@@ -1,10 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../../../Components/Header';
+import Header from '../../../Components/AuthHeader';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { registration } from '../../../Interface/Types';
+import { Registration } from '../../../Interface/register.interface';
+import TextInputField from '../../../Components/TextInputField';
+import Button from '../../../Components/Button';
+import { routes } from '../../../routes';
+import FormErrorMessage from '../../../Components/FormErrorMessage';
 
 export default function Register() {
 
@@ -19,10 +23,10 @@ export default function Register() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<registration>({
+  } = useForm<Registration>({
     resolver: yupResolver(registerSchema) as unknown as any,
   });
-  const onSubmit = (data: registration) => {
+  const onSubmit = (data: Registration) => {
     console.log(data);
     alert('Thank you for registration');
   };
@@ -40,89 +44,71 @@ export default function Register() {
             <input type='hidden' name='remember' defaultValue='true' />
             <div className='rounded-md -space-y-px'>
               <div className='pb-3'>
-                <input
+                <TextInputField
                   type='text'
-                  {...register('name')}
-                  className='appearance-none rounded-none relative block w-full px-3 py-2
-                   border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md
-                    focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
                   placeholder='Name'
+                  register={register('name')} 
                 />
               </div>
-              <div className='text-red-600 pb-2'>
+              <div>
               {errors.name?.type === 'required' && (
-              <div>Name is required.</div>
+              <FormErrorMessage>Name is required.</FormErrorMessage>
             )}
             </div>
               <div className='pb-3'>
-                <input
+                <TextInputField
                   type='email'
-                  {...register('email')}
-                  className='appearance-none rounded-none relative block w-full px-3 py-2
-                   border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md
-                    focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
                   placeholder='Email address'
+                  register={register('email')} 
                 />
               </div>
-              <div className='text-red-600 pb-2'>
+              <div>
               {errors.email?.type === 'required' && (
-              <div>Email address is required.</div>
+              <FormErrorMessage>Email address is required.</FormErrorMessage>
             )}
                {errors.email?.type === 'email' && (
-              <div>Enter valid email address</div>
+              <FormErrorMessage>Enter valid email address</FormErrorMessage>
             )}
             </div>
               <div className='pb-3'>
-                <input
+                <TextInputField
                   type='password'
-                  {...register('password')}
-                  className='appearance-none rounded-none relative block w-full px-3 py-2
-                   border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md
-                    focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
                   placeholder='Password'
+                  register={register('password')} 
                 />
               </div>
-              <div className='text-red-600 pb-2'>
+              <div>
                  {errors.password?.type === 'required' && (
-                <div>Password is required.</div>
+                <FormErrorMessage>Password is required.</FormErrorMessage>
               )}
                {errors.password?.type === 'min' && (
-                <div>Password must be at least 4 characters</div>
+                <FormErrorMessage>Password must be at least 4 characters</FormErrorMessage>
               )}
               </div>
               <div>
-                <input
+                <TextInputField
                   type='password'
-                  {...register('confirmPassword')}
-                  className='appearance-none rounded-none relative block w-full px-3 py-2
-                   border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md 
-                   focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
                   placeholder='Confirm Password'
+                  register={register('confirmPassword')} 
                 />
               </div>
-              <div className='text-red-600 pb-2 pt-2'>
+              <div>
               {errors.confirmPassword?.type === 'required' && (
-                <div>Confirm Password is required.</div>
+                <FormErrorMessage>Confirm Password is required.</FormErrorMessage>
               )}
                {errors.confirmPassword?.type === 'oneOf' && (
-                <div>{errors.confirmPassword?.message}</div>
+                <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
               )}
               </div>
             </div>
 
             <div>
-              <button
-                type='submit'
-                className='group relative w-full flex justify-center py-2 px-4 border 
-                border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 
-                hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'>
-                Register
-              </button>
+            <Button>Register</Button>
             </div>
           </form>
           <div className='text-center'>
             Already have an account?{' '}
-            <Link to='/' className='text-blue-600 hover:text-blue-800'>
+            <Link to={routes.login} className='text-blue-600 hover:text-blue-800'>
               Login
             </Link>
           </div>

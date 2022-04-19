@@ -1,9 +1,11 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ForgetPassword from './Pages/Auth/ForgetPassword/ForgetPassword';
-import Register from './Pages/Auth/Register/Register';
+import { routes } from './routes';
 
 const Login = React.lazy(() => import('./Pages/Auth/Login/Login'));
+const Registration = React.lazy(() => import('./Pages/Auth/Register/Register'));
+const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/ForgetPassword'));
+const PasswordReset = React.lazy(() => import('./Pages/Auth/ForgetPassword/ResetPassword'));
 
 export default function AppRouter() {
   return (
@@ -11,9 +13,10 @@ export default function AppRouter() {
       <BrowserRouter>
         <Suspense fallback={<>Loading</>}>
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgetpassword" element={<ForgetPassword />} />
+            <Route path={routes.login} element={<Login />} />
+            <Route path={routes.registration}  element={<Registration />} />
+            <Route path={routes.forgetpassword} element={<ForgetPassword />} />
+            <Route path={routes.resetpassword} element={<PasswordReset />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
