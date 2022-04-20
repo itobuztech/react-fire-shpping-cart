@@ -92,7 +92,7 @@ export default function Register() {
                   register={register('confirmPassword')} 
                 />
               </div>
-              <div>
+              <div className='pt-3'>
               {errors.confirmPassword?.type === 'required' && (
                 <FormErrorMessage>Confirm Password is required.</FormErrorMessage>
               )}
