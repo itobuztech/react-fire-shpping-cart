@@ -4,14 +4,15 @@ import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SignIn } from '../../../Interface/login.interface';
-import AuthHeader from '../../../Components/AuthHeader';
-import Button from '../../../Components/Button';
-import TextInputField from '../../../Components/TextInputField';
-import { routes } from '../../../routes';
-import FormErrorMessage from '../../../Components/FormErrorMessage';
-import { database } from '../../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+
+import { SignIn } from 'Interface/login.interface';
+import AuthHeader from 'Components/AuthHeader';
+import Button from 'Components/Button';
+import TextInputField from 'Components/TextInputField';
+import { routes } from 'routes';
+import FormErrorMessage from 'Components/FormErrorMessage';
+import { fireAuth } from 'lib/firebase';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,27 +28,23 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm<SignIn>({
-    resolver: yupResolver(loginSchema) as unknown as any,
+    resolver: yupResolver(loginSchema),
   });
-  watch('email');
+
 
   const onSubmit = async (value: SignIn) => {
-    signInWithEmailAndPassword(database, value.email, value.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-        navigate(routes.listscreen);
-      })
-      .catch((error) => {
-        if (error.code === 'auth/wrong-password') {
-          toast.error('Please check the Password');
-        }
-        if (error.code === 'auth/user-not-found') {
-          toast.error('Please check the Email');
-        }
-      });
+    try {
+      await signInWithEmailAndPassword(fireAuth, value.email, value.password);
+      navigate(routes.listScreen);
+    } catch (error: any) {
+      if (error.code === 'auth/wrong-password') {
+        toast.error('Please check the Password');
+      }
+      if (error.code === 'auth/user-not-found') {
+        toast.error('Please check the Email');
+      }
+    }
   };
 
   return (
@@ -63,18 +60,19 @@ export default function Login() {
           </div>
           <form className='mt-8 space-y-6' onSubmit={handleSubmit(onSubmit)}>
             <div className='rounded-md -space-y-px'>
+              {/* Email  */}
               <div className='pb-2'>
                 <TextInputField type='email' placeholder='Email' register={register('email')} />
               </div>
-              <div>
-                {errors.email?.type === 'required' && <FormErrorMessage>{errors.email?.message}</FormErrorMessage>}
-                {errors.email?.type === 'email' && <FormErrorMessage>{errors.email?.message}</FormErrorMessage>}
-              </div>
+             <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+              {/* Email End  */}
+
               <div className='pb-2'>
                 <TextInputField type='password' placeholder='Password' register={register('password')} />
               </div>
-              {errors.password && <FormErrorMessage>{errors.password?.message}</FormErrorMessage>}
+              <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
             </div>
+            
 
             <div className='flex items-center justify-between'>
               <div className='flex items-center'>
@@ -86,7 +84,7 @@ export default function Login() {
               </div>
 
               <div className='text-sm'>
-                <Link to={routes.forgetpassword} className='font-medium text-indigo-600 hover:text-indigo-800'>
+                <Link to={routes.forgetPassword} className='font-medium text-indigo-600 hover:text-indigo-800'>
                   Forgot your password?
                 </Link>
               </div>

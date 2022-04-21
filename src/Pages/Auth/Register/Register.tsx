@@ -1,18 +1,19 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Header from '../../../Components/AuthHeader';
+import Header from 'Components/AuthHeader';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Registration } from '../../../Interface/register.interface';
-import TextInputField from '../../../Components/TextInputField';
-import Button from '../../../Components/Button';
-import { routes } from '../../../routes';
-import FormErrorMessage from '../../../Components/FormErrorMessage';
-import { database } from '../../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import { Registration } from 'Interface/register.interface';
+import TextInputField from 'Components/TextInputField';
+import Button from 'Components/Button';
+import { routes } from 'routes';
+import FormErrorMessage from 'Components/FormErrorMessage';
+import { fireAuth } from 'lib/firebase';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -34,19 +35,20 @@ export default function Register() {
     resolver: yupResolver(registerSchema) as unknown as any,
   });
 
-  const onSubmit = (value: Registration) => {
-    createUserWithEmailAndPassword(database, value.email, value.password)
-      .then((response) => {
-        console.log(response);
-        alert('Thank you for registration');
-        navigate(routes.login);
-      })
-      .catch((error: any) => {
-        if (error.code === 'auth/email-already-in-use') {
-          toast.error('Email Address Already Used');
-        }
-      });
+  const onSubmit = async (value: Registration) => {
+    try {
+      await createUserWithEmailAndPassword(fireAuth, value.email, value.password);
+      navigate(routes.login);
+
+    } catch (error: any) {
+      if (error.code === 'auth/email-already-in-use') {
+        toast.error('Email Address Already Used');
+      } else {
+        toast.error(error.message);
+      }
+    }
   };
+    
 
   return (
     <>

@@ -1,7 +1,7 @@
 export const routes = {
   login: '/',
-  registration: '/Register',
-  forgetpassword: '/ForgetPassword',
-  resetpassword: '/PasswordReset',
-  listscreen: '/ListScreen'
+  registration: '/register',
+  forgetPassword: '/forgetPassword',
+  resetPassword: '/passwordReset',
+  listScreen: '/listScreen'
 };

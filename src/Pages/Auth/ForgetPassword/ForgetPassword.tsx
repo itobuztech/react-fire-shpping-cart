@@ -25,7 +25,7 @@ const navigate = useNavigate();
   });
   const onSubmit = (data: PasswordReset) => {
     console.log(data);
-    navigate(routes.resetpassword);
+    navigate(routes.resetPassword);
   };
   return (
   <>
