@@ -6,6 +6,7 @@ const Login = React.lazy(() => import('./Pages/Auth/Login/Login'));
 const Registration = React.lazy(() => import('./Pages/Auth/Register/Register'));
 const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/ForgetPassword'));
 const PasswordReset = React.lazy(() => import('./Pages/Auth/ForgetPassword/ResetPassword'));
+const ListScreen = React.lazy(() => import('./Screen/ListScreen'));
 
 export default function AppRouter() {
   return (
@@ -17,6 +18,7 @@ export default function AppRouter() {
             <Route path={routes.registration}  element={<Registration />} />
             <Route path={routes.forgetpassword} element={<ForgetPassword />} />
             <Route path={routes.resetpassword} element={<PasswordReset />} />
+            <Route path={routes.listscreen} element={<ListScreen />} />
           </Routes>
         </Suspense>
       </BrowserRouter>

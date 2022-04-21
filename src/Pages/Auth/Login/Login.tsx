@@ -10,11 +10,17 @@ import Button from '../../../Components/Button';
 import TextInputField from '../../../Components/TextInputField';
 import { routes } from '../../../routes';
 import FormErrorMessage from '../../../Components/FormErrorMessage';
+import { database } from '../../../firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Login() {
+  const navigate = useNavigate();
   const loginSchema = yup.object().shape({
-    email: yup.string().required().email(),
-    password: yup.string().required(),
+    email: yup.string().required('Email address is required.').email('Please enter your email address.'),
+    password: yup.string().required('Password is required.'),
   });
 
   const {
@@ -27,15 +33,29 @@ export default function Login() {
   });
   watch('email');
 
-  const onSubmit = (data: Signin) => {
-    console.log(data);
-    alert('Sucessfully Login ');
+  const onSubmit = async (value: Signin) => {
+    signInWithEmailAndPassword(database, value.email, value.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+        navigate(routes.listscreen);
+      })
+      .catch((error) => {
+        if (error.code === 'auth/wrong-password') {
+          toast.error('Please check the Password');
+        }
+        if (error.code === 'auth/user-not-found') {
+          toast.error('Please check the Email');
+        }
+      });
   };
+
   return (
     <>
       <div>
         <AuthHeader />
       </div>
+      <ToastContainer />
       <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full space-y-8'>
           <div>
@@ -44,23 +64,16 @@ export default function Login() {
           <form className='mt-8 space-y-6' onSubmit={handleSubmit(onSubmit)}>
             <div className='rounded-md -space-y-px'>
               <div className='pb-2'>
-          <TextInputField
-          type='email'
-          placeholder='Email'
-          register={register('email')}
-           />
+                <TextInputField type='email' placeholder='Email' register={register('email')} />
               </div>
               <div>
-                {errors.email?.type === 'required' && <FormErrorMessage>Email address is required.</FormErrorMessage>}
-                {errors.email?.type === 'email' && <FormErrorMessage>Please enter your email address</FormErrorMessage>}
+                {errors.email?.type === 'required' && <FormErrorMessage>{errors.email?.message}</FormErrorMessage>}
+                {errors.email?.type === 'email' && <FormErrorMessage>{errors.email?.message}</FormErrorMessage>}
               </div>
               <div className='pb-2'>
-                <TextInputField 
-                type='password'
-                placeholder='Password' 
-                register={register('password')} />
+                <TextInputField type='password' placeholder='Password' register={register('password')} />
               </div>
-              {errors.password && <FormErrorMessage>Password is required.</FormErrorMessage>}
+              {errors.password && <FormErrorMessage>{errors.password?.message}</FormErrorMessage>}
             </div>
 
             <div className='flex items-center justify-between'>
@@ -80,7 +93,7 @@ export default function Login() {
             </div>
 
             <div>
-             <Button>Login</Button>
+              <Button>Login</Button>
             </div>
           </form>
           <div className='text-center'>
