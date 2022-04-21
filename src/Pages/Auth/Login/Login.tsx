@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Signin } from '../../../Interface/login.interface';
+import { SignIn } from '../../../Interface/login.interface';
 import AuthHeader from '../../../Components/AuthHeader';
 import Button from '../../../Components/Button';
 import TextInputField from '../../../Components/TextInputField';
@@ -19,8 +19,8 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Login() {
   const navigate = useNavigate();
   const loginSchema = yup.object().shape({
-    email: yup.string().required('Email address is required.').email('Please enter your email address.'),
-    password: yup.string().required('Password is required.'),
+    email: yup.string().trim().required('Email address is required.').email('Please enter your email address.'),
+    password: yup.string().trim().required('Password is required.'),
   });
 
   const {
@@ -28,12 +28,12 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<Signin>({
+  } = useForm<SignIn>({
     resolver: yupResolver(loginSchema) as unknown as any,
   });
   watch('email');
 
-  const onSubmit = async (value: Signin) => {
+  const onSubmit = async (value: SignIn) => {
     signInWithEmailAndPassword(database, value.email, value.password)
       .then((userCredential) => {
         const user = userCredential.user;
