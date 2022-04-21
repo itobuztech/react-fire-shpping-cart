@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Signin } from '../../../Interface/login.interface';
+import { SignIn } from '../../../Interface/login.interface';
 import AuthHeader from '../../../Components/AuthHeader';
 import Button from '../../../Components/Button';
 import TextInputField from '../../../Components/TextInputField';
@@ -22,12 +22,12 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<Signin>({
+  } = useForm<SignIn>({
     resolver: yupResolver(loginSchema) as unknown as any,
   });
   watch('email');
 
-  const onSubmit = (data: Signin) => {
+  const onSubmit = (data: SignIn) => {
     console.log(data);
     alert('Sucessfully Login ');
   };
