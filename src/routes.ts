@@ -1,7 +1,9 @@
 export const routes = {
-  login: '/',
+  home: '/',
+  login: '/login',
   registration: '/register',
   forgetPassword: '/forgetPassword',
   resetPassword: '/passwordReset',
-  listScreen: '/listScreen'
+  listScreen: '/listScreen',
+  logOut: '/logOut'
 };

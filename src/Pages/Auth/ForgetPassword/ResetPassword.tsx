@@ -1,18 +1,22 @@
 import React from 'react';
-import Header from '../../../Components/AuthHeader';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ResetPassword } from '../../../Interface/resetpassword.interface';
-import TextInputField from '../../../Components/TextInputField';
-import Button from '../../../Components/Button';
-import FormErrorMessage from '../../../Components/FormErrorMessage';
+
+import Button from 'Components/Button';
+import FormErrorMessage from 'Components/FormErrorMessage';
+import TextInputField from 'Components/TextInputField';
+import { ResetPassword } from 'Interface/resetPassword.interface';
+import AuthHeader from 'Components/AuthHeader';
 
 export default function PasswordReset() {
-
   const resetPasswordSchema = yup.object().shape({
-    password: yup.string().required().min(4),
-    confirmPassword: yup.string().required().oneOf([yup.ref('password')], 'Passwords must match'),
+    password: yup.string().trim().required('Password is required.').min(6, 'Password must be at least 6 characters'),
+    confirmPassword: yup
+      .string()
+      .required('Confirm Password is required.')
+      .trim()
+      .oneOf([yup.ref('password')], 'Passwords must match'),
   });
 
   const {
@@ -20,63 +24,43 @@ export default function PasswordReset() {
     handleSubmit,
     formState: { errors },
   } = useForm<ResetPassword>({
-    resolver: yupResolver(resetPasswordSchema) as unknown as any,
+    resolver: yupResolver(resetPasswordSchema),
   });
-  const onSubmit = (data: ResetPassword) => {
-    console.log(data);
+  const onSubmit = () => {
     alert('Password is successfully reset');
   };
   return (
-  <>
-   <div>
-    <Header/>
-    </div>
-      <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-
-        <div className="max-w-md w-full space-y-8">
+    <>
+      <div>
+        <AuthHeader />
+      </div>
+      <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
+        <div className='max-w-md w-full space-y-8'>
           <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Reset Password</h2>
+            <h2 className='mt-6 text-center text-3xl font-extrabold text-gray-900'>Reset Password</h2>
           </div>
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            <div className="rounded-md -space-y-px">
-              <div className='pb-3'>
-                <TextInputField
-                  type="password"
-                  placeholder="Password"
-                  register={register('password')}
-                />
+          <form className='mt-8 space-y-6' onSubmit={handleSubmit(onSubmit)}>
+            <div className='rounded-md -space-y-px'>
+              <div className='pb-2'>
+                <TextInputField type='password' placeholder='Password' register={register('password')} />
               </div>
               <div>
-                 {errors.password?.type === 'required' && (
-                <FormErrorMessage>Password is required.</FormErrorMessage>
-              )}
-               {errors.password?.type === 'min' && (
-                <FormErrorMessage>Password must be at least 4 characters</FormErrorMessage>
-              )}
+                <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
               </div>
               <div>
-                <TextInputField
-                  type="password"
-                  placeholder="Confirm Password"
-                  register={register('confirmPassword')}
-                />
+                <TextInputField type='password' placeholder='Confirm Password' register={register('confirmPassword')} />
               </div>
-              <div>
-              {errors.confirmPassword?.type === 'required' && (
-                <FormErrorMessage>Confirm Password is required.</FormErrorMessage>
-              )}
-               {errors.confirmPassword?.type === 'oneOf' && (
-                <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
-              )}
+              <div className='pt-2'>
+                  <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
               </div>
             </div>
 
             <div>
-             <Button>Reset</Button>
+              <Button>Reset</Button>
             </div>
           </form>
+        </div>
       </div>
-      </div>
-      </>
+    </>
   );
 }
