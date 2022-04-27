@@ -12,6 +12,8 @@ const Registration = React.lazy(() => import('./Pages/Auth/Register/Register'));
 const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/ForgetPassword'));
 const PasswordReset = React.lazy(() => import('./Pages/Auth/ForgetPassword/ResetPassword'));
 const PostList = React.lazy(() => import('./Pages/Post/List/List'));
+const ProductCart = React.lazy(() => import('./Components/ProductCart'));
+const ProductDetailsScreen = React.lazy(() => import('./Components/ProductDetailsScreen'));
 const Logout = React.lazy(() => import('./Pages/Auth/Logout/Logout'));
 
 export default function AppRouter() {
@@ -31,6 +33,12 @@ export default function AppRouter() {
             <Route path={routes.resetPassword} element={<PasswordReset />} />
             <Route path={routes.listScreen} element={<AuthGuard />}>
               <Route path={routes.listScreen} element={<PostList />} />
+            </Route>
+            <Route path={routes.productCart} element={<AuthGuard />}>
+              <Route path={routes.productCart} element={<ProductCart />} />
+            </Route>
+            <Route path={routes.productDetailsScreen} element={<AuthGuard />}>
+              <Route path={routes.productDetailsScreen} element={<ProductDetailsScreen />} />
             </Route>
             <Route path={routes.logOut} element={<Logout />} />
           </Routes>
