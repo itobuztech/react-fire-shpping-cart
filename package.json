@@ -17,6 +17,7 @@
     "eslint-config-airbnb-typescript": "^17.0.0",
     "faker": "^6.6.6",
     "firebase": "^9.6.11",
+    "lodash": "^4.17.21",
     "postcss": "^8.4.12",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

@@ -5,5 +5,8 @@ export const routes = {
   forgetPassword: '/forgetPassword',
   resetPassword: '/passwordReset',
   listScreen: '/listScreen',
+  productCart: '/productCart',
+  productDetailsScreen:'/productDetailsScreen',
   logOut: '/logOut'
+ 
 };
