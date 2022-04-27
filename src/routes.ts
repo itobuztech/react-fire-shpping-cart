@@ -3,5 +3,6 @@ export const routes = {
   registration: '/register',
   forgetPassword: '/forgetPassword',
   resetPassword: '/passwordReset',
-  listScreen: '/listScreen'
+  listScreen: '/listScreen',
+  categoryAction: '/category-action'
 };

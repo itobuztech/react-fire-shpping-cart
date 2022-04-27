@@ -1,0 +1,15 @@
+.form-input {
+  @apply rounded-lg;
+  @apply border;
+  @apply border-slate-300;
+  @apply h-11;
+  @apply p-2;
+}
+
+.form-textarea {
+  @apply rounded-lg;
+  @apply border;
+  @apply border-slate-300;
+  @apply h-28;
+  @apply p-2;
+}

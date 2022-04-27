@@ -5,6 +5,9 @@
     "password": "Password is required",
     "confirmPassword": "Confirm Password is a required",
     "name": "Name is required",
-    "matchPassword": "New password and Repeat password Must Match"
+    "matchPassword": "New password and Repeat password Must Match",
+    "catName": "Please enter a category name",
+    "catDesc": "Please enter short description for category",
+    "catImage": "Please provide an image"
   }
 }
