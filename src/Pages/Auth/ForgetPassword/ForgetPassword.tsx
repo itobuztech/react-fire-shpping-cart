@@ -4,12 +4,12 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { PasswordReset } from 'Interface/forgetPassword.interface';
 import Button from 'Components/Button';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import TextInputField from 'Components/TextInputField';
 import { routes } from 'routes';
 import AuthHeader from 'Components/AuthHeader';
+import { PasswordReset } from 'Interface/forgetpassword.interface';
 
 export default function ForgetPassword() {
   const navigate = useNavigate();

@@ -6,8 +6,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Button from 'Components/Button';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import TextInputField from 'Components/TextInputField';
-import { ResetPassword } from 'Interface/resetPassword.interface';
 import AuthHeader from 'Components/AuthHeader';
+import { ResetPassword } from 'Interface/resetpassword.interface';
 
 export default function PasswordReset() {
   const resetPasswordSchema = yup.object().shape({
