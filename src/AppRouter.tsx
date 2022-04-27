@@ -9,7 +9,6 @@ const PasswordReset = React.lazy(() => import('./Pages/Auth/ForgetPassword/Reset
 const PostList = React.lazy(() => import('Pages/Post/List/List'));
 const CategoryAction = React.lazy(() => import('./Pages/Category/Action/Action'));
 
-
 export default function AppRouter() {
   return (
     <div>
@@ -22,6 +21,7 @@ export default function AppRouter() {
             <Route path={routes.resetPassword} element={<PasswordReset />} />
             <Route path={routes.listScreen} element={<PostList />} />
             <Route path={routes.categoryAction} element={<CategoryAction />} />
+            <Route path={routes.catgeoryActionUpdate} element={<CategoryAction />} />
           </Routes>
         </Suspense>
       </BrowserRouter>

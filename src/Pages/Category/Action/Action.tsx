@@ -1,7 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import Button from 'Components/Button';
 import FormErrorMessage from 'Components/FormErrorMessage';
+import { addDoc, collection } from 'firebase/firestore';
 import { CategoryActionIf } from 'Interface/categoryaction.interface';
+import { db } from 'lib/firebase';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -18,8 +20,14 @@ export default function CategoryAction() {
   const { register, handleSubmit, formState: { errors } } = useForm<CategoryActionIf>({
     resolver: yupResolver(categoryActionSchema)
   });
-  const onSubmit = (data: CategoryActionIf) => {
+  const onSubmit = async (data: CategoryActionIf) => {
     console.log(data);
+    await addDoc(collection(db, 'category'), {
+      id: String(new Date().getTime()),
+      categoryName: data.catName,
+      categoryDesc: data.catDesc,
+    }
+    );
   };
   
   return (
@@ -46,3 +54,4 @@ export default function CategoryAction() {
     </div>
   );
 }
+
