@@ -5,6 +5,9 @@ import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { SignIn } from 'Interface/login.interface';
 import AuthHeader from 'Components/AuthHeader';
@@ -13,9 +16,6 @@ import TextInputField from 'Components/TextInputField';
 import { routes } from 'routes';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import { fireAuth } from 'lib/firebase';
-import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -32,7 +32,6 @@ export default function Login() {
     resolver: yupResolver(loginSchema),
   });
 
-
   const onSubmit = async (value: SignIn) => {
     try {
       await signInWithEmailAndPassword(fireAuth, value.email, value.password);
@@ -40,9 +39,10 @@ export default function Login() {
     } catch (error: any) {
       if (error.code === 'auth/wrong-password') {
         toast.error('Please check the Password');
-      }
-      if (error.code === 'auth/user-not-found') {
+      } else if (error.code === 'auth/user-not-found') {
         toast.error('Please check the Email');
+      } else {
+        toast.error(error.message);
       }
     }
   };
@@ -61,18 +61,21 @@ export default function Login() {
           <form className='mt-8 space-y-6' onSubmit={handleSubmit(onSubmit)}>
             <div className='rounded-md -space-y-px'>
               {/* Email  */}
-              <div className='pb-2'>
+              <div className='mb-2'>
                 <TextInputField type='email' placeholder='Email' register={register('email')} />
               </div>
-             <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+              <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
               {/* Email End  */}
 
-              <div className='pb-2'>
+              {/* Password  */}
+              <div>
                 <TextInputField type='password' placeholder='Password' register={register('password')} />
               </div>
-              <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+              <div className='pt-2'>
+                <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+              </div>
+              {/* Password End  */}
             </div>
-            
 
             <div className='flex items-center justify-between'>
               <div className='flex items-center'>
@@ -93,7 +96,9 @@ export default function Login() {
             <div>
               <Button>Login</Button>
             </div>
+
           </form>
+          
           <div className='text-center'>
             Do not have an account?{' '}
             <Link to={routes.registration} className='text-blue-600 hover:text-blue-800'>
