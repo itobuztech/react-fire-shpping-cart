@@ -1,18 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { CategoryActionIf } from './../../Interface/categoryaction.interface';
+import { CategoryActionInterface } from './../../Interface/categoryaction.interface';
 
-const category : CategoryActionIf[] = [];
+const category : CategoryActionInterface[] = [];
 
 const categorySlice = createSlice({
   name: 'category',
   initialState: category,
   reducers: {
-    addCategory: (state: CategoryActionIf[], action) => {
+    addCategory: (state: CategoryActionInterface[], action) => {
       const newCategory = {
         id: String(new Date().getTime()),
-        catName: action.payload.catName,
-        catDesc: action.payload.catDesc,
-        catImage: action.payload.catImage
+        categoryName: action.payload.categoryName,
+        categoryDesc: action.payload.categoryDesc,
+        categoryImage: action.payload.categoryImage
       };
       state.push(newCategory);
     }

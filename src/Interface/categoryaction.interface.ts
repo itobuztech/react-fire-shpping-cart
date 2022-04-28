@@ -1,7 +1,7 @@
-export interface CategoryActionIf {
+export interface CategoryActionInterface {
   id?: string;
-  catName: string;
-  catDesc: string;
-  catImage: string;
+  categoryName: string;
+  categoryDesc: string;
+  categoryImage?: File;
   uid?: string;
 }

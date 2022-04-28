@@ -5,5 +5,6 @@ export const routes = {
   resetPassword: '/passwordReset',
   listScreen: '/listScreen',
   categoryAction: '/category-action',
-  catgeoryActionUpdate: '/category-action/:id'
+  categoryActionUpdate: '/category-action/:id',
+  categoryList: '/categories'
 };
