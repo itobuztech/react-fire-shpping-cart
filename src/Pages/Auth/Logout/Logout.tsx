@@ -1,8 +1,9 @@
 import { signOut } from 'firebase/auth';
-import { fireAuth } from 'lib/firebase';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { routes } from 'routes';
+import { fireAuth } from 'lib/firebase';
 
 export default function Logout() {
   const navigate = useNavigate();
@@ -12,7 +13,6 @@ export default function Logout() {
     signOut(fireAuth)
     .then(() => {
       if (user) {
-        alert('logout successfully');
         navigate(routes.login);
       }
     })

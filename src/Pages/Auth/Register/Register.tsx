@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 
 import { Registration } from 'Interface/register.interface';
 import TextInputField from 'Components/TextInputField';
@@ -16,6 +14,7 @@ import { fireAuth } from 'lib/firebase';
 import Header from 'Components/AuthHeader';
 
 export default function Register() {
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const registerSchema = yup.object().shape({
     name: yup.string().trim().required('Name is required.'),
@@ -38,13 +37,14 @@ export default function Register() {
 
   const onSubmit = async (value: Registration) => {
     try {
-      await createUserWithEmailAndPassword(fireAuth, value.email, value.password);
-      navigate(routes.login);
+      const userCredential = await createUserWithEmailAndPassword(fireAuth, value.email, value.password);
+      await sendEmailVerification(userCredential.user);
+      navigate(routes.emailVerification);
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
-        toast.error('Email Address Already Used');
+        setErrorMessage('Email exits');
       } else {
-        toast.error(error.message);
+        setErrorMessage(error.message);
       }
     }
   };
@@ -54,7 +54,6 @@ export default function Register() {
       <div>
         <Header />
       </div>
-      <ToastContainer />
       <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full space-y-8'>
           <div>
@@ -97,6 +96,11 @@ export default function Register() {
             <div>
               <Button>Register</Button>
             </div>
+            {errorMessage && (
+              <div className='bg-yellow-300 p-1'>
+                <div className='pl-2'>{errorMessage}</div>
+              </div>
+            )}
           </form>
 
           <div className='text-center'>
