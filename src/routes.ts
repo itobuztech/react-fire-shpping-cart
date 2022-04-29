@@ -4,7 +4,11 @@ export const routes = {
   forgetPassword: '/forgetPassword',
   resetPassword: '/passwordReset',
   listScreen: '/listScreen',
-  categoryAction: '/category-action',
-  categoryActionUpdate: '/category-action/:id',
+  categoryCreate: '/category-action',
+  categoryEdit: {
+    match: '/category-action/:id',
+    build: (id: string ) =>
+       `/category-action/${id}`
+  },
   categoryList: '/categories'
 };

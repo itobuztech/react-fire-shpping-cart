@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
 import { routes } from './routes';
 
 const Login = React.lazy(() => import('./Pages/Auth/Login/Login'));
@@ -21,8 +21,9 @@ export default function AppRouter() {
             <Route path={routes.forgetPassword} element={<ForgetPassword />} />
             <Route path={routes.resetPassword} element={<PasswordReset />} />
             <Route path={routes.listScreen} element={<PostList />} />
-            <Route path={routes.categoryAction} element={<CategoryAction />} />
-            <Route path={routes.categoryActionUpdate} element={<CategoryAction />} />
+            <Route path={routes.categoryCreate} 
+            element={<CategoryAction />} />
+            <Route path={routes.categoryEdit.match} element={<CategoryAction />} />
             <Route path={routes.categoryList} element={<CategoryList />} />
           </Routes>
         </Suspense>
