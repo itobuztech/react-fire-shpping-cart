@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { User } from 'firebase/auth';
 
 interface AuthState {
   // undefined meaning app / auth fully not loaded
-  user: null | any | undefined;
+  user: null | User | undefined;
 }
 
 const authSlice = createSlice({

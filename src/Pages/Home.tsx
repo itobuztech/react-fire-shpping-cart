@@ -13,8 +13,10 @@ export default function HomePage() {
     console.log(user);
     if (user === null) {
       navigate(routes.login);
-    } else if (user?.uid) {
+    } else if (user?.uid && user.emailVerified) {
       navigate(routes.listScreen);
+    } else {
+      navigate(routes.emailVerification);
     }
   }, [user, navigate]);
 
