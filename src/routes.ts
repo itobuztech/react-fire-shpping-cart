@@ -9,5 +9,4 @@ export const routes = {
   productDetailsScreen:'/product-detailsScreen',
   logOut: '/logout'
   
-
 };

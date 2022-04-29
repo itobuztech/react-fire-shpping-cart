@@ -3,7 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  GoogleAuthProvider,
+  sendEmailVerification,
+  signInWithPopup,
+} from 'firebase/auth';
 
 import { Registration } from 'Interface/register.interface';
 import TextInputField from 'Components/TextInputField';
@@ -12,6 +18,7 @@ import { routes } from 'routes';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import { fireAuth } from 'lib/firebase';
 import Header from 'Components/AuthHeader';
+import GoogleLinkButton from 'Components/GoogleLinkButton';
 
 export default function Register() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -48,14 +55,25 @@ export default function Register() {
       }
     }
   };
+  const provider = new GoogleAuthProvider();
+  const auth = getAuth();
+  const googleLogin = async () => {
+    try {
+      const results = signInWithPopup(auth, provider);
+      console.log(results);
+      navigate(routes.listScreen);
+    } catch (error) {
+      // ...
+    }
+  };
 
   return (
     <>
       <div>
         <Header />
       </div>
-      <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-md w-full space-y-8'>
+      <div className='min-h-full flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8'>
+        <div className='max-w-md w-full space-y-2'>
           <div>
             <h2 className='text-center text-3xl font-extrabold text-gray-900'>Create an Account</h2>
           </div>
@@ -96,8 +114,11 @@ export default function Register() {
             <div>
               <Button>Register</Button>
             </div>
+
             <FormErrorMessage>{errorMessage}</FormErrorMessage>
           </form>
+          <div className='text-center'> or</div>
+          <GoogleLinkButton onClick={googleLogin}>Sign in with Google</GoogleLinkButton>
 
           <div className='text-center'>
             Already have an account?{' '}
