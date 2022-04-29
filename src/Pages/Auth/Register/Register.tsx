@@ -96,11 +96,7 @@ export default function Register() {
             <div>
               <Button>Register</Button>
             </div>
-            {errorMessage && (
-              <div className='bg-yellow-300 p-1'>
-                <div className='pl-2'>{errorMessage}</div>
-              </div>
-            )}
+            <FormErrorMessage>{errorMessage}</FormErrorMessage>
           </form>
 
           <div className='text-center'>
