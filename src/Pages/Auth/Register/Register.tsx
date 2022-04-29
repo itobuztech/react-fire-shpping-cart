@@ -10,6 +10,7 @@ import {
   sendEmailVerification,
   signInWithPopup,
 } from 'firebase/auth';
+import { FcGoogle, FcPhoneAndroid } from 'react-icons/fc';
 
 import { Registration } from 'Interface/register.interface';
 import TextInputField from 'Components/TextInputField';
@@ -18,7 +19,7 @@ import { routes } from 'routes';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import { fireAuth } from 'lib/firebase';
 import Header from 'Components/AuthHeader';
-import GoogleLinkButton from 'Components/GoogleLinkButton';
+import SignInLinkButton from 'Components/SigninLinkButton';
 
 export default function Register() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -118,7 +119,23 @@ export default function Register() {
             <FormErrorMessage>{errorMessage}</FormErrorMessage>
           </form>
           <div className='text-center'> or</div>
-          <GoogleLinkButton onClick={googleLogin}>Sign in with Google</GoogleLinkButton>
+          <SignInLinkButton onClick={googleLogin}>
+            {' '}
+            <div className='text-2xl mr-2'>
+              <FcGoogle />
+            </div>
+            Sign in with Google
+          </SignInLinkButton>
+          <div>
+            <Link to={routes.numberVerification}>
+              <SignInLinkButton>
+                <div className='text-2xl mr-2'>
+                  <FcPhoneAndroid />
+                </div>
+                Sign in with mobile number
+              </SignInLinkButton>
+            </Link>
+          </div>
 
           <div className='text-center'>
             Already have an account?{' '}
