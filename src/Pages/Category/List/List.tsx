@@ -1,5 +1,5 @@
 import Button from 'Components/Button';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { CategoryActionInterface } from 'Interface/categoryaction.interface';
 import { db } from 'lib/firebase';
 import React, { useEffect, useState } from 'react';
@@ -15,8 +15,8 @@ export default function CategoryList() {
     setCategoryList(data);
   };
 
-  const onDelete = (id: string) => {
-
+  const onDelete = async (id: string) => {
+    await deleteDoc(doc(db, 'category', String(id)));
   };
 
   useEffect(() => {
