@@ -2,15 +2,12 @@ export const routes = {
   home: '/',
   login: '/login',
   registration: '/register',
-  emailVerification: '/emailVerification',
-  forgetPassword: '/forgetPassword',
-  listScreen: '/listScreen',
-  productCart: '/productCart',
-  productDetailsScreen:'/productDetailsScreen',
-  logOut: '/logOut'
-<<<<<<< HEAD
- 
-=======
+  emailVerification: '/email-verification',
+  forgetPassword: '/forget-password',
+  listScreen: '/list-screen',
+  productCart: '/product-cart',
+  productDetailsScreen:'/product-detailsScreen',
+  logOut: '/logout'
   
->>>>>>> feature/Email-confirmation
+
 };

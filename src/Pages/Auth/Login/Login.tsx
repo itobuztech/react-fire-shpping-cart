@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth';
 
 import { SignIn } from 'Interface/login.interface';
 import AuthHeader from 'Components/AuthHeader';
@@ -32,9 +32,10 @@ export default function Login() {
   const onSubmit = async (value: SignIn) => {
     try {
       const authUser = await signInWithEmailAndPassword(fireAuth, value.email, value.password);
-      if (authUser.user.emailVerified) {
+      if (authUser.user.emailVerified === true) {
         navigate(routes.listScreen);
-      } else {
+      } else if (authUser.user.emailVerified === false) {
+        sendEmailVerification(authUser.user);
         navigate(routes.emailVerification);
       }
     } catch (error: any) {
@@ -47,23 +48,6 @@ export default function Login() {
       }
     }
   };
-
-  // const onSubmit = (value : SignIn) => {
-  //   signInWithEmailAndPassword(fireAuth, value.email, value.password ).then(authUser => {
-
-  //     if (authUser.user.emailVerified) {
-  //      alert('email is verified');
-  //      navigate(routes.listScreen);
-  //     } else {
-  //       console.log('email not verified');
-  //       navigate(routes.emailVerification);
-  //     }
-  //     }).catch(function (error) {
-  //       console.log(error);
-
-  //   });
-
-  // };
 
   return (
     <>
@@ -113,11 +97,7 @@ export default function Login() {
             <div>
               <Button>Login</Button>
             </div>
-            {errorMessage && (
-              <div className='bg-yellow-300 p-1'>
-                <div className='pl-2'>{errorMessage}</div>
-              </div>
-            )}
+            <FormErrorMessage>{errorMessage}</FormErrorMessage>
           </form>
 
           <div className='text-center'>
