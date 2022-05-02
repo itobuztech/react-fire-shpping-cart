@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import AuthGuard from 'Guard/AuthGuard';
 import UnAuthGuard from 'Guard/UnAuthGuard';
+import EmailGuard from 'Guard/EmailGuard';
 import { routes } from './routes';
 
 const Home = React.lazy(() => import('./Pages/Home'));
@@ -11,7 +12,7 @@ const Login = React.lazy(() => import('./Pages/Auth/Login/Login'));
 const Registration = React.lazy(() => import('./Pages/Auth/Register/Register'));
 const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/ForgetPassword'));
 const EmailVerification = React.lazy(() => import('./Components/EmailVerification'));
-const PostList = React.lazy(() => import('./Pages/Post/List/ProductList'));
+const PostList = React.lazy(() => import('./Pages/ProductList/ProductList'));
 const ProductCart = React.lazy(() => import('./Components/ProductCart'));
 const ProductDetailsScreen = React.lazy(() => import('./Components/ProductDetailsScreen'));
 const Logout = React.lazy(() => import('./Pages/Auth/Logout/Logout'));
@@ -30,7 +31,7 @@ export default function AppRouter() {
             </Route>
             <Route path={routes.registration} element={<Registration />} />
             <Route path={routes.forgetPassword} element={<ForgetPassword />} />
-            <Route path={routes.emailVerification} element={<AuthGuard />}>
+            <Route path={routes.emailVerification} element={<EmailGuard />}>
               <Route path={routes.emailVerification} element={<EmailVerification />} />
             </Route>
             <Route path={routes.listScreen} element={<AuthGuard />}>
