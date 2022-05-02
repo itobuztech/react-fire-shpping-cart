@@ -11,7 +11,6 @@ const Login = React.lazy(() => import('./Pages/Auth/Login/Login'));
 const Registration = React.lazy(() => import('./Pages/Auth/Register/Register'));
 const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/ForgetPassword'));
 const EmailVerification = React.lazy(() => import('./Components/EmailVerification'));
-const NumberVerification = React.lazy(() => import('./Components/NumberVerification'));
 const PostList = React.lazy(() => import('./Pages/Post/List/ProductList'));
 const ProductCart = React.lazy(() => import('./Components/ProductCart'));
 const ProductDetailsScreen = React.lazy(() => import('./Components/ProductDetailsScreen'));
@@ -31,7 +30,6 @@ export default function AppRouter() {
             </Route>
             <Route path={routes.registration} element={<Registration />} />
             <Route path={routes.forgetPassword} element={<ForgetPassword />} />
-            <Route path={routes.numberVerification} element={<NumberVerification />} />
             <Route path={routes.emailVerification} element={<AuthGuard />}>
               <Route path={routes.emailVerification} element={<EmailVerification />} />
             </Route>
