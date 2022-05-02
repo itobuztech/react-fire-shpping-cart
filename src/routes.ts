@@ -8,5 +8,4 @@ export const routes = {
   productCart: '/product-cart',
   productDetailsScreen:'/product-detailsScreen',
   logOut: '/logout'
-  
 };
