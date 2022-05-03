@@ -2,11 +2,10 @@ export const routes = {
   home: '/',
   login: '/login',
   registration: '/register',
-  forgetPassword: '/forgetPassword',
-  resetPassword: '/passwordReset',
-  listScreen: '/listScreen',
-  productCart: '/productCart',
-  productDetailsScreen:'/productDetailsScreen',
-  logOut: '/logOut'
- 
+  emailVerification: '/email-verification',
+  forgetPassword: '/forget-password',
+  listScreen: '/list-screen',
+  productCart: '/product-cart',
+  productDetailsScreen:'/product-detailsScreen',
+  logOut: '/logout'
 };
