@@ -13,7 +13,7 @@ import { routes } from 'routes';
 import AuthHeader from 'Components/AuthHeader';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { fireAuth } from 'lib/firebase';
-import { PasswordReset } from 'Interface/forgetpassword.interface';
+import { PasswordReset } from 'Interface/forget-password.interface';
 
 export default function ForgetPassword() {
   const resetPasswordSchema = yup.object().shape({
