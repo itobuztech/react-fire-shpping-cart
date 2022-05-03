@@ -1,4 +1,4 @@
 export interface NumberVerificationLink {
- phoneNumber: any;
+ phoneNumber?: any;
  otp?: any;
 }
