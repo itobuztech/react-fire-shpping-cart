@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import Button from 'Components/Button';
 import FormErrorMessage from 'Components/FormErrorMessage';
-import { addDoc, collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { CategoryActionInterface } from 'Interface/categoryaction.interface';
 import { db } from 'lib/firebase';
 import React, { useEffect } from 'react';
