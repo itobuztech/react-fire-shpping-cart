@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import { SignIn } from 'Interface/login.interface';
 import AuthHeader from 'Components/AuthHeader';
@@ -35,7 +35,6 @@ export default function Login() {
       if (authUser.user.emailVerified === true) {
         navigate(routes.listScreen);
       } else if (authUser.user.emailVerified === false) {
-        sendEmailVerification(authUser.user);
         navigate(routes.emailVerification);
       }
     } catch (error: any) {
