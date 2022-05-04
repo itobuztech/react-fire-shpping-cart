@@ -74,7 +74,8 @@ export default function CategoryAction() {
         const data = docSnap.data() as CategoryActionInterface;
         setValue('categoryName', data.categoryName);
         setValue('categoryDesc', data.categoryDesc);
-        setValue('categoryImage', image);
+        setValue('categoryImage', data.categoryImage);
+        setImage(data.categoryImage);
       }
   })();
   }, [id, setValue, image]);
@@ -98,6 +99,9 @@ export default function CategoryAction() {
         </div>
         <div className="flex flex-col space-y-1">
           <label htmlFor="category-name">Featured image</label>
+          {
+            image && <img src={image} width={50} height={50} />
+          }
           <input type="file" {...register('categoryImage')} onChange={fileChange} />
           <FormErrorMessage>{errors.categoryImage?.message}</FormErrorMessage>
         </div>
