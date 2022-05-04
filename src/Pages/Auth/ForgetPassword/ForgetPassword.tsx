@@ -10,7 +10,7 @@ import Button from 'Components/Button';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import TextInputField from 'Components/TextInputField';
 import { routes } from 'routes';
-import AuthHeader from 'Components/AuthHeader';
+import FormHeader from 'Components/FormHeader';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { fireAuth } from 'lib/firebase';
 import { PasswordReset } from 'Interface/forget-password.interface';
@@ -40,7 +40,7 @@ export default function ForgetPassword() {
   return (
     <>
       <div>
-        <AuthHeader />
+        <FormHeader />
         <ToastContainer />
       </div>
       <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>

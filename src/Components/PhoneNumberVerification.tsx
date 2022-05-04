@@ -7,14 +7,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { NumberVerificationLink } from 'Interface/numberVerification.interface';
-import AuthHeader from './AuthHeader';
+import FormHeader from './FormHeader';
 import TextInputField from './TextInputField';
 import Button from './Button';
 import FormErrorMessage from './FormErrorMessage';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'routes';
 
-export default function NumberVerification() {
+export default function PhoneNumberVerification() {
   const navigate = useNavigate();
   const numberVerificationSchema = yup.object().shape({
     phoneNumber: yup.string().trim().required('Phone number is required.'),
@@ -39,7 +39,7 @@ export default function NumberVerification() {
         setResults(res);
         setShow(true);
         setHide(false);
-        toast.success('otp sent');
+        toast.success('Otp sent');
       })
       .catch((err) => {
         toast.error(err.message);
@@ -56,15 +56,15 @@ export default function NumberVerification() {
         navigate(routes.listScreen);
       })
       .catch((err: any) => {
-        toast.error('wrong otp');
-        toast.error(err.message);
+        toast.error('Wrong otp');
+        console.log(err.message);
       });
   };
 
   return (
     <>
       <div>
-        <AuthHeader />
+        <FormHeader />
       </div>
       <ToastContainer />
       {hide && (

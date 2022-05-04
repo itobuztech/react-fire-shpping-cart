@@ -4,15 +4,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 
 import { SignIn } from 'Interface/login.interface';
-import AuthHeader from 'Components/AuthHeader';
+import FormHeader from 'Components/FormHeader';
 import Button from 'Components/Button';
 import TextInputField from 'Components/TextInputField';
 import { routes } from 'routes';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import { fireAuth } from 'lib/firebase';
+import SignInLinkButton from 'Components/SigninLinkButton';
+import { FcGoogle, FcPhoneAndroid } from 'react-icons/fc';
 
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -47,14 +49,25 @@ export default function Login() {
       }
     }
   };
+  const provider = new GoogleAuthProvider();
+  const auth = getAuth();
+  const googleLogin = async () => {
+    try {
+      const results = signInWithPopup(auth, provider);
+      console.log(results);
+      navigate(routes.listScreen);
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <>
       <div>
-        <AuthHeader />
+        <FormHeader />
       </div>
       <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-md w-full space-y-8'>
+        <div className='max-w-md w-full space-y-2'>
           <div>
             <h2 className='text-center text-3xl font-extrabold text-gray-900'>Sign in to your account</h2>
           </div>
@@ -98,6 +111,26 @@ export default function Login() {
             </div>
             <FormErrorMessage>{errorMessage}</FormErrorMessage>
           </form>
+          
+          {/* Sign in button */}
+          <SignInLinkButton onClick={googleLogin}>
+            {' '}
+            <div className='text-2xl mr-2'>
+              <FcGoogle />
+            </div>
+            Sign in with Google
+          </SignInLinkButton>
+          <div>
+            <Link to={routes.numberVerification}>
+              <SignInLinkButton>
+                <div className='text-2xl mr-2'>
+                  <FcPhoneAndroid />
+                </div>
+                Sign in with mobile number
+              </SignInLinkButton>
+            </Link>
+          </div>
+          {/* Sign in button end */}
 
           <div className='text-center'>
             Do not have an account?{' '}

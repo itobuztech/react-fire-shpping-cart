@@ -16,9 +16,10 @@ export default function ListHeader() {
             <SearchField label={'search here...'} />
           </div>
           <div className='flex justify-between'>
-            <div className='md:text-xl sm:text-md font-medium md:pr-6 sm:pr-4'>Categories</div>
+            <div className='md:text-xl sm:text-md font-medium md:pr-6 sm:pr-4'>
+              <Link to={routes.productCategoryList}>Categories</Link></div>
             <div className='md:text-3xl sm:text-xl text-white md:pr-6 sm:pr-4'>
-              <Link to={routes.productCart}>
+              <Link to={routes.cartItem}>
                 {' '}
                 <BsCart3 />
               </Link>
