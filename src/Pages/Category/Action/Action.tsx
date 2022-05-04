@@ -11,10 +11,13 @@ import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { v4 as uuidv4 } from 'uuid';
 import ListHeader from 'Components/ListHeader';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default function CategoryAction() {
   const { id } = useParams();
   const [image, setImage] = useState<any>(null);
+  const auth = getAuth();
+  console.log(auth.currentUser?.uid);
   const categoryActionSchema = yup.object().shape({
     categoryName: yup.string().required('Please enter a category name'),
     categoryDesc: yup.string().required('Please enter short description for category'),
@@ -35,7 +38,6 @@ export default function CategoryAction() {
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     
-    
     // update category
     if (id) {
       const categoryDocRef = doc(db, 'category', id as unknown as string);
@@ -54,7 +56,8 @@ export default function CategoryAction() {
         id: generateId,
         categoryName: data.categoryName,
         categoryDesc: data.categoryDesc,
-        categoryImage: downloadURL
+        categoryImage: downloadURL,
+        uid: auth.currentUser?.uid
       });
       setImage(downloadURL);
     });
