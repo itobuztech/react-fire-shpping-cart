@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { v4 as uuidv4 } from 'uuid';
 import ListHeader from 'Components/ListHeader';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 
 export default function CategoryAction() {
   const { id } = useParams();
@@ -21,10 +21,6 @@ export default function CategoryAction() {
   const categoryActionSchema = yup.object().shape({
     categoryName: yup.string().required('Please enter a category name'),
     categoryDesc: yup.string().required('Please enter short description for category'),
-    // categoryImage: yup.mixed()
-    // .test('required', 'Please provide an image', (value) =>{
-    //   return value && value.length;
-    // } )
   });
   const { register, handleSubmit, setValue, reset, 
     formState: { errors, isSubmitting } } = useForm<CategoryActionInterface>({
@@ -81,7 +77,7 @@ export default function CategoryAction() {
         setImage(data.categoryImage);
       }
   })();
-  }, [id, setValue, image]);
+  }, [id, setValue]);
 
   return (
     <>
