@@ -2,6 +2,6 @@ export interface CategoryActionInterface {
   id?: string;
   categoryName: string;
   categoryDesc: string;
-  categoryImage?: File;
+  categoryImage?: any;
   uid?: string;
 }
