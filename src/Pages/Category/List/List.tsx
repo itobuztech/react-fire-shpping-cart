@@ -1,5 +1,4 @@
 import Button from 'Components/Button';
-import ListHeader from 'Components/ListHeader';
 import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { CategoryActionInterface } from 'Interface/categoryaction.interface';
 import { db } from 'lib/firebase';
@@ -7,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { routes } from 'routes';
 import { AiOutlinePlus } from 'react-icons/ai';
+import ListHeader from 'Components/ProductListHeader';
 
 export default function CategoryList() {
   const [categoryList, setCategoryList] = useState<CategoryActionInterface[]>([]);

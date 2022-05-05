@@ -11,9 +11,9 @@ import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { v4 as uuidv4 } from 'uuid';
-import ListHeader from 'Components/ListHeader';
 import { getAuth } from 'firebase/auth';
 import { TiDelete } from 'react-icons/ti';
+import ListHeader from 'Components/ProductListHeader';
 
 export default function CategoryAction() {
   const { id } = useParams();

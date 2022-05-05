@@ -15,10 +15,12 @@ const CategoryAction = React.lazy(() => import('./Pages/Category/Action/Action')
 const CategoryList = React.lazy(() => import('./Pages/Category/List/List'));
 const CategoryDetail = React.lazy(() => import('./Pages/Category/Details/Details'));
 const EmailVerification = React.lazy(() => import('./Components/EmailVerification'));
-const NumberVerification = React.lazy(() => import('./Components/NumberVerification'));
+const PhoneNumberVerification = React.lazy(() => import('./Components/PhoneNumberVerification'));
 const ProductList = React.lazy(() => import('./Pages/ProductList/ProductList'));
-const ProductCart = React.lazy(() => import('./Components/ProductCart'));
-const ProductDetailsScreen = React.lazy(() => import('./Components/ProductDetailsScreen'));
+const ProductCategoryList = React.lazy(() => import('./Pages/Categories/ProductCategoryList'));
+const CartItem = React.lazy(() => import('./Cart/CartItem'));
+const CheckoutScreen = React.lazy(() => import('./Cart/CheckoutScreen'));
+const ProductDetailsScreen = React.lazy(() => import('./Pages/ProductList/ProductDetailsScreen'));
 const Logout = React.lazy(() => import('./Pages/Auth/Logout/Logout'));
 
 export default function AppRouter() {
@@ -40,19 +42,47 @@ export default function AppRouter() {
             <Route path={routes.categoryEdit.match} element={<CategoryAction />} />
             <Route path={routes.categoryList} element={<CategoryList />} />
             <Route path={routes.categoryDetails.match} element={<CategoryDetail />} />
-            <Route path={routes.numberVerification} element={<NumberVerification />} />
+
+            {/*Phone number verification */}
+            <Route path={routes.numberVerification} element={<PhoneNumberVerification />} />
+            {/*Phone number verification end */}
+
+            {/*Email verification */}
             <Route path={routes.emailVerification} element={<EmailGuard />}>
               <Route path={routes.emailVerification} element={<EmailVerification />} />
             </Route>
+            {/*Email verification end */}
+
+            {/*Product list */}
             <Route path={routes.listScreen} element={<AuthGuard />}>
               <Route path={routes.listScreen} element={<ProductList />} />
             </Route>
-            <Route path={routes.productCart} element={<AuthGuard />}>
-              <Route path={routes.productCart} element={<ProductCart />} />
+            {/*Product list end */}
+
+            {/*Product category list */}
+            <Route path={routes.productCategoryList} element={<AuthGuard />}>
+              <Route path={routes.productCategoryList} element={<ProductCategoryList />} />
             </Route>
+            {/*Product category list end */}
+
+            {/*Product Cart */}
+            <Route path={routes.cartItem} element={<AuthGuard />}>
+              <Route path={routes.cartItem} element={<CartItem />} />
+            </Route>
+            {/*Product Cart end */}
+
+            {/*Product details screen */}
             <Route path={routes.productDetailsScreen} element={<AuthGuard />}>
               <Route path={routes.productDetailsScreen} element={<ProductDetailsScreen />} />
             </Route>
+            {/*Product details screen end */}
+
+            {/*Checkout screen */}
+            <Route path={routes.checkoutScreen} element={<AuthGuard />}>
+              <Route path={routes.checkoutScreen} element={<CheckoutScreen />} />
+            </Route>
+            {/*Checkout screen end */}
+
             <Route path={routes.logOut} element={<Logout />} />
           </Routes>
         </Suspense>

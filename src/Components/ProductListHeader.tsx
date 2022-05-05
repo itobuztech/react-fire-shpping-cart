@@ -20,7 +20,7 @@ export default function ListHeader() {
               <Link to={routes.categoryList}>Categories</Link>
             </div>
             <div className='md:text-3xl sm:text-xl text-white md:pr-6 sm:pr-4'>
-              <Link to={routes.productCart}>
+              <Link to={routes.cartItem}>
                 {' '}
                 <BsCart3 />
               </Link>

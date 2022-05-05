@@ -1,4 +1,4 @@
-import ListHeader from 'Components/ListHeader';
+import ListHeader from 'Components/ProductListHeader';
 import { doc, getDoc } from 'firebase/firestore';
 import { CategoryActionInterface } from 'Interface/categoryaction.interface';
 import { db } from 'lib/firebase';
