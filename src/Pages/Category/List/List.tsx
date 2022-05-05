@@ -36,7 +36,11 @@ export default function CategoryList() {
          return (
            <li key={item.id} className="border-b border-slate-300 p-2">
              <img src={item.categoryImage} className="" />
-             <h2 className="font-bold">{item.categoryName}</h2>
+             <h2 className="font-bold">
+              <Link to={routes.categoryDetails.build(String(item.id))}>
+               {item.categoryName}
+              </Link>
+            </h2>
              <p className="text-sm">{item.categoryDesc}</p>
              
              <div className="flex items-center mt-4">

@@ -13,6 +13,7 @@ const Registration = React.lazy(() => import('./Pages/Auth/Register/Register'));
 const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/ForgetPassword'));
 const CategoryAction = React.lazy(() => import('./Pages/Category/Action/Action'));
 const CategoryList = React.lazy(() => import('./Pages/Category/List/List'));
+const CategoryDetail = React.lazy(() => import('./Pages/Category/Details/Details'));
 const EmailVerification = React.lazy(() => import('./Components/EmailVerification'));
 const NumberVerification = React.lazy(() => import('./Components/NumberVerification'));
 const ProductList = React.lazy(() => import('./Pages/ProductList/ProductList'));
@@ -38,6 +39,7 @@ export default function AppRouter() {
             element={<CategoryAction />} />
             <Route path={routes.categoryEdit.match} element={<CategoryAction />} />
             <Route path={routes.categoryList} element={<CategoryList />} />
+            <Route path={routes.categoryDetails.match} element={<CategoryDetail />} />
             <Route path={routes.numberVerification} element={<NumberVerification />} />
             <Route path={routes.emailVerification} element={<EmailGuard />}>
               <Route path={routes.emailVerification} element={<EmailVerification />} />

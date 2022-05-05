@@ -10,6 +10,11 @@ export const routes = {
        `/category-action/${id}`
   },
   categoryList: '/categories',
+  categoryDetails: {
+    match: '/category-details/:id',
+    build: (id: string ) =>
+       `/category-details/${id}`
+  },
   emailVerification: '/email-verification',
   numberVerification: '/number-verification',
   forgetPassword: '/forget-password',
