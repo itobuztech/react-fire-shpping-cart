@@ -1,14 +1,14 @@
 import React from 'react';
 import faker from '@faker-js/faker';
 
-import ListHeader from 'Components/ListHeader';
+import ListHeader from 'Components/ProductListHeader';
 import { routes } from 'routes';
 import { Link } from 'react-router-dom';
 import { BiLeftArrowAlt, BiRightArrowAlt, BiRupee } from 'react-icons/bi';
 import CartButton from 'Components/CartButton';
 import StarRating from 'Components/StarRating';
 
-export default function PostList() {
+export default function ProductList() {
   const products = [...Array(12)].map(() => ({
     id: faker.datatype.uuid(),
     productName: faker.commerce.productName(),
@@ -50,7 +50,7 @@ export default function PostList() {
                 </div>
                 <div className='pb-10 flex justify-around'>
                   <CartButton>
-                    <Link to={routes.productCart}>ADD TO CART</Link>
+                    <Link to={routes.cartItem}>ADD TO CART</Link>
                   </CartButton>
                   <CartButton>Buy Now</CartButton>
                 </div>
