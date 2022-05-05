@@ -1,4 +1,4 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, limit, query, startAfter } from 'firebase/firestore';
 import { CategoryActionInterface } from 'Interface/categoryaction.interface';
 import { db } from 'lib/firebase';
 import React, { useEffect, useState } from 'react';
@@ -15,7 +15,31 @@ export default function CategoryList() {
     const q = await getDocs(collection( db, 'category' ));
     const data = q.docs.map(i => i.data() as CategoryActionInterface);
     setCategoryList(data);
+    // const first = query(collection(db, 'category'), limit(1));
+    // const documentSnapshots = await getDocs(first);
+    // const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    // const next = query(collection(db, 'category'),
+    // startAfter(lastVisible),
+    // limit(1));
   };
+
+  async function firstPage() {
+    const first = query(collection(db, 'category'), limit(1));
+    const documentSnapshots = await getDocs(first);
+    const data = documentSnapshots.docs.map(i => i.data() as CategoryActionInterface);
+    setCategoryList(data);
+  }
+  async function nextPage() {
+    const first = query(collection(db, 'category'), limit(1));
+    const documentSnapshots = await getDocs(first);
+    const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    const next = query(collection(db, 'category'),
+    startAfter(lastVisible),
+    limit(1));
+    const documentSnapshots1 = await getDocs(next);
+    const data = documentSnapshots1.docs.map(i => i.data() as CategoryActionInterface);
+    setCategoryList(data);
+  }
 
   // const onDelete = async (id: string) => {
   //   await deleteDoc(doc(db, 'category', String(id)));
@@ -55,7 +79,9 @@ export default function CategoryList() {
         })}
       </div>
       <div className='mt-10 mb-10 text-center flex justify-center text-xl'>
-        <BiLeftArrowAlt className='mt-1 mr-2' /> 1 {''} 2 {''} 3{''} 4{''} <BiRightArrowAlt className='mt-1 ml-2' />
+        <BiLeftArrowAlt className='mt-1 mr-2' onClick={() => firstPage()} />
+         1 {''} 2 {''} 3{''} 4{''} 
+        <BiRightArrowAlt className='mt-1 ml-2' onClick={() => nextPage()} />
       </div>
     </div>
     

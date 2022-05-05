@@ -64,8 +64,9 @@ export default function CategoryAction() {
         categoryImage: image,
         uid: auth.currentUser?.uid
       });
-    reset();
     }
+    reset();
+    setImage(null);
   };
 
   function deleteImage() {
