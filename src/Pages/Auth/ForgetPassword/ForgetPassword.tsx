@@ -11,9 +11,9 @@ import FormErrorMessage from 'Components/FormErrorMessage';
 import TextInputField from 'Components/TextInputField';
 import { routes } from 'routes';
 import AuthHeader from 'Components/AuthHeader';
-import { PasswordReset } from 'Interface/forgetpassword.interface';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { fireAuth } from 'lib/firebase';
+import { PasswordReset } from 'Interface/forgetpassword.interface';
 
 export default function ForgetPassword() {
   const resetPasswordSchema = yup.object().shape({

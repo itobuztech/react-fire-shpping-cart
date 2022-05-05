@@ -10,8 +10,10 @@ export default function AuthGuard() {
 
   if (user === null) {
     return <Navigate to={routes.login} />;
-  } else if (user?.uid) {
+  } else if (user?.uid && user.emailVerified) {
     return <Outlet />;
+  } else if (user && !user.emailVerified) {
+    return <Navigate to={routes.emailVerification} />;
   } else {
     return <>'... loading' </>;
   }

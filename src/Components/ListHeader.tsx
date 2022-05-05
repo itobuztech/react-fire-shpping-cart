@@ -11,7 +11,7 @@ export default function ListHeader() {
     <>
       <div className='bg-indigo-400'>
         <div className='pt-5 pb-5 text-white justify-around flex'>
-          <div className='md:text-2xl sm:text-md font-bold'>React Fire Cms</div>
+          <div className='md:text-2xl sm:text-md font-bold'>React Fire Shopping Cart</div>
           <div className='text-black pr-6'>
             <SearchField label={'search here...'} />
           </div>
