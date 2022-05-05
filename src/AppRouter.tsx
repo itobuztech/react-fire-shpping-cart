@@ -17,7 +17,6 @@ const CategoryDetail = React.lazy(() => import('./Pages/Category/Details/Details
 const EmailVerification = React.lazy(() => import('./Components/EmailVerification'));
 const PhoneNumberVerification = React.lazy(() => import('./Components/PhoneNumberVerification'));
 const ProductList = React.lazy(() => import('./Pages/ProductList/ProductList'));
-const ProductCategoryList = React.lazy(() => import('./Pages/Categories/ProductCategoryList'));
 const CartItem = React.lazy(() => import('./Cart/CartItem'));
 const CheckoutScreen = React.lazy(() => import('./Cart/CheckoutScreen'));
 const ProductDetailsScreen = React.lazy(() => import('./Pages/ProductList/ProductDetailsScreen'));
@@ -59,11 +58,6 @@ export default function AppRouter() {
             </Route>
             {/*Product list end */}
 
-            {/*Product category list */}
-            <Route path={routes.productCategoryList} element={<AuthGuard />}>
-              <Route path={routes.productCategoryList} element={<ProductCategoryList />} />
-            </Route>
-            {/*Product category list end */}
 
             {/*Product Cart */}
             <Route path={routes.cartItem} element={<AuthGuard />}>
