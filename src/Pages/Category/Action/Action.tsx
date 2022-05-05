@@ -2,7 +2,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Button from 'Components/Button';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref, uploadBytesResumable }
+ from 'firebase/storage';
 import { CategoryActionInterface } from 'Interface/categoryaction.interface';
 import { db } from 'lib/firebase';
 import React, { useEffect, useState } from 'react';
@@ -35,6 +36,9 @@ export default function CategoryAction() {
     const storageRef = ref(storage, storagePath);
     const uploadTask = uploadBytesResumable(storageRef, file);
     getDownloadURL((await uploadTask).ref).then(async (downloadURL) => {
+      updateDoc(doc(db, 'category', String(id)), {
+        categoryImage: downloadURL
+      });
       setImage(downloadURL);
     });
   };
@@ -43,16 +47,15 @@ export default function CategoryAction() {
     // update category
     if (id) {
       const categoryDocRef = doc(db, 'category', id as unknown as string);
-      //getDownloadURL((await uploadTask).ref).then(async (downloadURL) => {
-        await updateDoc(categoryDocRef, {
-          categoryName: data.categoryName,
-          categoryDesc: data.categoryDesc,
-          categoryImage: image
-        });
-      //});
+      await updateDoc(categoryDocRef, {
+        id: id,
+        categoryName: data.categoryName,
+        categoryDesc: data.categoryDesc,
+        categoryImage: image,
+        uid: auth.currentUser?.uid
+      });
     } else {
     // add category
-    //getDownloadURL((await uploadTask).ref).then(async (downloadURL) => {
       const generateId = uuidv4();
       await setDoc(doc(db, 'category', generateId), {
         id: generateId,
@@ -61,18 +64,16 @@ export default function CategoryAction() {
         categoryImage: image,
         uid: auth.currentUser?.uid
       });
-    //});
     reset();
     }
   };
 
-
-  // const deleteImage = async () => {
-  //   const delFieldRef = doc(db, 'category', String(id));
-  //   await updateDoc(delFieldRef, {
-  //     categoryImage: null
-  //   });
-  // };
+  function deleteImage() {
+    updateDoc(doc(db, 'category', String(id)), {
+      categoryImage: null
+    });
+    setImage(null);
+  }
 
   useEffect(() => {
     (async () => {
@@ -82,9 +83,8 @@ export default function CategoryAction() {
         const data = docSnap.data() as CategoryActionInterface;
         setValue('categoryName', data.categoryName);
         setValue('categoryDesc', data.categoryDesc);
-        setValue('categoryImage', data.categoryImage?.name);
+        setValue('categoryImage', data.categoryImage);
         setImage(data.categoryImage);
-        console.log(image);
       }
   })();
   }, [id, setValue, image]);
@@ -112,7 +112,7 @@ export default function CategoryAction() {
             image && (
             <div className="flex relative">
               <img src={image} width={50} height={50} />
-              <button className="absolute top-0 right-0"><TiDelete /></button>
+              <button onClick={() => deleteImage()} className="absolute top-0 right-0"><TiDelete /></button>
             </div>
           )}
           <input type="file" {...register('categoryImage')} onChange={fileChange} />
