@@ -12,12 +12,13 @@ import * as yup from 'yup';
 import { v4 as uuidv4 } from 'uuid';
 import ListHeader from 'Components/ListHeader';
 import { getAuth } from 'firebase/auth';
+import { TiDelete } from 'react-icons/ti';
 
 export default function CategoryAction() {
   const { id } = useParams();
   const [image, setImage] = useState<any>(null);
   const auth = getAuth();
-  console.log(auth.currentUser?.uid);
+  const storage = getStorage();
   const categoryActionSchema = yup.object().shape({
     categoryName: yup.string().required('Please enter a category name'),
     categoryDesc: yup.string().required('Please enter short description for category'),
@@ -28,7 +29,6 @@ export default function CategoryAction() {
   });
   const onSubmit = async (data: CategoryActionInterface) => {
     const file = image;
-    const storage = getStorage();
     const storagePath = 'uploads/' + file?.name;
     const storageRef = ref(storage, storagePath);
     const uploadTask = uploadBytesResumable(storageRef, file);
@@ -55,7 +55,6 @@ export default function CategoryAction() {
         categoryImage: downloadURL,
         uid: auth.currentUser?.uid
       });
-      setImage(downloadURL);
     });
     reset();
     }
@@ -65,6 +64,13 @@ export default function CategoryAction() {
     setImage(e.target.files[0]);
   };
 
+  // const deleteImage = async () => {
+  //   const delFieldRef = doc(db, 'category', String(id));
+  //   await updateDoc(delFieldRef, {
+  //     categoryImage: null
+  //   });
+  // };
+
   useEffect(() => {
     (async () => {
       if (id) {
@@ -73,11 +79,12 @@ export default function CategoryAction() {
         const data = docSnap.data() as CategoryActionInterface;
         setValue('categoryName', data.categoryName);
         setValue('categoryDesc', data.categoryDesc);
-        setValue('categoryImage', data.categoryImage);
+        setValue('categoryImage', data.categoryImage?.name);
         setImage(data.categoryImage);
+        console.log(image);
       }
   })();
-  }, [id, setValue]);
+  }, [id, setValue, image]);
 
   return (
     <>
@@ -99,8 +106,12 @@ export default function CategoryAction() {
         <div className="flex flex-col space-y-1">
           <label htmlFor="category-name">Featured image</label>
           {
-            image && <img src={image} width={50} height={50} />
-          }
+            image && (
+            <div className="flex relative">
+              <img src={image} width={50} height={50} />
+              <button className="absolute top-0 right-0"><TiDelete /></button>
+            </div>
+          )}
           <input type="file" {...register('categoryImage')} onChange={fileChange} />
           <FormErrorMessage>{errors.categoryImage?.message}</FormErrorMessage>
         </div>

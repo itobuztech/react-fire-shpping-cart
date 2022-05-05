@@ -19,6 +19,7 @@ export default function CategoryList() {
 
   const onDelete = async (id: string) => {
     await deleteDoc(doc(db, 'category', String(id)));
+    setCategoryList(categoryList.filter(d => d.id !== id));
   };
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export default function CategoryList() {
     <>
     <ListHeader />
     <div className="container mx-auto p-2">
+      {categoryList.length == 0 && <h2>No category is listed</h2>}
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-2">
        {categoryList && categoryList.map(item => {
          return (
