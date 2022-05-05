@@ -5,8 +5,8 @@ import ListHeader from 'Components/ListHeader';
 import { routes } from 'routes';
 import { Link } from 'react-router-dom';
 import { BiLeftArrowAlt, BiRightArrowAlt, BiRupee } from 'react-icons/bi';
-import CartButton from 'Components/CartButton';
 import StarRating from 'Components/StarRating';
+import Button from 'Components/Button';
 
 export default function PostList() {
   const products = [...Array(12)].map(() => ({
@@ -22,7 +22,17 @@ export default function PostList() {
     <>
       <ListHeader />
       <div className='container mx-auto'>
-        <div className='font-bold md:text-4xl sm:text-xl mt-10 mb-10 text-center'>Products</div>
+        <div className='flex justify-center relative'>
+          <div className='font-bold md:text-4xl sm:text-xl mt-10'>Products</div>
+
+          {/* Only visible for admin */}
+          <div className='absolute right-6 mt-10'>
+            <Link to={routes.productListForm}>
+              <Button>Add new</Button>
+            </Link>
+          </div>
+          {/* Only visible for admin end */}
+        </div>
         <div className='mt-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
           {products.map((el) => {
             return (
@@ -41,18 +51,17 @@ export default function PostList() {
                     Price : <BiRupee className='mt-1' /> {el.price}
                   </span>
                   <div className='flex'>
-                  <span className='px-3 py-1 mb-2'>Ratings: 
-                 </span>
-              <div className='mt-2'>
-                 <StarRating rating={el.rating} />
-                  </div>
+                    <span className='px-3 py-1 mb-2'>Ratings:</span>
+                    <div className='mt-2'>
+                      <StarRating rating={el.rating} />
+                    </div>
                   </div>
                 </div>
                 <div className='pb-10 flex justify-around'>
-                  <CartButton>
+                  <Button>
                     <Link to={routes.productCart}>ADD TO CART</Link>
-                  </CartButton>
-                  <CartButton>Buy Now</CartButton>
+                  </Button>
+                  <Button>Buy Now</Button>
                 </div>
               </div>
             );

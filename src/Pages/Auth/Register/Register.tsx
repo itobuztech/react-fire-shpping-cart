@@ -112,7 +112,7 @@ export default function Register() {
               {/* Confirm Password End  */}
             </div>
 
-            <div>
+            <div className='flex justify-center pb-2'>
               <Button>Register</Button>
             </div>
 

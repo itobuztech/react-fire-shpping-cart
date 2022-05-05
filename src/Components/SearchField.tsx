@@ -28,7 +28,7 @@ export function SearchField({ onSearch, label, defaultValue }: {
         </label>
       )}
       <input
-        className="py-1 px-4 md:w-96 sm:w-50 focus:outline-none rounded-lg 
+        className="py-1 px-4 lg:w-96 md:w-64 sm:w-50 focus:outline-none rounded-lg 
           border-gray-300 focus:border-indigo-400"
         onChange={(e) => {
           const v = e.target.value;

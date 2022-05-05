@@ -14,8 +14,10 @@ const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/Forg
 const EmailVerification = React.lazy(() => import('./Components/EmailVerification'));
 const NumberVerification = React.lazy(() => import('./Components/NumberVerification'));
 const ProductList = React.lazy(() => import('./Pages/ProductList/ProductList'));
+const ProductListForm = React.lazy(() => import('./Admin/ProductListForm'));
 const ProductCart = React.lazy(() => import('./Components/ProductCart'));
-const ProductDetailsScreen = React.lazy(() => import('./Components/ProductDetailsScreen'));
+const ProductDetailsScreen = React.lazy(() => import('./Pages/ProductList/ProductDetailsScreen'));
+const UserProfile = React.lazy(() => import('./UserProfile/UserProfile'));
 const Logout = React.lazy(() => import('./Pages/Auth/Logout/Logout'));
 
 export default function AppRouter() {
@@ -45,6 +47,19 @@ export default function AppRouter() {
             <Route path={routes.productDetailsScreen} element={<AuthGuard />}>
               <Route path={routes.productDetailsScreen} element={<ProductDetailsScreen />} />
             </Route>
+
+            {/* Only visible for admin - product list create screen */}
+            <Route path={routes.productListForm} element={<AuthGuard />}>
+            <Route path={routes.productListForm} element={<ProductListForm />} />
+            </Route>
+             {/* Only visible for admin - product list create screen end */}
+
+             {/*User profile */}
+             <Route path={routes.userProfile} element={<AuthGuard />}>
+            <Route path={routes.userProfile} element={<UserProfile />} />
+            </Route>
+              {/*User profile end */}
+
             <Route path={routes.logOut} element={<Logout />} />
           </Routes>
         </Suspense>

@@ -6,7 +6,9 @@ export const routes = {
   numberVerification: '/number-verification',
   forgetPassword: '/forget-password',
   listScreen: '/list-screen',
+  productListForm: '/product-list-form',
   productCart: '/product-cart',
   productDetailsScreen:'/product-detailsScreen',
+  userProfile: '/user-profile',
   logOut: '/logout'
 };
