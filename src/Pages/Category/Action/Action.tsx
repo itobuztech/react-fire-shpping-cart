@@ -27,42 +27,45 @@ export default function CategoryAction() {
     formState: { errors, isSubmitting } } = useForm<CategoryActionInterface>({
     resolver: yupResolver(categoryActionSchema)
   });
-  const onSubmit = async (data: CategoryActionInterface) => {
-    const file = image;
+
+  const fileChange = async (e: any) => {
+    const file = e.target.files[0];
+    console.log(file.name);
     const storagePath = 'uploads/' + file?.name;
     const storageRef = ref(storage, storagePath);
     const uploadTask = uploadBytesResumable(storageRef, file);
+    getDownloadURL((await uploadTask).ref).then(async (downloadURL) => {
+      setImage(downloadURL);
+    });
+  };
 
-    
+  const onSubmit = async (data: CategoryActionInterface) => {
     // update category
     if (id) {
       const categoryDocRef = doc(db, 'category', id as unknown as string);
-      getDownloadURL((await uploadTask).ref).then(async (downloadURL) => {
+      //getDownloadURL((await uploadTask).ref).then(async (downloadURL) => {
         await updateDoc(categoryDocRef, {
           categoryName: data.categoryName,
           categoryDesc: data.categoryDesc,
-          categoryImage: downloadURL
+          categoryImage: image
         });
-      });
+      //});
     } else {
     // add category
-    getDownloadURL((await uploadTask).ref).then(async (downloadURL) => {
+    //getDownloadURL((await uploadTask).ref).then(async (downloadURL) => {
       const generateId = uuidv4();
       await setDoc(doc(db, 'category', generateId), {
         id: generateId,
         categoryName: data.categoryName,
         categoryDesc: data.categoryDesc,
-        categoryImage: downloadURL,
+        categoryImage: image,
         uid: auth.currentUser?.uid
       });
-    });
+    //});
     reset();
     }
   };
 
-  const fileChange = (e: any) => {
-    setImage(e.target.files[0]);
-  };
 
   // const deleteImage = async () => {
   //   const delFieldRef = doc(db, 'category', String(id));
