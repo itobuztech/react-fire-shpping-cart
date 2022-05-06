@@ -106,7 +106,7 @@ export default function Login() {
               </div>
             </div>
 
-            <div>
+            <div className='flex justify-center'>
               <Button>Login</Button>
             </div>
             <FormErrorMessage>{errorMessage}</FormErrorMessage>

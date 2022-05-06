@@ -12,6 +12,10 @@ const Login = React.lazy(() => import('./Pages/Auth/Login/Login'));
 const Registration = React.lazy(() => import('./Pages/Auth/Register/Register'));
 const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/ForgetPassword'));
 const EmailVerification = React.lazy(() => import('./Components/EmailVerification'));
+const NumberVerification = React.lazy(() => import('./Components/PhoneNumberVerification'));
+const ProductListForm = React.lazy(() => import('./Admin/ProductListForm'));
+const OrderListScreen = React.lazy(() => import('./Admin/OrderListScreen'));
+const UserProfile = React.lazy(() => import('./UserProfile/UserProfile'));
 const PhoneNumberVerification = React.lazy(() => import('./Components/PhoneNumberVerification'));
 const ProductList = React.lazy(() => import('./Pages/ProductList/ProductList'));
 const ProductCategoryList = React.lazy(() => import('./Pages/Categories/ProductCategoryList'));
@@ -34,12 +38,8 @@ export default function AppRouter() {
             </Route>
             <Route path={routes.registration} element={<Registration />} />
             <Route path={routes.forgetPassword} element={<ForgetPassword />} />
-
-            {/*Phone number verification */}
-            <Route path={routes.numberVerification} element={<PhoneNumberVerification />} />
-            {/*Phone number verification end */}
-
-            {/*Email verification */}
+            <Route path={routes.numberVerification} element={<NumberVerification />} />
+            
             <Route path={routes.emailVerification} element={<EmailGuard />}>
               <Route path={routes.emailVerification} element={<EmailVerification />} />
             </Route>
@@ -67,13 +67,24 @@ export default function AppRouter() {
             <Route path={routes.productDetailsScreen} element={<AuthGuard />}>
               <Route path={routes.productDetailsScreen} element={<ProductDetailsScreen />} />
             </Route>
-            {/*Product details screen end */}
 
-            {/*Checkout screen */}
-            <Route path={routes.checkoutScreen} element={<AuthGuard />}>
-              <Route path={routes.checkoutScreen} element={<CheckoutScreen />} />
+            {/* Only visible for admin - product list create screen */}
+            <Route path={routes.productListForm} element={<AuthGuard />}>
+            <Route path={routes.productListForm} element={<ProductListForm />} />
             </Route>
-            {/*Checkout screen end */}
+             {/* Only visible for admin - product list create screen end */}
+
+              {/* Only visible for admin - order list screen */}
+            <Route path={routes.oderListScreen} element={<AuthGuard />}>
+            <Route path={routes.oderListScreen} element={<OrderListScreen />} />
+            </Route>
+             {/* Only visible for admin - order list screen end */}
+
+             {/*User profile */}
+             <Route path={routes.userProfile} element={<AuthGuard />}>
+            <Route path={routes.userProfile} element={<UserProfile />} />
+            </Route>
+              {/*User profile end */}
 
             <Route path={routes.logOut} element={<Logout />} />
           </Routes>

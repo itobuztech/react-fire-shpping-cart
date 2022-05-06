@@ -18,8 +18,8 @@ import Button from 'Components/Button';
 import { routes } from 'routes';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import { fireAuth } from 'lib/firebase';
-import SignInLinkButton from 'Components/SigninLinkButton';
 import FormHeader from 'Components/FormHeader';
+import SignInLinkButton from 'Components/SigninLinkButton';
 
 export default function Register() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -112,7 +112,7 @@ export default function Register() {
               {/* Confirm Password End  */}
             </div>
 
-            <div>
+            <div className='flex justify-center pb-2'>
               <Button>Register</Button>
             </div>
 
