@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import { SignIn } from 'Interface/login.interface';
-import AuthHeader from 'Components/AuthHeader';
+import AuthHeader from 'Components/FormHeader';
 import Button from 'Components/Button';
 import TextInputField from 'Components/TextInputField';
 import { routes } from 'routes';

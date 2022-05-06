@@ -12,9 +12,10 @@ const Login = React.lazy(() => import('./Pages/Auth/Login/Login'));
 const Registration = React.lazy(() => import('./Pages/Auth/Register/Register'));
 const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/ForgetPassword'));
 const EmailVerification = React.lazy(() => import('./Components/EmailVerification'));
-const NumberVerification = React.lazy(() => import('./Components/NumberVerification'));
+const NumberVerification = React.lazy(() => import('./Components/PhoneNumberVerification'));
 const ProductList = React.lazy(() => import('./Pages/ProductList/ProductList'));
 const ProductListForm = React.lazy(() => import('./Admin/ProductListForm'));
+const OrderListScreen = React.lazy(() => import('./Admin/OrderListScreen'));
 const ProductCart = React.lazy(() => import('./Components/ProductCart'));
 const ProductDetailsScreen = React.lazy(() => import('./Pages/ProductList/ProductDetailsScreen'));
 const UserProfile = React.lazy(() => import('./UserProfile/UserProfile'));
@@ -35,6 +36,7 @@ export default function AppRouter() {
             <Route path={routes.registration} element={<Registration />} />
             <Route path={routes.forgetPassword} element={<ForgetPassword />} />
             <Route path={routes.numberVerification} element={<NumberVerification />} />
+            
             <Route path={routes.emailVerification} element={<EmailGuard />}>
               <Route path={routes.emailVerification} element={<EmailVerification />} />
             </Route>
@@ -53,6 +55,12 @@ export default function AppRouter() {
             <Route path={routes.productListForm} element={<ProductListForm />} />
             </Route>
              {/* Only visible for admin - product list create screen end */}
+
+              {/* Only visible for admin - order list screen */}
+            <Route path={routes.oderListScreen} element={<AuthGuard />}>
+            <Route path={routes.oderListScreen} element={<OrderListScreen />} />
+            </Route>
+             {/* Only visible for admin - order list screen end */}
 
              {/*User profile */}
              <Route path={routes.userProfile} element={<AuthGuard />}>

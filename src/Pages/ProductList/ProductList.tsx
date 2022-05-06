@@ -1,14 +1,15 @@
 import React from 'react';
 import faker from '@faker-js/faker';
 
-import ListHeader from 'Components/ListHeader';
+import ProductListHeader from 'Components/ProductListHeader';
 import { routes } from 'routes';
 import { Link } from 'react-router-dom';
 import { BiLeftArrowAlt, BiRightArrowAlt, BiRupee } from 'react-icons/bi';
 import StarRating from 'Components/StarRating';
 import Button from 'Components/Button';
+import 'Styles/product-list-header.css';
 
-export default function PostList() {
+export default function ProductList() {
   const products = [...Array(12)].map(() => ({
     id: faker.datatype.uuid(),
     productName: faker.commerce.productName(),
@@ -20,7 +21,7 @@ export default function PostList() {
 
   return (
     <>
-      <ListHeader />
+      <ProductListHeader />
       <div className='container mx-auto'>
         <div className='flex justify-center relative'>
           <div className='font-bold md:text-4xl sm:text-xl mt-10'>Products</div>
@@ -33,7 +34,7 @@ export default function PostList() {
           </div>
           {/* Only visible for admin end */}
         </div>
-        <div className='mt-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <div className='mt-10 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center p-4'>
           {products.map((el) => {
             return (
               <div className='max-w-sm rounded-2xl overflow-hidden shadow hover:shadow-lg' key={el.id}>

@@ -7,7 +7,7 @@ import { ProductListItem } from 'Interface/product-list-item.interface';
 import TextInputField from 'Components/TextInputField';
 import Button from 'Components/Button';
 import FormErrorMessage from 'Components/FormErrorMessage';
-import AuthHeader from 'Components/AuthHeader';
+import AuthHeader from 'Components/FormHeader';
 import Select from 'react-select';
 
 export default function ProductListForm() {

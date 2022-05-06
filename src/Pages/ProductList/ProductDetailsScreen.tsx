@@ -3,11 +3,12 @@ import StarRating from 'Components/StarRating';
 import React from 'react';
 import { BiRupee } from 'react-icons/bi';
 import { MdLocalOffer } from 'react-icons/md';
-import { Link } from 'react-router-dom';
 import { routes } from 'routes';
+import { Link } from 'react-router-dom';
 
 import Button from '../../Components/Button';
-import ListHeader from '../../Components/ListHeader';
+import ProductListHeader from 'Components/ProductListHeader';
+
 
 export default function ProductDetailsScreen() {
   const products = [...Array(1)].map(() => ({
@@ -24,7 +25,7 @@ export default function ProductDetailsScreen() {
   }));
   return (
     <>
-      <ListHeader />
+      <ProductListHeader />
       <body className='bg-gray-100 p-6'>
         <div className='flex justify-center'>
           <div className='font-bold md:text-4xl sm:text-xl mb-6 '>Products Details</div>

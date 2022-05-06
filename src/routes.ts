@@ -9,6 +9,7 @@ export const routes = {
   productListForm: '/product-list-form',
   productCart: '/product-cart',
   productDetailsScreen:'/product-detailsScreen',
+  oderListScreen: '/order-list-screen',
   userProfile: '/user-profile',
   logOut: '/logout'
 };

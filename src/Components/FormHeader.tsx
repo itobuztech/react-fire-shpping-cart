@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function AuthHeader() {
+export default function FormHeader() {
   return (
     <>
       <div

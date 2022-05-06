@@ -18,7 +18,7 @@ import Button from 'Components/Button';
 import { routes } from 'routes';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import { fireAuth } from 'lib/firebase';
-import Header from 'Components/AuthHeader';
+import FormHeader from 'Components/FormHeader';
 import SignInLinkButton from 'Components/SigninLinkButton';
 
 export default function Register() {
@@ -71,7 +71,7 @@ export default function Register() {
   return (
     <>
       <div>
-        <Header />
+        <FormHeader />
       </div>
       <div className='min-h-full flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full space-y-2'>

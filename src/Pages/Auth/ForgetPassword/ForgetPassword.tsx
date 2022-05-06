@@ -10,7 +10,7 @@ import Button from 'Components/Button';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import TextInputField from 'Components/TextInputField';
 import { routes } from 'routes';
-import AuthHeader from 'Components/AuthHeader';
+import AuthHeader from 'Components/FormHeader';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { fireAuth } from 'lib/firebase';
 import { PasswordReset } from 'Interface/forgetpassword.interface';
