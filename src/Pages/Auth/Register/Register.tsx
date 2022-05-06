@@ -63,8 +63,8 @@ export default function Register() {
       const results = signInWithPopup(auth, provider);
       console.log(results);
       navigate(routes.listScreen);
-    } catch (error) {
-      // ...
+    } catch (error: any) {
+      console.log(error.message);
     }
   };
 
@@ -118,6 +118,8 @@ export default function Register() {
 
             <FormErrorMessage>{errorMessage}</FormErrorMessage>
           </form>
+
+          {/* Sign in button */}
           <SignInLinkButton onClick={googleLogin}>
             {' '}
             <div className='text-2xl mr-2'>
@@ -135,7 +137,8 @@ export default function Register() {
               </SignInLinkButton>
             </Link>
           </div>
-          
+          {/* Sign in button end */}
+
           <div className='text-center'>
             Already have an account?{' '}
             <Link to={routes.login} className='text-blue-600 hover:text-blue-800'>

@@ -13,12 +13,15 @@ const Registration = React.lazy(() => import('./Pages/Auth/Register/Register'));
 const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/ForgetPassword'));
 const EmailVerification = React.lazy(() => import('./Components/EmailVerification'));
 const NumberVerification = React.lazy(() => import('./Components/PhoneNumberVerification'));
-const ProductList = React.lazy(() => import('./Pages/ProductList/ProductList'));
 const ProductListForm = React.lazy(() => import('./Admin/ProductListForm'));
 const OrderListScreen = React.lazy(() => import('./Admin/OrderListScreen'));
-const ProductCart = React.lazy(() => import('./Components/ProductCart'));
-const ProductDetailsScreen = React.lazy(() => import('./Pages/ProductList/ProductDetailsScreen'));
 const UserProfile = React.lazy(() => import('./UserProfile/UserProfile'));
+const PhoneNumberVerification = React.lazy(() => import('./Components/PhoneNumberVerification'));
+const ProductList = React.lazy(() => import('./Pages/ProductList/ProductList'));
+const ProductCategoryList = React.lazy(() => import('./Pages/Categories/ProductCategoryList'));
+const CartItem = React.lazy(() => import('./Cart/CartItem'));
+const CheckoutScreen = React.lazy(() => import('./Cart/CheckoutScreen'));
+const ProductDetailsScreen = React.lazy(() => import('./Pages/ProductList/ProductDetailsScreen'));
 const Logout = React.lazy(() => import('./Pages/Auth/Logout/Logout'));
 
 export default function AppRouter() {
@@ -40,12 +43,27 @@ export default function AppRouter() {
             <Route path={routes.emailVerification} element={<EmailGuard />}>
               <Route path={routes.emailVerification} element={<EmailVerification />} />
             </Route>
+            {/*Email verification end */}
+
+            {/*Product list */}
             <Route path={routes.listScreen} element={<AuthGuard />}>
               <Route path={routes.listScreen} element={<ProductList />} />
             </Route>
-            <Route path={routes.productCart} element={<AuthGuard />}>
-              <Route path={routes.productCart} element={<ProductCart />} />
+            {/*Product list end */}
+
+            {/*Product category list */}
+            <Route path={routes.productCategoryList} element={<AuthGuard />}>
+              <Route path={routes.productCategoryList} element={<ProductCategoryList />} />
             </Route>
+            {/*Product category list end */}
+
+            {/*Product Cart */}
+            <Route path={routes.cartItem} element={<AuthGuard />}>
+              <Route path={routes.cartItem} element={<CartItem />} />
+            </Route>
+            {/*Product Cart end */}
+
+            {/*Product details screen */}
             <Route path={routes.productDetailsScreen} element={<AuthGuard />}>
               <Route path={routes.productDetailsScreen} element={<ProductDetailsScreen />} />
             </Route>

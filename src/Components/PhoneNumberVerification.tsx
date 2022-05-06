@@ -7,7 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { NumberVerificationLink } from 'Interface/numberVerification.interface';
-import AuthHeader from './FormHeader';
+import FormHeader from './FormHeader';
 import TextInputField from './TextInputField';
 import Button from './Button';
 import FormErrorMessage from './FormErrorMessage';
@@ -39,7 +39,7 @@ export default function PhoneNumberVerification() {
         setResults(res);
         setShow(true);
         setHide(false);
-        toast.success('otp sent');
+        toast.success('Otp sent');
       })
       .catch((err) => {
         toast.error(err.message);
@@ -56,15 +56,15 @@ export default function PhoneNumberVerification() {
         navigate(routes.listScreen);
       })
       .catch((err: any) => {
-        toast.error('wrong otp');
-        toast.error(err.message);
+        toast.error('Wrong otp');
+        console.log(err.message);
       });
   };
 
   return (
     <>
       <div>
-        <AuthHeader />
+        <FormHeader />
       </div>
       <ToastContainer />
       {hide && (
