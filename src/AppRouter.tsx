@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* eslint-disable @typescript-eslint/no-redeclare */
 import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -10,33 +9,6 @@ const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/Forg
 const PasswordReset = React.lazy(() => import('./Pages/Auth/ForgetPassword/ResetPassword'));
 const PostList = React.lazy(() => import('Pages/Post/List/List'));
 const Product = React.lazy(() => import('Pages/Product/Product'));
-=======
-import React, { Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
-import AuthGuard from 'Guard/AuthGuard';
-import UnAuthGuard from 'Guard/UnAuthGuard';
-import EmailGuard from 'Guard/EmailGuard';
-import { routes } from './routes';
-
-const Home = React.lazy(() => import('./Pages/Home'));
-
-const Login = React.lazy(() => import('./Pages/Auth/Login/Login'));
-const Registration = React.lazy(() => import('./Pages/Auth/Register/Register'));
-const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/ForgetPassword'));
-const EmailVerification = React.lazy(() => import('./Components/EmailVerification'));
-const NumberVerification = React.lazy(() => import('./Components/PhoneNumberVerification'));
-const ProductListForm = React.lazy(() => import('./Admin/ProductListForm'));
-const OrderListScreen = React.lazy(() => import('./Admin/OrderListScreen'));
-const UserProfile = React.lazy(() => import('./UserProfile/UserProfile'));
-const PhoneNumberVerification = React.lazy(() => import('./Components/PhoneNumberVerification'));
-const ProductList = React.lazy(() => import('./Pages/ProductList/ProductList'));
-const ProductCategoryList = React.lazy(() => import('./Pages/Categories/ProductCategoryList'));
-const CartItem = React.lazy(() => import('./Cart/CartItem'));
-const CheckoutScreen = React.lazy(() => import('./Cart/CheckoutScreen'));
-const ProductDetailsScreen = React.lazy(() => import('./Pages/ProductList/ProductDetailsScreen'));
-const Logout = React.lazy(() => import('./Pages/Auth/Logout/Logout'));
->>>>>>> b90f53174b0f2dccc9729fddeb43c19bbc5ba365
 
 export default function AppRouter() {
   return (
@@ -44,7 +16,6 @@ export default function AppRouter() {
       <BrowserRouter>
         <Suspense fallback={<>Loading</>}>
           <Routes>
-<<<<<<< HEAD
             <Route path={routes.login} element={<Login />} />
             <Route path={routes.registration}  element={<Registration />} />
             <Route path={routes.forgetPassword} element={<ForgetPassword />} />
@@ -52,7 +23,6 @@ export default function AppRouter() {
             <Route path={routes.listScreen} element={<PostList />} />
             <Route path={routes.product} element={<Product />} />
             <Route path={routes.productId} element={<Product />} />
-=======
             <Route path={routes.home} element={<Home />}>
               <Route path={routes.home} element={<Login />} />
             </Route>
@@ -110,7 +80,6 @@ export default function AppRouter() {
               {/*User profile end */}
 
             <Route path={routes.logOut} element={<Logout />} />
->>>>>>> b90f53174b0f2dccc9729fddeb43c19bbc5ba365
           </Routes>
         </Suspense>
       </BrowserRouter>
