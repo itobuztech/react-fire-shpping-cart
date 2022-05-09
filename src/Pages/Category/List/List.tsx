@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { routes } from 'routes';
 import { AiOutlinePlus } from 'react-icons/ai';
-import ListHeader from 'Components/ProductListHeader';
+import ProductListHeader from 'Components/ProductListHeader';
 import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
 import Button from 'Components/Button';
 
@@ -56,7 +56,7 @@ export default function CategoryList() {
 
   return (
     <>
-    <ListHeader />
+    <ProductListHeader />
     <div className='container mx-auto'>
       <div className='font-bold md:text-4xl sm:text-xl mt-10 mb-10 text-center'>Products Categories</div>
       {categoryList.length == 0 && <h2 className="text-center">No category is listed</h2>}

@@ -26,6 +26,7 @@
     "react-redux": "^8.0.1",
     "react-router-dom": "6",
     "react-scripts": "5.0.1",
+    "react-select": "^5.3.1",
     "react-toastify": "^8.2.0",
     "reactjs-popup": "^2.0.5",
     "tailwindcss": "^3.0.24",
@@ -40,7 +41,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.ts{,x} --max-warnings=0",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "firebase:start": "firebase emulators:start",
+    "firebase:export": "firebase emulators:export fire_data"
   },
   "lint-staged": {
     "*.{ts,tsx}": "eslint src/**/*.ts{,x}"

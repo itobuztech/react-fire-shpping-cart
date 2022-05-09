@@ -18,8 +18,8 @@ import Button from 'Components/Button';
 import { routes } from 'routes';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import { fireAuth } from 'lib/firebase';
-import SignInLinkButton from 'Components/SigninLinkButton';
 import FormHeader from 'Components/FormHeader';
+import SignInLinkButton from 'Components/SigninLinkButton';
 
 export default function Register() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -73,12 +73,12 @@ export default function Register() {
       <div>
         <FormHeader />
       </div>
-      <div className='min-h-full flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8'>
+      <div className='min-h-full flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full space-y-2'>
           <div>
             <h2 className='text-center text-3xl font-extrabold text-gray-900'>Create an Account</h2>
           </div>
-          <form className='mt-8 space-y-6' onSubmit={handleSubmit(onSubmit)}>
+          <form className='mt-8 space-y-2' onSubmit={handleSubmit(onSubmit)}>
             <input type='hidden' name='remember' defaultValue='true' />
             <div className='rounded-md -space-y-px'>
               {/* Name  */}
@@ -112,7 +112,7 @@ export default function Register() {
               {/* Confirm Password End  */}
             </div>
 
-            <div>
+            <div className='flex justify-center pb-2'>
               <Button>Register</Button>
             </div>
 
@@ -128,7 +128,7 @@ export default function Register() {
             Sign in with Google
           </SignInLinkButton>
           <div>
-            <Link to={routes.numberVerification}>
+            <Link to={routes.phoneNumberVerification}>
               <SignInLinkButton>
                 <div className='text-2xl mr-2'>
                   <FcPhoneAndroid />

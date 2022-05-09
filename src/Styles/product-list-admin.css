@@ -1,0 +1,37 @@
+th {
+  @apply lg:text-left lg:py-2 lg:px-3;
+}
+
+td {
+  @apply flex justify-between text-right py-3 px-4 align-top border-b border-gray-100
+    lg:table-cell lg:text-left lg:py-2 lg:px-3 lg:align-middle lg:border-b-0;
+}
+
+tbody tr:hover td {
+  @apply lg:bg-gray-100;
+}
+
+td:before {
+  content: attr(data-label);
+  @apply font-semibold pr-3 text-left lg:hidden;
+}
+
+td.image-cell:before, td.actions-cell:before {
+  @apply hidden;
+}
+
+.icon {
+  @apply inline-flex justify-center items-center w-6 h-6;
+}
+
+.icon.large {
+  @apply w-12 h-12;
+}
+
+.button.green {
+  @apply bg-green-500 border-green-500 text-white hover:bg-green-600;
+}
+
+.button.red {
+  @apply bg-red-500 border-red-500 text-white hover:bg-red-600;
+}

@@ -1,4 +1,4 @@
-import ListHeader from 'Components/ProductListHeader';
+import ProductListHeader from 'Components/ProductListHeader';
 import { doc, getDoc } from 'firebase/firestore';
 import { CategoryActionInterface } from 'Interface/categoryaction.interface';
 import { db } from 'lib/firebase';
@@ -20,7 +20,7 @@ export default function CategoryDetails() {
 
   return (
     <>
-    <ListHeader />
+    <ProductListHeader />
     <div className="container mx-auto">
       <img src={categoryData?.categoryImage} />
       <h1>{categoryData?.categoryName}</h1>

@@ -71,7 +71,7 @@ export default function Login() {
           <div>
             <h2 className='text-center text-3xl font-extrabold text-gray-900'>Sign in to your account</h2>
           </div>
-          <form className='mt-8 space-y-6' onSubmit={handleSubmit(onSubmit)}>
+          <form className='mt-8 space-y-2' onSubmit={handleSubmit(onSubmit)}>
             <div className='rounded-md -space-y-px'>
               {/* Email  */}
               <div className='mb-2'>
@@ -106,12 +106,12 @@ export default function Login() {
               </div>
             </div>
 
-            <div>
+            <div className='flex justify-center'>
               <Button>Login</Button>
             </div>
             <FormErrorMessage>{errorMessage}</FormErrorMessage>
           </form>
-          
+
           {/* Sign in button */}
           <SignInLinkButton onClick={googleLogin}>
             {' '}
@@ -121,7 +121,7 @@ export default function Login() {
             Sign in with Google
           </SignInLinkButton>
           <div>
-            <Link to={routes.numberVerification}>
+            <Link to={routes.phoneNumberVerification}>
               <SignInLinkButton>
                 <div className='text-2xl mr-2'>
                   <FcPhoneAndroid />

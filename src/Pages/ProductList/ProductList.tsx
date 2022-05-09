@@ -1,12 +1,14 @@
 import React from 'react';
 import faker from '@faker-js/faker';
 
-import ListHeader from 'Components/ProductListHeader';
 import { routes } from 'routes';
 import { Link } from 'react-router-dom';
-import { BiLeftArrowAlt, BiRightArrowAlt, BiRupee } from 'react-icons/bi';
-import CartButton from 'Components/CartButton';
+import { BiRupee } from 'react-icons/bi';
 import StarRating from 'Components/StarRating';
+import Button from 'Components/Button';
+import 'Styles/product-list-header.css';
+import Pagination from 'Components/Pagination';
+import ProductListHeader from 'Components/ProductListHeader';
 
 export default function ProductList() {
   const products = [...Array(12)].map(() => ({
@@ -20,10 +22,12 @@ export default function ProductList() {
 
   return (
     <>
-      <ListHeader />
+      <ProductListHeader />
       <div className='container mx-auto'>
-        <div className='font-bold md:text-4xl sm:text-xl mt-10 mb-10 text-center'>Products</div>
-        <div className='mt-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <div className='flex justify-center'>
+          <div className='font-bold md:text-4xl sm:text-xl mt-10'>Products</div>
+        </div>
+        <div className='mt-10 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center p-4'>
           {products.map((el) => {
             return (
               <div className='max-w-sm rounded-2xl overflow-hidden shadow hover:shadow-lg' key={el.id}>
@@ -41,26 +45,23 @@ export default function ProductList() {
                     Price : <BiRupee className='mt-1' /> {el.price}
                   </span>
                   <div className='flex'>
-                  <span className='px-3 py-1 mb-2'>Ratings: 
-                 </span>
-              <div className='mt-2'>
-                 <StarRating rating={el.rating} />
-                  </div>
+                    <span className='px-3 py-1 mb-2'>Ratings:</span>
+                    <div className='mt-2'>
+                      <StarRating rating={el.rating} />
+                    </div>
                   </div>
                 </div>
                 <div className='pb-10 flex justify-around'>
-                  <CartButton>
-                    <Link to={routes.cartItem}>ADD TO CART</Link>
-                  </CartButton>
-                  <CartButton>Buy Now</CartButton>
+                  <Button>
+                    <Link to={routes.productCart}>ADD TO CART</Link>
+                  </Button>
+                  <Button>Buy Now</Button>
                 </div>
               </div>
             );
           })}
         </div>
-        <div className='mt-10 mb-10 text-center flex justify-center text-xl'>
-          <BiLeftArrowAlt className='mt-1 mr-2' /> 1 {''} 2 {''} 3{''} 4{''} <BiRightArrowAlt className='mt-1 ml-2' />
-        </div>
+       <Pagination/>
       </div>
     </>
   );

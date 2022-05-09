@@ -13,7 +13,7 @@ import * as yup from 'yup';
 import { v4 as uuidv4 } from 'uuid';
 import { getAuth } from 'firebase/auth';
 import { TiDelete } from 'react-icons/ti';
-import ListHeader from 'Components/ProductListHeader';
+import ProductListHeader from 'Components/ProductListHeader';
 
 export default function CategoryAction() {
   const { id } = useParams();
@@ -92,7 +92,7 @@ export default function CategoryAction() {
 
   return (
     <>
-    <ListHeader />
+    <ProductListHeader />
     <div className="container mx-auto p-2">
       <h1 className="font-semibold text-xl mb-3">{id ? 'Update' : 'Add new'} category item</h1>
       <form className="flex flex-col space-y-2 max-w-sm" onSubmit={handleSubmit(onSubmit)}>
