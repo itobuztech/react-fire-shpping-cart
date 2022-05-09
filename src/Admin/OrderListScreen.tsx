@@ -1,15 +1,16 @@
 import FormHeader from 'Components/FormHeader';
+import Pagination from 'Components/Pagination';
 import React from 'react';
 import { BiRupee } from 'react-icons/bi';
 
 export default function OrderListScreen() {
   return (
     <>
-      <body className='bg-gray-100'>
+      <body className=''>
         <FormHeader />
         <div className='container mx-auto mt-10'>
           <div className='flex shadow-md my-10'>
-            <div className='w-full bg-white px-10 py-10'>
+            <div className='w-full bg-gray-50 px-10 py-10'>
               {/* Cart header */}
               <div className='flex justify-between border-b pb-8'>
                 <h1 className='font-semibold text-2xl'>Order List</h1>
@@ -67,6 +68,7 @@ export default function OrderListScreen() {
             </div>
           </div>
         </div>
+        <Pagination/>
       </body>
     </>
   );
