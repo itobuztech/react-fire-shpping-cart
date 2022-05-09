@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { routes } from '../../../routes';
 import { PasswordReset } from '../../../Interface/forgetpassword.interface';
 import FormErrorMessage from '../../../Components/FormErrorMessage';
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 export default function ForgetPassword() {
 const navigate = useNavigate();

@@ -1,21 +1,21 @@
 /* eslint-disable max-len */
-import React from 'react';
-import { Link } from 'react-router-dom';
+/* eslint-disable max-len */
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 
 import { SignIn } from 'Interface/login.interface';
-import AuthHeader from 'Components/AuthHeader';
+import FormHeader from 'Components/FormHeader';
 import Button from 'Components/Button';
 import TextInputField from 'Components/TextInputField';
 import { routes } from 'routes';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import { fireAuth } from 'lib/firebase';
-import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import SignInLinkButton from 'Components/SigninLinkButton';
+import { FcGoogle, FcPhoneAndroid } from 'react-icons/fc';
 
 export default function Login() {
   const navigate = useNavigate();
