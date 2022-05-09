@@ -16,6 +16,8 @@ import FormErrorMessage from 'Components/FormErrorMessage';
 import { fireAuth } from 'lib/firebase';
 import SignInLinkButton from 'Components/SigninLinkButton';
 import { FcGoogle, FcPhoneAndroid } from 'react-icons/fc';
+import { ToastContainer } from 'react-toastify';
+import AuthHeader from 'Components/AuthHeader';
 
 export default function Login() {
   const navigate = useNavigate();
