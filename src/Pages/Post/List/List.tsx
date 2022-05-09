@@ -14,12 +14,14 @@ import ReactPaginate from 'react-paginate';
 import  Pagination from '../../Pagination/Pagination';
 
 
+
 export default function PostList() {
 
   const { id } = useParams();
   const [list, setList] = useState<Products[]>([]);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(6);
+  const [totalPages, setTotalPages] = useState(3);
+  
 
 
 
@@ -46,18 +48,18 @@ export default function PostList() {
   // Listing
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchData = async () => {
+    console.log('effect');
     const q = await getDocs(collection(db, 'productForm'));
     const data = q.docs.map(i => i.data() as Products);
     
     setList(data);
-    setPage(page);
-    setTotalPages(totalPages);
+
     
   };
 
   useEffect(() => {
     fetchData();
-  }, [fetchData, page, list]);
+  }, []);
 
   // Delete 
   const handleDelete = async (id: number) => {
@@ -70,9 +72,7 @@ export default function PostList() {
     window.location.reload();
   };
 
-
-
-
+  
   return (
     <div> 
       <nav className="
@@ -118,6 +118,7 @@ navbar navbar-expand-lg navbar-light
         </div>
       </nav>
       <br/><br/>
+     
       <h3 className='text-center'>Products Lists</h3><br/><br/>
       <div className="flex flex-col">
         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -200,3 +201,4 @@ navbar navbar-expand-lg navbar-light
   
   );
 }
+

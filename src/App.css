@@ -56,7 +56,9 @@ text-decoration: none;
   text-align: center;
   margin-top: 42px;
 }
-
+.input-field{
+border:1px solid #000;
+}
 
 @keyframes App-logo-spin {
   from {
