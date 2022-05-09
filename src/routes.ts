@@ -14,6 +14,7 @@ export const routes = {
   productDetailsScreen:'/product-detailsScreen',
   oderListScreen: '/order-list-screen', //for admin
   productListScreen: '/product-list-screen', //for admin
+  categoryListScreen: '/category-list-screen', //for admin
   userProfile: '/user-profile',
   logOut: '/logout'
 };

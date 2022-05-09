@@ -16,6 +16,7 @@ const PhoneNumberVerification = React.lazy(() => import('./Components/PhoneNumbe
 const ProductListForm = React.lazy(() => import('./Admin/ProductListForm'));
 const OrderListScreen = React.lazy(() => import('./Admin/OrderListScreen'));
 const ProductListScreen = React.lazy(() => import('./Admin/ProductListScreen'));
+const CategoryListScreen = React.lazy(() => import('./Admin/CategoryListScreen'));
 const UserProfile = React.lazy(() => import('./UserProfile/UserProfile'));
 const ProductList = React.lazy(() => import('./Pages/ProductList/ProductList'));
 const ProductCategoryList = React.lazy(() => import('./Pages/Categories/ProductCategoryList'));
@@ -91,6 +92,12 @@ export default function AppRouter() {
               <Route path={routes.productListScreen} element={<ProductListScreen />} />
             </Route>
             {/* Only visible for admin - product list screen end */}
+
+              {/* Only visible for admin - category list screen */}
+              <Route path={routes.categoryListScreen} element={<AuthGuard />}>
+              <Route path={routes.categoryListScreen} element={<CategoryListScreen />} />
+            </Route>
+            {/* Only visible for admin - category list screen end */}
 
             {/*User profile */}
             <Route path={routes.userProfile} element={<AuthGuard />}>

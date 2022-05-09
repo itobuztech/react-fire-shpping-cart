@@ -6,7 +6,7 @@ export default function Pagination() {
   return (
    <>
       <div className='px-6 py-3 border-t border-gray-100'>
-              <div className='flex items-center justify-between pb-4'>
+              <div className='flex items-center justify-between pb-6 pt-4'>
                 <div className='buttons'>
                   <button type='button' className='button active'>
                     1

@@ -5,16 +5,16 @@ import iconPlus from 'assets/icons/icon_plus.svg';
 import { BiRupee } from 'react-icons/bi';
 import { routes } from 'routes';
 import { Link } from 'react-router-dom';
-import FormHeader from 'Components/FormHeader';
+import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 
 export default function CartItem() {
   return (
     <>
-      <body className='bg-gray-100'>
-        <FormHeader/>
+      <body>
+        <ShoppingCartHeader />
         <div className='container mx-auto mt-10'>
           <div className='flex shadow-md my-10'>
-            <div className='w-3/4 bg-white px-10 py-10'>
+            <div className='w-3/4 bg-gray-50 px-10 py-10'>
               {/* Cart header */}
               <div className='flex justify-between border-b pb-8'>
                 <h1 className='font-semibold text-2xl'>Shopping Cart</h1>
@@ -89,43 +89,51 @@ export default function CartItem() {
             </div>
 
             {/*Order summary section */}
-            <div className='w-1/4 px-8 py-10'>
+            <div className='w-1/4 px-8 py-10 bg-gray-200'>
               <h1 className='font-semibold text-2xl border-b pb-8'>Order Summary</h1>
               <div className='flex justify-between mt-10 mb-5'>
                 <span className='font-semibold text-sm'>Items 2</span>
                 <div className='flex'>
-                <span className='text-sm mr-4'><BiRupee className='absolute mt-1' /></span>
-                <span className='font-semibold text-sm'>440</span>
+                  <span className='text-sm mr-4'>
+                    <BiRupee className='absolute mt-1' />
+                  </span>
+                  <span className='font-semibold text-sm'>440</span>
                 </div>
               </div>
               <div>
-              <div className='flex justify-between mt-10 mb-5'>
-                <span className='font-semibold text-sm'>Delivery Charges</span>
-                <div className='flex'>
-                <span className='text-sm mr-4'><BiRupee className='absolute mt-1' /></span>
-                <span className='font-semibold text-sm'>40</span>
+                <div className='flex justify-between mt-10 mb-5'>
+                  <span className='font-semibold text-sm'>Delivery Charges</span>
+                  <div className='flex'>
+                    <span className='text-sm mr-4'>
+                      <BiRupee className='absolute mt-1' />
+                    </span>
+                    <span className='font-semibold text-sm'>40</span>
+                  </div>
                 </div>
-              </div>
               </div>
               <div className='border-t mt-8'>
                 <div className='flex font-semibold justify-between py-6 text-'>
                   <span>Total Amount</span>
                   <div className='flex'>
-                <span className='text-sm mr-4'><BiRupee className='absolute mt-1' /></span>
-                <span className='font-semibold text-sm'>480</span>
+                    <span className='text-sm mr-4'>
+                      <BiRupee className='absolute mt-1' />
+                    </span>
+                    <span className='font-semibold text-sm'>480</span>
+                  </div>
                 </div>
-                </div>
-                <Link to={routes.checkoutScreen}> <button
-                  className='bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm 
+
+                <Link to={routes.checkoutScreen}>
+                  {' '}
+                  <button
+                    className='bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm 
           text-white uppercase w-full'>
-                  Checkout
-                </button></Link>
-               
+                    Checkout
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
         </div>
-      
       </body>
     </>
   );

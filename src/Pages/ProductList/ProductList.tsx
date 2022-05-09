@@ -1,7 +1,7 @@
 import React from 'react';
 import faker from '@faker-js/faker';
 
-import ProductListHeader from 'Components/ProductListHeader';
+import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 import { routes } from 'routes';
 import { Link } from 'react-router-dom';
 import { BiRupee } from 'react-icons/bi';
@@ -22,7 +22,7 @@ export default function ProductList() {
 
   return (
     <>
-      <ProductListHeader />
+      <ShoppingCartHeader />
       <div className='container mx-auto'>
         <div className='flex justify-center'>
           <div className='font-bold md:text-4xl sm:text-xl mt-10'>Products</div>
@@ -55,7 +55,7 @@ export default function ProductList() {
                   <Button>
                     <Link to={routes.productCart}>ADD TO CART</Link>
                   </Button>
-                  <Button>Buy Now</Button>
+                  <Link to={routes.checkoutScreen}><Button>Buy Now</Button></Link>
                 </div>
               </div>
             );
