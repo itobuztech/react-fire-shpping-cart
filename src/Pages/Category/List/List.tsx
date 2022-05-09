@@ -1,4 +1,4 @@
-import { collection, getDocs, limit, query, startAfter, startAt } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, limit, query, startAfter, startAt } from 'firebase/firestore';
 import { CategoryActionInterface } from 'Interface/categoryaction.interface';
 import { db } from 'lib/firebase';
 import React, { useEffect, useState } from 'react';
@@ -7,46 +7,47 @@ import { routes } from 'routes';
 import { AiOutlinePlus } from 'react-icons/ai';
 import ListHeader from 'Components/ProductListHeader';
 import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
+import Button from 'Components/Button';
 
 export default function CategoryList() {
    const [categoryList, setCategoryList] = useState<CategoryActionInterface[]>([]);
 
   const fetchData = async () => {
-    const q = query(collection( db, 'category' ), limit(2));
+    const q = query(collection( db, 'category' ));
     const queryData = await getDocs(q);
     const data = queryData.docs.map(i => i.data() as CategoryActionInterface);
     setCategoryList(data);
   };
 
   // Query the first page of docs
-  const goToPreviousPage = async () => {
-    const first = query(collection(db, 'category'), limit(2));
-    const documentSnapshots = await getDocs(first);
-    const data = documentSnapshots.docs.map(i => i.data() as CategoryActionInterface);
-    setCategoryList(data);
-    if (data)
-      console.log('clicked previous');
-  };
+  // const goToPreviousPage = async () => {
+  //   const first = query(collection(db, 'category'), limit(2));
+  //   const documentSnapshots = await getDocs(first);
+  //   const data = documentSnapshots.docs.map(i => i.data() as CategoryActionInterface);
+  //   setCategoryList(data);
+  //   if (data)
+  //     console.log('clicked previous');
+  // };
     // Get the last visible document
-   const goToNextPage = async () => {
-    const first = query(collection(db, 'category'), limit(2));
-    const documentSnapshots = await getDocs(first);
-     const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-     const next = query(collection(db, 'category'),
-        startAfter(lastVisible),
-        limit(2));
-     const nextDocSnap = await getDocs(next);
-     const nextDoc = nextDocSnap.docs.map(i => i.data() as CategoryActionInterface);
-    setCategoryList(nextDoc);
-    if (nextDoc)
-      console.log('clicked next');
-   }; 
+  //  const goToNextPage = async () => {
+  //   const first = query(collection(db, 'category'), limit(2));
+  //   const documentSnapshots = await getDocs(first);
+  //    const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+  //    const next = query(collection(db, 'category'),
+  //       startAfter(lastVisible),
+  //       limit(2));
+  //    const nextDocSnap = await getDocs(next);
+  //    const nextDoc = nextDocSnap.docs.map(i => i.data() as CategoryActionInterface);
+  //   setCategoryList(nextDoc);
+  //   if (nextDoc)
+  //     console.log('clicked next');
+  //  }; 
 
   // for delete category
-  // const onDelete = async (id: string) => {
-  //   await deleteDoc(doc(db, 'category', String(id)));
-  //   setCategoryList(categoryList.filter(d => d.id !== id));
-  // };
+  const onDelete = async (id: string) => {
+    await deleteDoc(doc(db, 'category', String(id)));
+    setCategoryList(categoryList.filter(d => d.id !== id));
+  };
 
   
   useEffect(() => {
@@ -71,21 +72,21 @@ export default function CategoryList() {
                     </Link>
                   </div>
                   <p className='text-gray-700 text-base'>{el.categoryDesc}....</p>
-                  {/* <div className="flex items-center mt-4">
+                  <div className="flex items-center mt-4">
                     <Link to={routes.categoryEdit.build(String(el.id))}
                     className="mr-3">Edit</Link>
                     <Button onClick={() => onDelete(String(el.id))}>Delete</Button>
-                  </div> */}
+                  </div>
                 </div>
             </div>
           );
         })}
       </div>
-      <div className='mt-10 mb-10 text-center flex justify-center text-xl'>
+      {/* <div className='mt-10 mb-10 text-center flex justify-center text-xl'>
         <BiLeftArrowAlt className='mt-1 mr-2' onClick={goToPreviousPage} />
          
         <BiRightArrowAlt className='mt-1 ml-2' onClick={goToNextPage} />
-      </div>
+      </div> */}
       
     </div>
     
