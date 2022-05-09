@@ -2,7 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+<<<<<<< HEAD
 import 'bootstrap/dist/css/bootstrap.css';
+=======
+>>>>>>> b90f53174b0f2dccc9729fddeb43c19bbc5ba365
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
