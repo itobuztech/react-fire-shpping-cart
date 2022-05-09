@@ -21,6 +21,15 @@ export default function PostList() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(6);
 
+
+
+
+
+  const lastItem =  page * totalPages;
+  const firstItem =  lastItem - totalPages;
+
+
+
   const handlePrevPage = (prevPage: number) => {
     console.log(prevPage);
     setPage((prevPage) => prevPage - 1);
@@ -61,9 +70,6 @@ export default function PostList() {
     window.location.reload();
   };
 
-
-
-  
 
 
 
@@ -148,7 +154,7 @@ navbar navbar-expand-lg navbar-light
                 </thead>
                 <tbody>
 
-                  {list && list.map(item => {
+                  {list && list.slice(firstItem, lastItem).map(item => {
                     return (
                       <tr className="border-b">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1</td>

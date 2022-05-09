@@ -30,7 +30,7 @@ import { Paginations } from 'Interface/pagination';
            onClick={() => handleNextPage(currentPage)}
            disabled={currentPage === totalPages}
          >
-          
+           &rarr;
          </button>
        </div>
      );
