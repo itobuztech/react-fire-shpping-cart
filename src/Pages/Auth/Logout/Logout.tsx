@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-
-export default function Logout() {
-  return (
-    <div>Logout</div>
-  );
-=======
 import { signOut } from 'firebase/auth';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -30,5 +22,4 @@ export default function Logout() {
   }, [navigate, user]);
 
   return <div />;
->>>>>>> b90f53174b0f2dccc9729fddeb43c19bbc5ba365
 }
