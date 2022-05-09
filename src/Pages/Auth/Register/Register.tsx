@@ -37,6 +37,7 @@ export default function Register() {
 
   const onSubmit = async (value: Registration) => {
     try {
+
       await createUserWithEmailAndPassword(fireAuth, value.email, value.password);
       navigate(routes.login);
 
@@ -50,20 +51,52 @@ export default function Register() {
   };
     
 
+      const userCredential = await createUserWithEmailAndPassword(fireAuth, value.email, value.password);
+      await sendEmailVerification(userCredential.user);
+      navigate(routes.emailVerification);
+    } catch (error: any) {
+      if (error.code === 'auth/email-already-in-use') {
+        setErrorMessage('Email exits');
+      } else {
+        setErrorMessage(error.message);
+      }
+    }
+  };
+  const provider = new GoogleAuthProvider();
+  const auth = getAuth();
+  const googleLogin = async () => {
+    try {
+      const results = signInWithPopup(auth, provider);
+      console.log(results);
+      navigate(routes.listScreen);
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
+
   return (
     <>
       <div>
+
         <Header />
       </div>
       <ToastContainer />
       <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full space-y-8'>
+
+        <FormHeader />
+      </div>
+      <div className='min-h-full flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8'>
+        <div className='max-w-md w-full space-y-2'>
+
           <div>
             <h2 className='text-center text-3xl font-extrabold text-gray-900'>Create an Account</h2>
           </div>
           <form className='mt-8 space-y-6' onSubmit={handleSubmit(onSubmit)}>
             <input type='hidden' name='remember' defaultValue='true' />
             <div className='rounded-md -space-y-px'>
+
               <div className='pb-3'>
                 <TextInputField type='text' placeholder='Name' register={register('name')} />
               </div>
@@ -104,6 +137,66 @@ export default function Register() {
               <Button>Register</Button>
             </div>
           </form>
+
+              {/* Name  */}
+              <div className='pb-3'>
+                <TextInputField type='text' placeholder='Name' register={register('name')} />
+              </div>
+              <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+              {/* Name End  */}
+
+              {/* Email  */}
+              <div className='pb-3'>
+                <TextInputField type='email' placeholder='Email address' register={register('email')} />
+              </div>
+              <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+              {/* Email End */}
+
+              {/* Password  */}
+              <div className='pb-3'>
+                <TextInputField type='password' placeholder='Password' register={register('password')} />
+              </div>
+              <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+              {/* Password End  */}
+
+              {/* Confirm Password  */}
+              <div>
+                <TextInputField type='password' placeholder='Confirm Password' register={register('confirmPassword')} />
+              </div>
+              <div className='pt-2'>
+                <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
+              </div>
+              {/* Confirm Password End  */}
+            </div>
+
+            <div className='flex justify-center pb-2'>
+              <Button>Register</Button>
+            </div>
+
+            <FormErrorMessage>{errorMessage}</FormErrorMessage>
+          </form>
+
+          {/* Sign in button */}
+          <SignInLinkButton onClick={googleLogin}>
+            {' '}
+            <div className='text-2xl mr-2'>
+              <FcGoogle />
+            </div>
+            Sign in with Google
+          </SignInLinkButton>
+          <div>
+            <Link to={routes.numberVerification}>
+              <SignInLinkButton>
+                <div className='text-2xl mr-2'>
+                  <FcPhoneAndroid />
+                </div>
+                Sign in with mobile number
+              </SignInLinkButton>
+            </Link>
+          </div>
+          {/* Sign in button end */}
+
+
           <div className='text-center'>
             Already have an account?{' '}
             <Link to={routes.login} className='text-blue-600 hover:text-blue-800'>

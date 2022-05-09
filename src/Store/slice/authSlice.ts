@@ -1,4 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { User } from 'firebase/auth';
+
+interface AuthState {
+  // undefined meaning app / auth fully not loaded
+  user: null | User | undefined;
+}
 
 const authSlice = createSlice({
   name: 'auth',
@@ -7,6 +13,12 @@ const authSlice = createSlice({
   },
   reducers: {
   
+    user: undefined,
+  } as AuthState,
+  reducers: {
+    updateAuthState: (state, { payload }: { payload: any | null }) => {
+      state.user = payload;
+    },
   },
 });
 
