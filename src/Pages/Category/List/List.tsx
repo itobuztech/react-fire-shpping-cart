@@ -1,4 +1,4 @@
-import { collection, getDocs, limit, query, startAfter } from 'firebase/firestore';
+import { collection, getDocs, limit, query, startAfter, startAt } from 'firebase/firestore';
 import { CategoryActionInterface } from 'Interface/categoryaction.interface';
 import { db } from 'lib/firebase';
 import React, { useEffect, useState } from 'react';
@@ -9,43 +9,46 @@ import ListHeader from 'Components/ProductListHeader';
 import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
 
 export default function CategoryList() {
-  const [categoryList, setCategoryList] = useState<CategoryActionInterface[]>([]);
-  
+   const [categoryList, setCategoryList] = useState<CategoryActionInterface[]>([]);
+
   const fetchData = async () => {
-    const q = await getDocs(collection( db, 'category' ));
-    const data = q.docs.map(i => i.data() as CategoryActionInterface);
+    const q = query(collection( db, 'category' ), limit(2));
+    const queryData = await getDocs(q);
+    const data = queryData.docs.map(i => i.data() as CategoryActionInterface);
     setCategoryList(data);
-    // const first = query(collection(db, 'category'), limit(1));
-    // const documentSnapshots = await getDocs(first);
-    // const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-    // const next = query(collection(db, 'category'),
-    // startAfter(lastVisible),
-    // limit(1));
   };
 
-  async function firstPage() {
-    const first = query(collection(db, 'category'), limit(1));
+  // Query the first page of docs
+  const goToPreviousPage = async () => {
+    const first = query(collection(db, 'category'), limit(2));
     const documentSnapshots = await getDocs(first);
     const data = documentSnapshots.docs.map(i => i.data() as CategoryActionInterface);
     setCategoryList(data);
-  }
-  async function nextPage() {
-    const first = query(collection(db, 'category'), limit(1));
+    if (data)
+      console.log('clicked previous');
+  };
+    // Get the last visible document
+   const goToNextPage = async () => {
+    const first = query(collection(db, 'category'), limit(2));
     const documentSnapshots = await getDocs(first);
-    const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-    const next = query(collection(db, 'category'),
-    startAfter(lastVisible),
-    limit(1));
-    const documentSnapshots1 = await getDocs(next);
-    const data = documentSnapshots1.docs.map(i => i.data() as CategoryActionInterface);
-    setCategoryList(data);
-  }
+     const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+     const next = query(collection(db, 'category'),
+        startAfter(lastVisible),
+        limit(2));
+     const nextDocSnap = await getDocs(next);
+     const nextDoc = nextDocSnap.docs.map(i => i.data() as CategoryActionInterface);
+    setCategoryList(nextDoc);
+    if (nextDoc)
+      console.log('clicked next');
+   }; 
 
+  // for delete category
   // const onDelete = async (id: string) => {
   //   await deleteDoc(doc(db, 'category', String(id)));
   //   setCategoryList(categoryList.filter(d => d.id !== id));
   // };
 
+  
   useEffect(() => {
     fetchData();
   }, []);
@@ -79,10 +82,11 @@ export default function CategoryList() {
         })}
       </div>
       <div className='mt-10 mb-10 text-center flex justify-center text-xl'>
-        <BiLeftArrowAlt className='mt-1 mr-2' onClick={() => firstPage()} />
-         1 {''} 2 {''} 3{''} 4{''} 
-        <BiRightArrowAlt className='mt-1 ml-2' onClick={() => nextPage()} />
+        <BiLeftArrowAlt className='mt-1 mr-2' onClick={goToPreviousPage} />
+         
+        <BiRightArrowAlt className='mt-1 ml-2' onClick={goToNextPage} />
       </div>
+      
     </div>
     
     <Link to={routes.categoryCreate}
