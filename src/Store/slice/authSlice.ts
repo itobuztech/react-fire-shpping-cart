@@ -9,10 +9,6 @@ interface AuthState {
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    value: 0,
-  },
-  reducers: {
-  
     user: undefined,
   } as AuthState,
   reducers: {

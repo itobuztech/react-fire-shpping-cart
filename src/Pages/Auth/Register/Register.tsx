@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Header from 'Components/AuthHeader';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  GoogleAuthProvider,
+  sendEmailVerification,
+  signInWithPopup,
+} from 'firebase/auth';
+import { FcGoogle, FcPhoneAndroid } from 'react-icons/fc';
 
 import { Registration } from 'Interface/register.interface';
 import TextInputField from 'Components/TextInputField';
@@ -14,16 +18,20 @@ import Button from 'Components/Button';
 import { routes } from 'routes';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import { fireAuth } from 'lib/firebase';
+import FormHeader from 'Components/FormHeader';
+import SignInLinkButton from 'Components/SigninLinkButton';
 
 export default function Register() {
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const registerSchema = yup.object().shape({
-    name: yup.string().required('Name is required.'),
-    email: yup.string().required('Email address is required').email('Enter valid email address'),
-    password: yup.string().required('Password is required.').min(6, 'Password must be at least 6 characters'),
+    name: yup.string().trim().required('Name is required.'),
+    email: yup.string().trim().required('Email address is required').email('Enter valid email address'),
+    password: yup.string().trim().required('Password is required.').min(6, 'Password must be at least 6 characters'),
     confirmPassword: yup
       .string()
       .required('Confirm Password is required')
+      .trim()
       .oneOf([yup.ref('password')], 'Passwords must match'),
   });
 
@@ -32,25 +40,11 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
   } = useForm<Registration>({
-    resolver: yupResolver(registerSchema) as unknown as any,
+    resolver: yupResolver(registerSchema),
   });
 
   const onSubmit = async (value: Registration) => {
     try {
-
-      await createUserWithEmailAndPassword(fireAuth, value.email, value.password);
-      navigate(routes.login);
-
-    } catch (error: any) {
-      if (error.code === 'auth/email-already-in-use') {
-        toast.error('Email Address Already Used');
-      } else {
-        toast.error(error.message);
-      }
-    }
-  };
-    
-
       const userCredential = await createUserWithEmailAndPassword(fireAuth, value.email, value.password);
       await sendEmailVerification(userCredential.user);
       navigate(routes.emailVerification);
@@ -74,70 +68,19 @@ export default function Register() {
     }
   };
 
-
   return (
     <>
       <div>
-
-        <Header />
-      </div>
-      <ToastContainer />
-      <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-md w-full space-y-8'>
-
         <FormHeader />
       </div>
-      <div className='min-h-full flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8'>
+      <div className='min-h-full flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full space-y-2'>
-
           <div>
             <h2 className='text-center text-3xl font-extrabold text-gray-900'>Create an Account</h2>
           </div>
-          <form className='mt-8 space-y-6' onSubmit={handleSubmit(onSubmit)}>
+          <form className='mt-8 space-y-2' onSubmit={handleSubmit(onSubmit)}>
             <input type='hidden' name='remember' defaultValue='true' />
             <div className='rounded-md -space-y-px'>
-
-              <div className='pb-3'>
-                <TextInputField type='text' placeholder='Name' register={register('name')} />
-              </div>
-              <div>{errors.name?.type === 'required' && 
-              <FormErrorMessage>{errors.name?.message}</FormErrorMessage>}</div>
-              <div className='pb-3'>
-                <TextInputField type='email' placeholder='Email address' register={register('email')} />
-              </div>
-              <div>
-                {errors.email?.type === 'required' && 
-                <FormErrorMessage>{errors.email?.message}</FormErrorMessage>}
-                {errors.email?.type === 'email' && <FormErrorMessage>{errors.email?.message}</FormErrorMessage>}
-              </div>
-              <div className='pb-3'>
-                <TextInputField type='password' placeholder='Password' register={register('password')} />
-              </div>
-              <div>
-                {errors.password?.type === 'required' && 
-                <FormErrorMessage>{errors.password?.message}</FormErrorMessage>}
-                {errors.password?.type === 'min' && (
-                  <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
-                )}
-              </div>
-              <div>
-                <TextInputField type='password' placeholder='Confirm Password' register={register('confirmPassword')} />
-              </div>
-              <div className='pt-3'>
-                {errors.confirmPassword?.type === 'required' && (
-                  <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
-                )}
-                {errors.confirmPassword?.type === 'oneOf' && (
-                  <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
-                )}
-              </div>
-            </div>
-
-            <div>
-              <Button>Register</Button>
-            </div>
-          </form>
-
               {/* Name  */}
               <div className='pb-3'>
                 <TextInputField type='text' placeholder='Name' register={register('name')} />
@@ -185,7 +128,7 @@ export default function Register() {
             Sign in with Google
           </SignInLinkButton>
           <div>
-            <Link to={routes.numberVerification}>
+            <Link to={routes.phoneNumberVerification}>
               <SignInLinkButton>
                 <div className='text-2xl mr-2'>
                   <FcPhoneAndroid />
@@ -195,7 +138,6 @@ export default function Register() {
             </Link>
           </div>
           {/* Sign in button end */}
-
 
           <div className='text-center'>
             Already have an account?{' '}
