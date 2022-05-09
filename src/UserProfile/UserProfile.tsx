@@ -3,11 +3,13 @@ import TextInputField from 'Components/TextInputField';
 import React from 'react';
 import { FaUserAlt } from 'react-icons/fa';
 import { AiFillLock } from 'react-icons/ai';
+import FormHeader from 'Components/FormHeader';
 
 export default function UserProfile() {
-  
   return (
     <>
+      {' '}
+      <FormHeader />
       <body className='bg-gray-100 p-10'>
         <div className='grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6'>
           <div className='bg-white'>
@@ -37,23 +39,21 @@ export default function UserProfile() {
                   </div>
                 </div>
                 <div className='field'>
-                  <label className='pr-4 font-semibold'>E-mail</label>
+                  <label className='pr-4 font-semibold'>Phone Number</label>
                   <div className='field'>
                     <div className='pb-2 pt-2'>
-                      <TextInputField value='rimpa@itobuz.com' placeholder='Enter your email' type='text' />
+                      <TextInputField value='+91 1234566787' placeholder='Enter your email' type='text' />
                     </div>
                   </div>
                 </div>
                 <div className='field'>
-                  <Button>
-                    Submit
-                  </Button>
+                  <Button>Submit</Button>
                 </div>
               </form>
             </div>
           </div>
           <div className='card bg-white'>
-          <header className='p-6 flex items-stretch border-b border-gray-100'>
+            <header className='p-6 flex items-stretch border-b border-gray-100'>
               <p className='flex-grow font-bold flex'>
                 <span className='mt-1 mr-2'>
                   <FaUserAlt />
@@ -72,54 +72,48 @@ export default function UserProfile() {
               <hr />
               <div className='field p-2'>
                 <label className='font-semibold'>Name</label>
-               <div>Rimpa Das</div>
+                <div>Rimpa Das</div>
               </div>
               <hr />
               <div className='field p-2'>
                 <label className='font-semibold'>Email</label>
-               <div>rimpa@itobuz.com</div>
+                <div>rimpa@itobuz.com</div>
               </div>
             </div>
           </div>
         </div>
         <div className='card bg-white p-6'>
-        <header className='p-2 flex items-stretch border-b border-gray-100'>
-              <p className='flex-grow font-bold flex'>
-                <span className='mt-1 mr-2'>
-                  <AiFillLock />
-                </span>
-                Change Password
-              </p>
-            </header>
-         
+          <header className='p-2 flex items-stretch border-b border-gray-100'>
+            <p className='flex-grow font-bold flex'>
+              <span className='mt-1 mr-2'>
+                <AiFillLock />
+              </span>
+              Change Password
+            </p>
+          </header>
+
           <div className='card-content'>
             <form>
               <div className='field p-2'>
                 <label className='font-semibold'>Current password</label>
                 <div className='p-2'>
-                  <TextInputField
-                    type='password'
-                    placeholder='enter current password'
-                  />
+                  <TextInputField type='password' placeholder='enter current password' />
                 </div>
               </div>
               <div className='field p-2'>
                 <label className='font-semibold'>New password</label>
                 <div className='p-2'>
-                  <TextInputField type='password' placeholder='enter new password'  />
+                  <TextInputField type='password' placeholder='enter new password' />
                 </div>
               </div>
               <div className='field'>
                 <label className='font-semibold'>Confirm password</label>
                 <div className='p-2'>
-                  <TextInputField
-                    type='password'
-                   placeholder='enter new password again'
-                  />
+                  <TextInputField type='password' placeholder='enter new password again' />
                 </div>
               </div>
               <div className='field'>
-              <Button>Submit</Button>
+                <Button>Submit</Button>
               </div>
             </form>
           </div>

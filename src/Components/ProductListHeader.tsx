@@ -28,18 +28,28 @@ export default function ProductListHeader() {
                 <MdOutlineKeyboardArrowDown />
               </button>
               <ul className='dropdown-menu absolute hidden text-gray-700 z-10 w-40 '>
-                <li>
-                  <div className='rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>
-                    <Link to={routes.userProfile}>Profile</Link>
-                  </div>
-                </li>
+                <Link to={routes.userProfile} >
+                  <li>
+                    <div className='rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>
+                      Profile
+                    </div>
+                  </li>
+                </Link>
 
                 {/* only visible for admin*/}
-                <li>
-                  <div className='bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>
-                    <Link to={routes.oderListScreen}>Order List</Link>
-                  </div>
-                </li>
+                <Link to={routes.oderListScreen}>
+                  <li>
+                    <div className='bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>Order List</div>
+                  </li>
+                </Link>
+                {/* only visible for admin end*/}
+
+                  {/* only visible for admin*/}
+                  <Link to={routes.productListScreen}>
+                  <li>
+                    <div className='bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>Product List</div>
+                  </li>
+                </Link>
                 {/* only visible for admin end*/}
 
                 {/* only visible for admin*/}
@@ -47,11 +57,13 @@ export default function ProductListHeader() {
                   <div className='bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>Categories</div>
                 </li>
                 {/* only visible for admin end*/}
-                <li>
-                  <div className='rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>
-                    <Link to={routes.logOut}>Logout</Link>
-                  </div>
-                </li>
+                <Link to={routes.logOut}>
+                  <li>
+                    <div className='rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>
+                      Logout
+                    </div>
+                  </li>
+                </Link>
               </ul>
             </div>
 

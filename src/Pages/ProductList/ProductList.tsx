@@ -4,10 +4,11 @@ import faker from '@faker-js/faker';
 import ProductListHeader from 'Components/ProductListHeader';
 import { routes } from 'routes';
 import { Link } from 'react-router-dom';
-import { BiLeftArrowAlt, BiRightArrowAlt, BiRupee } from 'react-icons/bi';
+import { BiRupee } from 'react-icons/bi';
 import StarRating from 'Components/StarRating';
 import Button from 'Components/Button';
 import 'Styles/product-list-header.css';
+import Pagination from 'Components/Pagination';
 
 export default function ProductList() {
   const products = [...Array(12)].map(() => ({
@@ -23,16 +24,8 @@ export default function ProductList() {
     <>
       <ProductListHeader />
       <div className='container mx-auto'>
-        <div className='flex justify-center relative'>
+        <div className='flex justify-center'>
           <div className='font-bold md:text-4xl sm:text-xl mt-10'>Products</div>
-
-          {/* Only visible for admin */}
-          <div className='absolute right-6 mt-10'>
-            <Link to={routes.productListForm}>
-              <Button>Add new</Button>
-            </Link>
-          </div>
-          {/* Only visible for admin end */}
         </div>
         <div className='mt-10 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center p-4'>
           {products.map((el) => {
@@ -68,9 +61,7 @@ export default function ProductList() {
             );
           })}
         </div>
-        <div className='mt-10 mb-10 text-center flex justify-center text-xl'>
-          <BiLeftArrowAlt className='mt-1 mr-2' /> 1 {''} 2 {''} 3{''} 4{''} <BiRightArrowAlt className='mt-1 ml-2' />
-        </div>
+       <Pagination/>
       </div>
     </>
   );

@@ -97,11 +97,15 @@ export default function CheckoutScreen() {
                 <label className='ml-2 block text-sm text-gray-900'>Save this information for next time</label>
               </div>
             </div>
-            <Button>Continue</Button>
+            <div className='flex justify-center'>
+              <Button>Continue</Button>
+            </div>
           </form>
-          <Button>
-            <Link to={routes.cartItem}>Back to Cart</Link>
-          </Button>
+          <div className='flex justify-center'>
+            <Button>
+              <Link to={routes.cartItem}>Back to Cart</Link>
+            </Button>
+          </div>
         </div>
         {/*Order summary section */}
         <div className='w-1/4 px-8'>

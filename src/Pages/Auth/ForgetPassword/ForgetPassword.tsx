@@ -65,7 +65,7 @@ export default function ForgetPassword() {
               </div>
             </div>
 
-            <div>
+            <div className='flex justify-center'>
               <Button>Reset Password</Button>
             </div>
           </form>
