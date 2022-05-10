@@ -10,8 +10,8 @@ export default function Star({
   if (filled) {
     return (
       <svg
-        width="12"
-        height="16"
+        width="14"
+        height="18"
         viewBox="0 0 20 19"
         fill="none"
         className={className}
@@ -28,8 +28,8 @@ export default function Star({
   } else {
     return (
       <svg
-        width="12"
-        height="16"
+        width="14"
+        height="18"
         viewBox="0 0 20 19"
         fill="none"
         className={className}

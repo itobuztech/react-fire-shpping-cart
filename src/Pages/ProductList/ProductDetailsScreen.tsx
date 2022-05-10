@@ -7,7 +7,7 @@ import { routes } from 'routes';
 import { Link } from 'react-router-dom';
 
 import Button from '../../Components/Button';
-import ProductListHeader from 'Components/ProductListHeader';
+import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 
 
 export default function ProductDetailsScreen() {
@@ -25,7 +25,7 @@ export default function ProductDetailsScreen() {
   }));
   return (
     <>
-      <ProductListHeader />
+      <ShoppingCartHeader />
       <body className='bg-gray-100 p-6'>
         <div className='flex justify-center'>
           <div className='font-bold md:text-4xl sm:text-xl mb-6 '>Products Details</div>
@@ -49,8 +49,8 @@ export default function ProductDetailsScreen() {
                     <img src={el.image} alt='image' className='p-2' />
                   </div>
                   <div className='flex justify-around mt-4'>
-                    <Button>ADD TO CART</Button>
-                    <Button>BUY NOW</Button>
+                    <Link to={routes.cartItem}><Button>ADD TO CART</Button></Link>
+                    <Link to={routes.checkoutScreen}><Button>BUY NOW</Button></Link>
                   </div>
                 </div>
               </div>

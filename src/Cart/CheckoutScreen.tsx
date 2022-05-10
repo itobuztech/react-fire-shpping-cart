@@ -2,15 +2,13 @@ import React from 'react';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { BiRupee } from 'react-icons/bi';
 
 import Button from 'Components/Button';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import TextInputField from 'Components/TextInputField';
 import { UserDetails } from 'Interface/user-details.interface';
-import { routes } from 'routes';
-import { Link } from 'react-router-dom';
-import FormHeader from 'Components/FormHeader';
-import { BiRupee } from 'react-icons/bi';
+import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 
 export default function CheckoutScreen() {
   const UserDetailsSchema = yup.object().shape({
@@ -33,7 +31,7 @@ export default function CheckoutScreen() {
   const onSubmit = async () => {};
   return (
     <>
-      <FormHeader />
+      <ShoppingCartHeader />
       <div className='min-h-full flex items-center justify-center px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full space-y-2 pr-6'>
           <form className='mt-8 space-y-6' onSubmit={handleSubmit(onSubmit)}>
@@ -101,11 +99,6 @@ export default function CheckoutScreen() {
               <Button>Continue</Button>
             </div>
           </form>
-          <div className='flex justify-center'>
-            <Button>
-              <Link to={routes.cartItem}>Back to Cart</Link>
-            </Button>
-          </div>
         </div>
         {/*Order summary section */}
         <div className='w-1/4 px-8'>
