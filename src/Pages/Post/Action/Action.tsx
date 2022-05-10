@@ -4,7 +4,7 @@ import ProductListHeader from 'Components/ProductListHeader';
 import { collection, getDocs, query } from 'firebase/firestore';
 import { CategoryActionInterface } from 'Interface/categoryaction.interface';
 import { db } from 'lib/firebase';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Select from 'react-select';
 
 interface CategoryOption {
@@ -13,40 +13,21 @@ interface CategoryOption {
 }
 
 export default function PostAction() {
-  const [categoryList, setCategoryList] = useState<CategoryActionInterface>();
-  const [optionList, setOptionList] = useState<string[]>([]);
-
-  const fetchCategory = async () => {
-    const q = query(collection( db, 'category' ));
-    const queryData = await getDocs(q);
-    const data = queryData.docs.map(i => i.data() as CategoryActionInterface);
-    const dataItem = data.map(i => i.categoryName);
-    setOptionList(dataItem);
-  };
-
-  const categoryOption = [
-    { value: optionList, label: optionList }
-  ];
-
-  // const loadOptions = (
-  //   inputValue: string,
-  //   callback: (options: CategoryActionInterface[]) => void
-  // ) => {
-  //   console.log('load option');
-  //   (async () => {
-  //     callback(await fetchCategory(inputValue));
-  //   })();
-  // };
-
-  // const handleInputChange = async (newValue: string) => {
-  //   await fetchCategory();
-  //   return newValue.replace(/\W/g, '');
-  // };
+  const [optionList, setOptionList] = useState<CategoryOption[]>([]);
 
   useEffect(() => {
-    (async () => {
-      fetchCategory();
-    })();
+    async function fetchCategoryList() {
+      const categoryOption: CategoryOption[] = [];
+      const q = query(collection( db, 'category' ));
+      const queryData = await getDocs(q);
+      const data = queryData.docs.map(i => i.data() as CategoryActionInterface);
+      data.forEach(i => categoryOption.push({
+        label: i.categoryName,
+        value: String(i.id)
+      }));
+      setOptionList(categoryOption);
+    }
+    fetchCategoryList();
   }, []);
 
 
@@ -74,7 +55,7 @@ export default function PostAction() {
         </div>
         <div className="flex flex-col space-y-1">
           <label htmlFor="category-opt">Category options</label>
-          <Select options={categoryOption} />
+          <Select options={optionList} />
           <FormErrorMessage>{}</FormErrorMessage>
         </div>
         <div className="flex flex-col space-y-1">
