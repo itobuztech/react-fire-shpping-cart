@@ -8,6 +8,10 @@ import { BiLeftArrowAlt, BiRightArrowAlt, BiRupee } from 'react-icons/bi';
 import StarRating from 'Components/StarRating';
 import Button from 'Components/Button';
 import 'Styles/product-list-header.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'Store/store';
+import { cartSliceAction } from 'Pages/Reducer/CartSlice';
+import { ICart } from 'Interface/cart.interface';
 
 export default function ProductList() {
   const products = [...Array(12)].map(() => ({
@@ -18,6 +22,13 @@ export default function ProductList() {
     description: faker.lorem.words(4),
     rating: faker.datatype.number({ min: 0, max: 5 }),
   }));
+
+   const cart = useSelector((state:RootState) => state.cart.cartItem);
+   const dispatch = useDispatch;
+
+   console.log(cart);
+
+
 
   return (
     <>
@@ -58,13 +69,18 @@ export default function ProductList() {
                     </div>
                   </div>
                 </div>
+               
                 <div className='pb-10 flex justify-around'>
-                  <Button>
+                { cart.map((elem) => (
+                  <Button onClick={() => dispatch(cartSliceAction.addToDo(elem.id))}>
                     <Link to={routes.productCart}>ADD TO CART</Link>
                   </Button>
+                  ))
+                }
                   <Button>Buy Now</Button>
                 </div>
               </div>
+               
             );
           })}
         </div>
