@@ -4,6 +4,8 @@ import { BiRupee } from 'react-icons/bi';
 import Pagination from 'Components/Pagination';
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 import { MdPreview } from 'react-icons/md';
+import { routes } from 'routes';
+import { Link } from 'react-router-dom';
 
 export default function OrderListScreen() {
   return (
@@ -67,7 +69,9 @@ export default function OrderListScreen() {
                 {/* Price section end */}
 
                 <div className='flex justify-center w-1/5'>
-                  <MdPreview className='text-2xl text-green-600' />
+                  <Link to={routes.orderDetails}>
+                    <MdPreview className='text-2xl text-green-600' />
+                  </Link>
                 </div>
               </div>
             </div>

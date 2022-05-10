@@ -19,6 +19,8 @@ const ProductListScreen = React.lazy(() => import('./Admin/ProductListScreen'));
 const CategoryListScreen = React.lazy(() => import('./Admin/CategoryListScreen'));
 const UserProfile = React.lazy(() => import('./UserProfile/UserProfile'));
 const ProductList = React.lazy(() => import('./Pages/ProductList/ProductList'));
+const OrderList = React.lazy(() => import('./OrderList/OrderList'));
+const OrderListDetails = React.lazy(() => import('./OrderList/OrderListDetails'));
 const ProductCategoryList = React.lazy(() => import('./Pages/Categories/ProductCategoryList'));
 const CartItem = React.lazy(() => import('./Cart/CartItem'));
 const CheckoutScreen = React.lazy(() => import('./Cart/CheckoutScreen'));
@@ -51,6 +53,18 @@ export default function AppRouter() {
               <Route path={routes.listScreen} element={<ProductList />} />
             </Route>
             {/*Product list end */}
+
+            {/*Order list */}
+            <Route path={routes.orderList} element={<AuthGuard />}>
+              <Route path={routes.orderList} element={<OrderList />} />
+            </Route>
+            {/*Order list end */}
+
+              {/*Order list details */}
+              <Route path={routes.orderDetails} element={<AuthGuard />}>
+              <Route path={routes.orderDetails} element={<OrderListDetails />} />
+            </Route>
+            {/*Order list details end */}
 
             {/*Product category list */}
             <Route path={routes.productCategoryList} element={<AuthGuard />}>
@@ -93,8 +107,8 @@ export default function AppRouter() {
             </Route>
             {/* Only visible for admin - product list screen end */}
 
-              {/* Only visible for admin - category list screen */}
-              <Route path={routes.categoryListScreen} element={<AuthGuard />}>
+            {/* Only visible for admin - category list screen */}
+            <Route path={routes.categoryListScreen} element={<AuthGuard />}>
               <Route path={routes.categoryListScreen} element={<CategoryListScreen />} />
             </Route>
             {/* Only visible for admin - category list screen end */}

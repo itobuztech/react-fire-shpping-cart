@@ -49,8 +49,8 @@ export default function ProductDetailsScreen() {
                     <img src={el.image} alt='image' className='p-2' />
                   </div>
                   <div className='flex justify-around mt-4'>
-                    <Button>ADD TO CART</Button>
-                    <Button>BUY NOW</Button>
+                    <Link to={routes.cartItem}><Button>ADD TO CART</Button></Link>
+                    <Link to={routes.checkoutScreen}><Button>BUY NOW</Button></Link>
                   </div>
                 </div>
               </div>

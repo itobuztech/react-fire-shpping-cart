@@ -6,8 +6,10 @@ export const routes = {
   phoneNumberVerification: '/phone-number-verification',
   forgetPassword: '/forget-password',
   listScreen: '/list-screen',
-  productListForm: '/product-list-form',
+  productListForm: '/product-list-form', //for admin
   productCart: '/product-cart',
+  orderList: '/order-list',
+  orderDetails: '/order-details',
   productCategoryList: '/product-category-list',
   cartItem: '/product-cart',
   checkoutScreen: '/checkout-screen',

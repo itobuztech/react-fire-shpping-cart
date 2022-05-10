@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { BsCart3 } from 'react-icons/bs';
+import { BsBoxArrowRight, BsCart3 } from 'react-icons/bs';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import { MdOutlineCategory, MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import { CgProfile } from 'react-icons/cg';
+import { RiProductHuntLine } from 'react-icons/ri';
 
 import { routes } from 'routes';
 import { SearchField } from './SearchField';
 import '../Styles/product-list-header.css';
+import { BiLogOutCircle } from 'react-icons/bi';
 
 export default function ShoppingCartHeader() {
   const productCart = '/product-cart';
@@ -18,9 +21,9 @@ export default function ShoppingCartHeader() {
             React Fire Shopping Cart
           </div>
           {!cartHide ? (
-          <div className='text-black lg:pr-6 md:pr-6 sm:mr-4 sm:pl-2 search'>
-            <SearchField label={'search here...'} />
-          </div>
+            <div className='text-black lg:pr-6 md:pr-6 sm:mr-4 sm:pl-2 search'>
+              <SearchField label={'search here...'} />
+            </div>
           ) : null}
           <div className='flex justify-between nav-items'>
             {/*dropdown */}
@@ -39,8 +42,15 @@ export default function ShoppingCartHeader() {
                     background: isActive ? '#7600dc' : '#f0f0f0',
                   })}>
                   <li>
-                    <div className='rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>
-                      Profile
+                    <div
+                      className='rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 
+                    block whitespace-no-wrap'>
+                      <div className='flex'>
+                        <div className='mt-1 text-blue-600 mr-2 text-xl'>
+                          <CgProfile />
+                        </div>
+                        <div> Profile</div>
+                      </div>
                     </div>
                   </li>
                 </NavLink>
@@ -51,8 +61,34 @@ export default function ShoppingCartHeader() {
                     fontWeight: isActive ? 'bold' : 'semi-bold',
                   })}>
                   <li>
-                    <div className='rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>
-                      Products
+                    <div
+                      className='bg-gray-200 hover:bg-gray-400 py-2 px-4 
+                    block whitespace-no-wrap'>
+                      <div className='flex'>
+                        <div className='mt-1 text-blue-600 mr-2 text-xl'>
+                          <RiProductHuntLine />
+                        </div>
+                        <div> Products</div>
+                      </div>
+                    </div>
+                  </li>
+                </NavLink>
+
+                <NavLink
+                  to={routes.orderList}
+                  style={({ isActive }) => ({
+                    fontWeight: isActive ? 'bold' : 'semi-bold',
+                  })}>
+                  <li>
+                    <div
+                      className='bg-gray-200 hover:bg-gray-400 py-2 px-4 
+                    block whitespace-no-wrap'>
+                      <div className='flex'>
+                        <div className='mt-1 text-blue-600 mr-2 text-xl'>
+                          <BsBoxArrowRight />
+                        </div>
+                        <div> Orders</div>
+                      </div>
                     </div>
                   </li>
                 </NavLink>
@@ -64,8 +100,15 @@ export default function ShoppingCartHeader() {
                     fontWeight: isActive ? 'bold' : 'semi-bold',
                   })}>
                   <li>
-                    <div className='bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>
-                      Order List(admin)
+                    <div
+                      className='bg-gray-200 hover:bg-gray-400 py-2 px-4 
+                    block whitespace-no-wrap'>
+                      <div className='flex'>
+                        <div className='mt-1 text-blue-600 mr-2 text-xl'>
+                          <BsBoxArrowRight />
+                        </div>
+                        <div> Orders List(admin)</div>
+                      </div>
                     </div>
                   </li>
                 </NavLink>
@@ -78,8 +121,15 @@ export default function ShoppingCartHeader() {
                     fontWeight: isActive ? 'bold' : 'semi-bold',
                   })}>
                   <li>
-                    <div className='bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>
-                      Product List(admin)
+                    <div
+                      className='bg-gray-200 hover:bg-gray-400 py-2 px-4 
+                    block whitespace-no-wrap'>
+                      <div className='flex'>
+                        <div className='mt-1 text-blue-600 mr-2 text-xl'>
+                          <BsBoxArrowRight />
+                        </div>
+                        <div> Product List(admin)</div>
+                      </div>
                     </div>
                   </li>
                 </NavLink>
@@ -92,8 +142,15 @@ export default function ShoppingCartHeader() {
                     fontWeight: isActive ? 'bold' : 'semi-bold',
                   })}>
                   <li>
-                    <div className='bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>
-                      Category List(admin)
+                    <div
+                      className='bg-gray-200 hover:bg-gray-400 py-2 px-4 
+                    block whitespace-no-wrap'>
+                      <div className='flex'>
+                        <div className='mt-1 text-blue-600 mr-2 text-xl'>
+                          <BsBoxArrowRight />
+                        </div>
+                        <div> Category List(admin)</div>
+                      </div>
                     </div>
                   </li>
                 </NavLink>
@@ -106,14 +163,30 @@ export default function ShoppingCartHeader() {
                     fontWeight: isActive ? 'bold' : 'semi-bold',
                   })}>
                   <li>
-                    <div className='bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>Categories</div>
+                    <div
+                      className='bg-gray-200 hover:bg-gray-400 py-2 px-4 
+                    block whitespace-no-wrap'>
+                      <div className='flex'>
+                        <div className='mt-1 text-blue-600 mr-2 text-xl'>
+                          <MdOutlineCategory />
+                        </div>
+                        <div> Category</div>
+                      </div>
+                    </div>
                   </li>
                 </NavLink>
                 {/* only visible for admin end*/}
                 <NavLink to={routes.logOut}>
                   <li>
-                    <div className='rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'>
-                      Logout
+                    <div
+                      className='bg-gray-200 hover:bg-gray-400 py-2 px-4 
+                    block whitespace-no-wrap'>
+                      <div className='flex'>
+                        <div className='mt-1 text-blue-600 mr-2 rotate-90 text-xl'>
+                          <BiLogOutCircle />
+                        </div>
+                        <div> Logout</div>
+                      </div>
                     </div>
                   </li>
                 </NavLink>

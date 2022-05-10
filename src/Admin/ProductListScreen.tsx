@@ -57,11 +57,7 @@ export default function ProductListScreen() {
                 {products.map((el) => {
                   return (
                     <tr>
-                      <td className='checkbox-cell lg:w-5'>
-                        <label className='checkbox'>
-                          <input type='checkbox' />
-                          <span className='check'></span>
-                        </label>
+                      <td className='lg:w-5'>
                       </td>
                       <td className='image-cell'>
                         <div className='image w-24 h-24 mx-auto lg:w-6 lg:h-6'>

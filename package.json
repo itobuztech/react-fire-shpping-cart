@@ -40,7 +40,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.ts{,x} --max-warnings=0",
     "lint-staged": "lint-staged",
-    "firebase:start": "firebase emulators:start --import=fire_data",
+    "firebase:start": "firebase emulators:start",
     "firebase:export": "firebase emulators:export fire_data"
   },
   "lint-staged": {
