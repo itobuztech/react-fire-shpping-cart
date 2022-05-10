@@ -19,7 +19,7 @@ const app = initializeApp(firebaseConfig);
 
 
 
-export default db;
+
 // Initialize Firebase Authentication and get a reference to the service
 export const fireAuth = getAuth(app);
 
@@ -38,3 +38,4 @@ export const storage = getStorage();
 if (process.env.REACT_APP_FIREBASE_EMULATOR === 'true') {
   connectStorageEmulator(storage, 'localhost', 9199);
 }
+export default db;

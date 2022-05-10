@@ -1,4 +1,6 @@
 export interface ProductListItem {
+  id:number;
+  categoryName: any;
   title: string;
   description: string;
   image: string;

@@ -59,6 +59,13 @@ text-decoration: none;
 .input-field{
 border:1px solid #000;
 }
+select{
+border: 1px solid #00000042;
+    padding: 20px 3;
+    width: 100%;
+    min-height: 45px;
+}
+
 
 @keyframes App-logo-spin {
   from {

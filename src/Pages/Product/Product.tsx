@@ -24,7 +24,7 @@ export default function Product() {
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
   const [image, setImage] = useState<any>(null);
-  const [productForm, setProductForm] = useState([]);
+
 
   const { id } = useParams();
 
@@ -33,7 +33,7 @@ export default function Product() {
     descriptions: yup.string(),
     price: yup.number(),
     category: yup.string(),
-    related_products:yup.string(),
+    related_products: yup.string(),
   }).required();
 
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<Products>({
@@ -47,7 +47,7 @@ export default function Product() {
     const storageRef = ref(storage, storagePath);
     const uploadTask = uploadBytesResumable(storageRef, file);
     uploadTask.on('state_changed', (snapshot) => {
-    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
     });
 
     //update
@@ -60,7 +60,7 @@ export default function Product() {
             descriptions: data.descriptions,
             price: data.price,
             category: data.category,
-            related_products:data.related_products,
+            related_products: data.related_products,
             images: url,
 
           });
@@ -80,7 +80,7 @@ export default function Product() {
           descriptions: data.descriptions,
           price: data.price,
           category: data.category,
-          related_products:data.related_products,
+          related_products: data.related_products,
           images: url,
 
         });
