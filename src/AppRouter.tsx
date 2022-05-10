@@ -25,6 +25,7 @@ const CartItem = React.lazy(() => import('./Cart/CartItem'));
 const CheckoutScreen = React.lazy(() => import('./Cart/CheckoutScreen'));
 const ProductDetailsScreen = React.lazy(() => import('./Pages/ProductList/ProductDetailsScreen'));
 const Logout = React.lazy(() => import('./Pages/Auth/Logout/Logout'));
+const MyProductList = React.lazy(() => import('./Pages/Post/Action/Action'));
 
 export default function AppRouter() {
   return (
@@ -99,6 +100,12 @@ export default function AppRouter() {
               <Route path={routes.userProfile} element={<UserProfile />} />
             </Route>
             {/*User profile end */}
+
+            {/* My product list */}
+            <Route path={routes.myProductList} element={<AuthGuard />}>
+              <Route path={routes.myProductList} element={<MyProductList />} />
+            </Route>
+            {/* My product list end */}
 
             <Route path={routes.logOut} element={<Logout />} />
           </Routes>

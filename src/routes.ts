@@ -27,5 +27,7 @@ export const routes = {
   oderListScreen: '/order-list-screen', //for admin
   productListScreen: '/product-list-screen', //for admin
   userProfile: '/user-profile',
-  logOut: '/logout'
+  logOut: '/logout',
+  myProductList: '/myproduct-list'
+
 };
