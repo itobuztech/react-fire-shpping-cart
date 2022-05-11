@@ -19,8 +19,12 @@ const PhoneNumberVerification = React.lazy(() => import('./Components/PhoneNumbe
 const ProductListForm = React.lazy(() => import('./Admin/ProductListForm'));
 const OrderListScreen = React.lazy(() => import('./Admin/OrderListScreen'));
 const ProductListScreen = React.lazy(() => import('./Admin/ProductListScreen'));
+const CategoryListScreen = React.lazy(() => import('./Admin/CategoryListScreen'));
 const UserProfile = React.lazy(() => import('./UserProfile/UserProfile'));
 const ProductList = React.lazy(() => import('./Pages/ProductList/ProductList'));
+const OrderList = React.lazy(() => import('./OrderList/OrderList'));
+const OrderListDetails = React.lazy(() => import('./OrderList/OrderListDetails'));
+const ProductCategoryList = React.lazy(() => import('./Pages/Categories/ProductCategoryList'));
 const CartItem = React.lazy(() => import('./Cart/CartItem'));
 const CheckoutScreen = React.lazy(() => import('./Cart/CheckoutScreen'));
 const ProductDetailsScreen = React.lazy(() => import('./Pages/ProductList/ProductDetailsScreen'));
@@ -60,6 +64,23 @@ export default function AppRouter() {
             </Route>
             {/*Product list end */}
 
+            {/*Order list */}
+            <Route path={routes.orderList} element={<AuthGuard />}>
+              <Route path={routes.orderList} element={<OrderList />} />
+            </Route>
+            {/*Order list end */}
+
+              {/*Order list details */}
+              <Route path={routes.orderDetails} element={<AuthGuard />}>
+              <Route path={routes.orderDetails} element={<OrderListDetails />} />
+            </Route>
+            {/*Order list details end */}
+
+            {/*Product category list */}
+            <Route path={routes.productCategoryList} element={<AuthGuard />}>
+              <Route path={routes.productCategoryList} element={<ProductCategoryList />} />
+            </Route>
+            {/*Product category list end */}
 
             {/*Product Cart */}
             <Route path={routes.cartItem} element={<AuthGuard />}>
@@ -95,6 +116,12 @@ export default function AppRouter() {
               <Route path={routes.productListScreen} element={<ProductListScreen />} />
             </Route>
             {/* Only visible for admin - product list screen end */}
+
+            {/* Only visible for admin - category list screen */}
+            <Route path={routes.categoryListScreen} element={<AuthGuard />}>
+              <Route path={routes.categoryListScreen} element={<CategoryListScreen />} />
+            </Route>
+            {/* Only visible for admin - category list screen end */}
 
             {/*User profile */}
             <Route path={routes.userProfile} element={<AuthGuard />}>

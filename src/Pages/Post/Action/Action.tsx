@@ -127,7 +127,7 @@ export default function PostAction() {
     <>
     <ProductListHeader />
     <div className="container mx-auto">
-      <h1 className="font-semibold text-xl mb-3">Add new product item</h1>
+      <h1 className="font-semibold text-xl mb-3">{id ? 'Update' : 'Add new'} product item</h1>
       <form className="flex flex-col space-y-2 max-w-sm" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col space-y-1">
           <label htmlFor="product-name">Name</label>

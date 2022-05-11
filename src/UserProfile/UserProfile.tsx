@@ -3,13 +3,13 @@ import TextInputField from 'Components/TextInputField';
 import React from 'react';
 import { FaUserAlt } from 'react-icons/fa';
 import { AiFillLock } from 'react-icons/ai';
-import FormHeader from 'Components/FormHeader';
+import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 
 export default function UserProfile() {
   return (
     <>
       {' '}
-      <FormHeader />
+      <ShoppingCartHeader />
       <body className='bg-gray-100 p-10'>
         <div className='grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6'>
           <div className='bg-white'>
