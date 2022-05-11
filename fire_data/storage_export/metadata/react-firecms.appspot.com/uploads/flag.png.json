@@ -1,0 +1,19 @@
+{
+  "name": "uploads/flag.png",
+  "bucket": "react-firecms.appspot.com",
+  "contentType": "image/png",
+  "metageneration": 1,
+  "generation": 1652245597518,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "7242d4d2-9c4a-490c-884f-bcae1ea1e2e4"
+  ],
+  "timeCreated": "2022-05-11T05:06:37.517Z",
+  "updated": "2022-05-11T05:06:37.518Z",
+  "size": 23924,
+  "md5Hash": "kV8y8eRZWXJap5YlceNDuA==",
+  "crc32c": "3561562517"
+}

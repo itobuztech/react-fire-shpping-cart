@@ -1,0 +1,19 @@
+{
+  "name": "uploads/flower.jpeg",
+  "bucket": "react-firecms.appspot.com",
+  "contentType": "image/jpeg",
+  "metageneration": 1,
+  "generation": 1652245498250,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "af4cc69a-ff2f-48a3-b8d9-9f5dc60debf6"
+  ],
+  "timeCreated": "2022-05-11T05:04:58.249Z",
+  "updated": "2022-05-11T05:04:58.256Z",
+  "size": 7581,
+  "md5Hash": "WGIUcEW2ZGCsN9QVYqzIuQ==",
+  "crc32c": "956514648"
+}

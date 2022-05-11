@@ -25,7 +25,8 @@ const CartItem = React.lazy(() => import('./Cart/CartItem'));
 const CheckoutScreen = React.lazy(() => import('./Cart/CheckoutScreen'));
 const ProductDetailsScreen = React.lazy(() => import('./Pages/ProductList/ProductDetailsScreen'));
 const Logout = React.lazy(() => import('./Pages/Auth/Logout/Logout'));
-const MyProductList = React.lazy(() => import('./Pages/Post/Action/Action'));
+const MyProductAction = React.lazy(() => import('./Pages/Post/Action/Action'));
+const MyProductList = React.lazy(() => import('./Pages/Post/List/List'));
 
 export default function AppRouter() {
   return (
@@ -100,6 +101,18 @@ export default function AppRouter() {
               <Route path={routes.userProfile} element={<UserProfile />} />
             </Route>
             {/*User profile end */}
+
+            {/* My product create */}
+            <Route path={routes.myProductCreate} element={<AuthGuard />}>
+              <Route path={routes.myProductCreate} element={<MyProductAction />} />
+            </Route>
+            {/* My product create end */}
+
+            {/* My product update */}
+            <Route path={routes.myProductEdit.match} element={<AuthGuard />}>
+              <Route path={routes.myProductEdit.match} element={<MyProductAction />} />
+            </Route>
+            {/* My product update end */}
 
             {/* My product list */}
             <Route path={routes.myProductList} element={<AuthGuard />}>

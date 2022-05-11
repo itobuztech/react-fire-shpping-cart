@@ -28,6 +28,11 @@ export const routes = {
   productListScreen: '/product-list-screen', //for admin
   userProfile: '/user-profile',
   logOut: '/logout',
-  myProductList: '/myproduct-list'
-
+  myProductCreate: '/myproduct-create',
+  myProductList: '/myproduct-list',
+  myProductEdit: {
+    match: '/myproduct-update/:id',
+    build: (id: string ) =>
+       `/myproduct-update/${id}`
+  },
 };

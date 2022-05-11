@@ -1,0 +1,19 @@
+{
+  "name": "uploads/butterfly.jpeg",
+  "bucket": "react-firecms.appspot.com",
+  "contentType": "image/jpeg",
+  "metageneration": 1,
+  "generation": 1652245655775,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "1594fa7c-bb59-46c0-b2e1-11406ce25137"
+  ],
+  "timeCreated": "2022-05-11T05:07:35.774Z",
+  "updated": "2022-05-11T05:07:35.774Z",
+  "size": 9769,
+  "md5Hash": "BNNn1xNVWsc7wO7okZG/gw==",
+  "crc32c": "3563620678"
+}

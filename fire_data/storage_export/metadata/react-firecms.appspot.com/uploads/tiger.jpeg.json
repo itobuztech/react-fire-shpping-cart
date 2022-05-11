@@ -1,0 +1,19 @@
+{
+  "name": "uploads/tiger.jpeg",
+  "bucket": "react-firecms.appspot.com",
+  "contentType": "image/jpeg",
+  "metageneration": 1,
+  "generation": 1652245630953,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "f1efe9fc-ac05-49d8-a9d5-9eb73dec5032"
+  ],
+  "timeCreated": "2022-05-11T05:07:10.952Z",
+  "updated": "2022-05-11T05:07:10.953Z",
+  "size": 130940,
+  "md5Hash": "WOVTxFfgb1pJ2Sv05PBzyw==",
+  "crc32c": "3542699742"
+}

@@ -62,9 +62,9 @@ export default function ProductListForm() {
 
               {/* image */}
               <div className='pb-2'>
-                <TextInputField type='file' placeholder='Upload image' register={register('image')} />
+                <TextInputField type='file' placeholder='Upload image' register={register('productImage')} />
               </div>
-              <FormErrorMessage>{errors.image?.message}</FormErrorMessage>
+              <FormErrorMessage>{errors.productImage?.message}</FormErrorMessage>
               {/* image End  */}
 
               {/* Category  */}
