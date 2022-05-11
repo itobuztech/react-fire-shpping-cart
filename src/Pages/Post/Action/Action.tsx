@@ -13,6 +13,7 @@ import * as yup from 'yup';
 import { v4 as uuidv4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { useParams } from 'react-router-dom';
+import { TiDelete } from 'react-icons/ti';
 interface CategoryOption {
   value: string;
   label: string;
@@ -83,6 +84,13 @@ export default function PostAction() {
     }
   };
 
+  function deleteImage() {
+    updateDoc(doc(db, 'category', String(id)), {
+      categoryImage: null
+    });
+    setImage(null);
+  }
+
   useEffect(() => {
     async function fetchCategoryList() {
       const categoryOption: CategoryOption[] = [];
@@ -135,6 +143,13 @@ export default function PostAction() {
         </div>
         <div className="flex flex-col space-y-1">
           <label htmlFor="featured-img">Featured image</label>
+          {
+            image && (
+            <div className="flex relative">
+              <img src={image} width={50} height={50} />
+              <button onClick={() => deleteImage()} className="absolute top-0 right-0"><TiDelete /></button>
+            </div>
+          )}
           <input type="file" {...register('productImage')} onChange={fileChange} />
         </div>
         <div className="flex flex-col space-y-1">
