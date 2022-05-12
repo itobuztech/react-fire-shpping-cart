@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'Store/store';
-import { removeFromCart } from '../Store/slice/cartSlice';
+import { removeFromCart, quantityIncrement } from '../Store/slice/cartSlice';
 
 export default function CartItem() {
   const dispatch = useDispatch();
@@ -17,10 +17,13 @@ export default function CartItem() {
   const deleteItem = (id: string) => {
     dispatch(removeFromCart(id));
   };
+  const incrementQuantity = (id: string) => {
+    dispatch(quantityIncrement(id));
+  };
 
   return (
     <>
-      <body>
+      <div>
         <ShoppingCartHeader />
         <div className='container mx-auto mt-10'>
           <div className='flex shadow-md my-10'>
@@ -55,7 +58,7 @@ export default function CartItem() {
 
                   <div className='mx-2 border text-center w-8'>{i.quantity}</div>
 
-                  <img src={iconPlus} alt='plus' />
+                  <img src={iconPlus} alt='plus' onClick={() => incrementQuantity(i.id)} />
                 </div>
                 <span className='text-center w-1/5 font-semibold text-sm'>
                   <BiRupee className='absolute ml-12 mt-1' />
@@ -119,7 +122,7 @@ export default function CartItem() {
             </div>
           </div>
         </div>
-      </body>
+      </div>
     </>
   );
 }

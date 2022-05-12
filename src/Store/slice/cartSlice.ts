@@ -24,18 +24,23 @@ const cartSlice = createSlice({
         productImage: '',
         discountedPrice: action.payload.discountedPrice
       };
-      state.numberCart++;
+      state.numberCart = state.numberCart++;
       state.Carts.push(item);
-      console.log(item);
     },
     removeFromCart: (state, action) => {
       state.Carts = state.Carts.filter((item) => 
         item.id !== action.payload
       );
+    },
+    quantityIncrement: (state, action) => {
+      const item = state.Carts.find(i => i.id === action.payload.id);
+      if (item) {
+        item.quantity += 1;
+      }
     }
   }
 });
 
-export const { addToCart, removeFromCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, quantityIncrement } = cartSlice.actions;
 
 export default cartSlice.reducer;
