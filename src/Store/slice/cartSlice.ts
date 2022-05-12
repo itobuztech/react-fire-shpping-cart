@@ -17,7 +17,14 @@ const cartSlice = createSlice({
   initialState: initProduct,
   reducers: {
     addToCart: (state, action) => {
-      const item: CartInterface = action.payload;
+      const item: CartInterface = {
+        id: action.payload.id,
+        quantity: 1,
+        title: action.payload.title,
+        productImage: '',
+        discountedPrice: action.payload.discountedPrice
+      };
+      state.numberCart++;
       state.Carts.push(item);
       console.log(item);
     },

@@ -13,6 +13,7 @@ import { removeFromCart } from '../Store/slice/cartSlice';
 export default function CartItem() {
   const dispatch = useDispatch();
   const cartList = useSelector((state: RootState) => state.cart.Carts || []);
+  const cartNum = useSelector((state: RootState) => state.cart.numberCart);
   const deleteItem = (id: string) => {
     dispatch(removeFromCart(id));
   };
@@ -27,7 +28,7 @@ export default function CartItem() {
               {/* Cart header */}
               <div className='flex justify-between border-b pb-8'>
                 <h1 className='font-semibold text-2xl'>Shopping Cart</h1>
-                <h2 className='font-semibold text-2xl'>2 Items</h2>
+                <h2 className='font-semibold text-2xl'>{cartNum} Items</h2>
               </div>
               {/* Cart header end */}
 
@@ -66,27 +67,6 @@ export default function CartItem() {
                 </span>
               </div>);
               } )}
-              <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5'>
-                <div className='flex w-2/5'>
-                  <div className='flex flex-col justify-between ml-4 flex-grow'>
-                    <span className='font-bold text-sm'>HP Laptop</span>
-                    <span className='font-semibold hover:text-red-500 text-gray-500 text-xs'>Remove</span>
-                  </div>
-                </div>
-                <div className='flex justify-center w-1/5'>
-                  <img src={iconMinus} alt='minus' />
-                  <input className='mx-2 border text-center w-8' type='text' value='1' />
-                  <img src={iconPlus} alt='plus' />
-                </div>
-                <span className='text-center w-1/5 font-semibold text-sm'>
-                  <BiRupee className='absolute ml-12 mt-1' />
-                  40.00
-                </span>
-                <span className='text-center w-1/5 font-semibold text-sm'>
-                  <BiRupee className='absolute ml-12 mt-1' />
-                  40.00
-                </span>
-              </div>
               <Link to={routes.myProductList}>
                 {' '}
                 <div className='flex font-semibold text-indigo-600 text-sm mt-10'>Continue Shopping</div>
