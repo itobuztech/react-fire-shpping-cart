@@ -7,10 +7,14 @@ import { ProductListItem } from 'Interface/product-list-item.interface';
 import { db } from 'lib/firebase';
 import React, { useEffect, useState } from 'react';
 import { BiRupee } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { routes } from 'routes';
+import { addToCart } from '../../../Store/slice/cartSlice';
 
 export default function MyProductList() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [productList, setProductList] = useState<ProductListItem[]>([]);
 
   const fetchData = async () => {
@@ -24,6 +28,12 @@ export default function MyProductList() {
   const onDelete = async (id: string) => {
     await deleteDoc(doc(db, 'myProducts', String(id)));
     setProductList(productList.filter(d => d.id !== id));
+  };
+
+  // for add_to_cart
+  const addtoCart = (product: ProductListItem) => {
+    dispatch(addToCart({ ...product }));
+    navigate(routes.productCart);
   };
   
   useEffect(() => {
@@ -73,8 +83,8 @@ export default function MyProductList() {
                   <Button onClick={() => onDelete(String(el.id))}>Delete</Button>
                 </div>
                 <div className='pb-10 flex justify-around'>
-                  <Button>
-                    <Link to={routes.productCart}>ADD TO CART</Link>
+                  <Button onClick={() => addtoCart(el)}>
+                    ADD TO CART
                   </Button>
                   <Button>Buy Now</Button>
                 </div>

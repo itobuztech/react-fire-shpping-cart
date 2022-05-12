@@ -6,8 +6,17 @@ import { BiRupee } from 'react-icons/bi';
 import { routes } from 'routes';
 import { Link } from 'react-router-dom';
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'Store/store';
+import { removeFromCart } from '../Store/slice/cartSlice';
 
 export default function CartItem() {
+  const dispatch = useDispatch();
+  const cartList = useSelector((state: RootState) => state.cart.Carts || []);
+  const deleteItem = (id: string) => {
+    dispatch(removeFromCart(id));
+  };
+
   return (
     <>
       <body>
@@ -30,37 +39,33 @@ export default function CartItem() {
                 <h3 className='font-semibold text-center text-gray-600 text-xs uppercase w-1/5'>Total</h3>
               </div>
               {/* cart list header end */}
-
-              {/* cart list item */}
-              <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5'>
+              {cartList.map(i => {
+                return (
+              <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5' key={i.id}>
                 <div className='flex w-2/5'>
                   <div className='flex flex-col justify-between ml-4 flex-grow'>
-                    <span className='font-bold text-sm'>Samsung A50</span>
-                    <span className='font-semibold hover:text-red-500 text-gray-500 text-xs'>Remove</span>
+                    <span className='font-bold text-sm'>{i.title}</span>
+                    <span className='font-semibold hover:text-red-500 text-gray-500 text-xs'
+                     onClick={() => deleteItem(i.id)}>Remove</span>
                   </div>
                 </div>
-                {/* Quantity section */}
                 <div className='flex justify-center w-1/5'>
                   <img src={iconMinus} alt='minus' />
 
-                  <input className='mx-2 border text-center w-8' type='text' value='1' />
+                  <div className='mx-2 border text-center w-8'>{i.quantity}</div>
 
                   <img src={iconPlus} alt='plus' />
                 </div>
-                {/* Quantity section end */}
-
-                {/* Price section */}
                 <span className='text-center w-1/5 font-semibold text-sm'>
                   <BiRupee className='absolute ml-12 mt-1' />
-                  400.00
+                  {i.discountedPrice}
                 </span>
                 <span className='text-center w-1/5 font-semibold text-sm'>
                   <BiRupee className='absolute ml-12 mt-1' />
                   400.00
                 </span>
-              </div>
-              {/* Price section end */}
-
+              </div>);
+              } )}
               <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5'>
                 <div className='flex w-2/5'>
                   <div className='flex flex-col justify-between ml-4 flex-grow'>
@@ -82,7 +87,7 @@ export default function CartItem() {
                   40.00
                 </span>
               </div>
-              <Link to={routes.listScreen}>
+              <Link to={routes.myProductList}>
                 {' '}
                 <div className='flex font-semibold text-indigo-600 text-sm mt-10'>Continue Shopping</div>
               </Link>
