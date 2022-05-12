@@ -35,7 +35,7 @@ export default function ProductList() {
           {productList.map((el: any) => {
             return (
               <div className='max-w-sm rounded-2xl overflow-hidden shadow hover:shadow-lg' key={el.productId}>
-                <Link to={routes.productDetailsScreen}>
+                <Link to={routes.productDetailsScreen.build(el.productId)}>
                   {' '}
                   <img className='w-full h-56' src={el.Image} alt='image' />
                   <div className='px-6 py-2'>

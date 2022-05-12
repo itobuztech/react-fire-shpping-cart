@@ -1,5 +1,4 @@
-import React from 'react';
-import faker from '@faker-js/faker';
+import React, { useEffect, useState } from 'react';
 import { FiEdit } from 'react-icons/fi';
 
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
@@ -9,14 +8,31 @@ import { Link } from 'react-router-dom';
 import { routes } from 'routes';
 import Pagination from 'Components/Pagination';
 import '../Styles/product-list-admin.css';
+import { CategoryData } from 'Interface/category-data.interface';
+import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { db } from 'lib/firebase';
 
 export default function CategoryListScreen() {
-  const categories = [...Array(8)].map(() => ({
-    id: faker.datatype.uuid(),
-    productName: faker.commerce.productName(),
-    image: faker.image.business(600, 600),
-    description: faker.lorem.words(4),
-  }));
+  const [categoryList, setCategoryList] = useState<CategoryData[]>([]);
+
+  const fetchCategory = async () => {
+    const getData = await getDocs(collection(db, 'categories'));
+    const data = getData.docs.map((items) => items.data() as CategoryData);
+    setCategoryList(data);
+  };
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
+  const deleteCategory = async (categoryId: string) => {
+    const result = doc(db, 'categories', categoryId);
+    try {
+      await deleteDoc(result);
+      setCategoryList(categoryList.filter((items) => items.categoryId !== categoryId));
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
   return (
     <>
       <ShoppingCartHeader />
@@ -48,17 +64,17 @@ export default function CategoryListScreen() {
                 </tr>
               </thead>
               <tbody>
-                {categories.map((el) => {
+                {categoryList.map((el) => {
                   return (
-                    <tr>
+                    <tr key={el.categoryId}>
                       <td className='lg:w-5'></td>
                       <td className='image-cell p-4'>
                         <div className='image w-24 h-24 mx-auto lg:w-6 lg:h-6'>
-                          <img src={el.image} className='rounded-full' />
+                          <img src={el.Image} className='rounded-full' />
                         </div>
                       </td>
-                      <td data-label='Product Name'>{el.productName}</td>
-                      <td data-label='Product Description'>{el.description}</td>
+                      <td data-label='Product Name'>{el.CategoryName}</td>
+                      <td data-label='Product Description'>{el.Description}</td>
                       <td data-label='Created'>
                         <small className='text-gray-500' title='Oct 25, 2021'>
                           Oct 25, 2021
@@ -66,13 +82,18 @@ export default function CategoryListScreen() {
                       </td>
                       <td className='actions-cell'>
                         <div className='buttons right nowrap'>
+                          <Link to={routes.categoryListEdit.build(el.categoryId)}>
                           <button className='button small green' type='button'>
                             <span className='icon'>
                               <FiEdit />
                             </span>
                           </button>
+                          </Link>
 
-                          <button className='button small red' type='button'>
+                          <button
+                            className='button small red'
+                            type='button'
+                            onClick={() => deleteCategory(el.categoryId)}>
                             <span className='icon'>
                               <MdDeleteSweep />
                             </span>

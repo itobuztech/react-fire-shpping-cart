@@ -14,7 +14,7 @@ const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/Forg
 const EmailVerification = React.lazy(() => import('./Components/EmailVerification'));
 const PhoneNumberVerification = React.lazy(() => import('./Components/PhoneNumberVerification'));
 const ProductListForm = React.lazy(() => import('./Admin/ProductListForm'));
-const CategoryListForm = React.lazy(() => import('./Admin/ProductListForm'));
+const CategoryListForm = React.lazy(() => import('./Admin/CategoryListForm'));
 const OrderListScreen = React.lazy(() => import('./Admin/OrderListScreen'));
 const ProductListScreen = React.lazy(() => import('./Admin/ProductListScreen'));
 const CategoryListScreen = React.lazy(() => import('./Admin/CategoryListScreen'));
@@ -86,8 +86,8 @@ export default function AppRouter() {
             {/*Product Cart end */}
 
             {/*Product details screen */}
-            <Route path={routes.productDetailsScreen} element={<AuthGuard />}>
-              <Route path={routes.productDetailsScreen} element={<ProductDetailsScreen />} />
+            <Route path={routes.productDetailsScreen.match} element={<AuthGuard />}>
+              <Route path={routes.productDetailsScreen.match} element={<ProductDetailsScreen />} />
             </Route>
 
             {/* Only visible for admin - product list create screen */}
@@ -107,6 +107,12 @@ export default function AppRouter() {
               <Route path={routes.categoryListForm} element={<CategoryListForm />} />
             </Route>
             {/* Only visible for admin - product list create screen end */}
+
+              {/* Only visible for admin - category list edit screen */}
+              <Route path={routes.categoryListEdit.match} element={<AuthGuard />}>
+              <Route path={routes.categoryListEdit.match} element={<CategoryListForm />} />
+            </Route>
+            {/* Only visible for admin - category list edit screen end */}
 
             {/* Only visible for admin - order list screen */}
             <Route path={routes.oderListScreen} element={<AuthGuard />}>

@@ -1,28 +1,37 @@
 import faker from '@faker-js/faker';
 import StarRating from 'Components/StarRating';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiRupee } from 'react-icons/bi';
 import { MdLocalOffer } from 'react-icons/md';
 import { routes } from 'routes';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import Button from '../../Components/Button';
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
-
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from 'lib/firebase';
 
 export default function ProductDetailsScreen() {
-  const products = [...Array(1)].map(() => ({
-    productName: faker.commerce.productName(),
-    price: faker.commerce.price(),
-    image: faker.image.business(600, 600),
-    description: faker.lorem.words(40),
-    rating: faker.datatype.number({ min: 0, max: 5 }),
-  }));
+  const params = useParams();
+  const [value, setValue] = useState<any>();
   const relateProducts = [...Array(4)].map(() => ({
     productName: faker.commerce.productName(),
     price: faker.commerce.price(),
     image: faker.image.business(600, 400),
   }));
+  useEffect(() => {
+    (async () => {
+      const productId = params.productId;
+      if (productId) {
+        const docRef = doc(db, 'products', productId);
+        const d = await getDoc(docRef);
+        const products = d.data() as any;
+        setValue(products);
+        console.log(products);
+      }
+    })();
+  }, [params.productId]);
+
   return (
     <>
       <ShoppingCartHeader />
@@ -40,63 +49,64 @@ export default function ProductDetailsScreen() {
         {/* Only visible for admin end */}
 
         {/* product details */}
-        {products.map((el) => {
-          return (
-            <div className='grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6'>
-              <div className='bg-white'>
-                <div className='card-content p-6'>
-                  <div className=' block relative md:w-96 sm:w-48 h-96 mx-auto'>
-                    <img src={el.image} alt='image' className='p-2' />
-                  </div>
-                  <div className='flex justify-around mt-4'>
-                    <Link to={routes.cartItem}><Button>ADD TO CART</Button></Link>
-                    <Link to={routes.checkoutScreen}><Button>BUY NOW</Button></Link>
-                  </div>
-                </div>
+
+        <div className='grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6'>
+          <div className='bg-white'>
+            <div className='card-content p-6'>
+              <div className=' block relative md:w-96 sm:w-48 h-96 mx-auto'></div>
+              <div className='flex justify-around mt-4'>
+                <Link to={routes.cartItem}>
+                  <Button>ADD TO CART</Button>
+                </Link>
+                <Link to={routes.checkoutScreen}>
+                  <Button>BUY NOW</Button>
+                </Link>
               </div>
-              <div className='card bg-white'>
-                <div className='card-content p-6'>
-                  <div className='field p-2'>
-                    <div className='font-bold md:text-3xl sm:text-xl mb-2'>{el.productName}</div>
-                    <div className='mt-2'>
-                      <StarRating rating={el.rating} />
-                    </div>
-                    <div>
-                      {' '}
-                      <span className='mb-3 flex font-semibold'>
-                        Price : <BiRupee className='mt-1' /> {el.price}
-                      </span>
-                    </div>
-                    <div>
-                      <div className='font-semibold text-xl mb-2'>Available offers</div>
-                      <div className='flex'>
-                        <div className='mt-1 mr-2 text-green-600'>
-                          <MdLocalOffer />
-                        </div>
-                        <div className='mb-4'>
-                          <span className='font-semibold'>Bank Offer</span>
-                          10% off on SBI Credit Card, up to ₹750. On orders of ₹5000 and above
-                          <span className='text-blue-500 ml-2'>T&C</span>
-                        </div>
-                      </div>
-                      <div className='flex'>
-                        <div className='mt-1 mr-2 text-green-600'>
-                          <MdLocalOffer />
-                        </div>
-                        <div>
-                          <span className='font-semibold'>Bank Offer</span>
-                          10% off on SBI Credit Card EMI transactions, up to ₹1000. On orders of ₹5000 and above
-                          <span className='text-blue-500 ml-2'>T&C</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='text-gray-700 text-base mt-4'>{el.description}</div>
+            </div>
+          </div>
+          <div>
+            <div className='card bg-white'>
+              <div className='card-content p-6'>
+                <div className='field p-2'>
+                  <div className='font-bold md:text-3xl sm:text-xl mb-2'>{value.ProductName}</div>
+                  <div className='mt-2'>
+                    <StarRating rating={value.rating} />
                   </div>
+                  <div>
+                    {' '}
+                    <span className='mb-3 flex font-semibold'>
+                      Price : <BiRupee className='mt-1' /> {value.Price}
+                    </span>
+                  </div>
+                  <div>
+                    <div className='font-semibold text-xl mb-2'>Available offers</div>
+                    <div className='flex'>
+                      <div className='mt-1 mr-2 text-green-600'>
+                        <MdLocalOffer />
+                      </div>
+                      <div className='mb-4'>
+                        <span className='font-semibold'>Bank Offer</span>
+                        10% off on SBI Credit Card, up to ₹750. On orders of ₹5000 and above
+                        <span className='text-blue-500 ml-2'>T&C</span>
+                      </div>
+                    </div>
+                    <div className='flex'>
+                      <div className='mt-1 mr-2 text-green-600'>
+                        <MdLocalOffer />
+                      </div>
+                      <div>
+                        <span className='font-semibold'>Bank Offer</span>
+                        10% off on SBI Credit Card EMI transactions, up to ₹1000. On orders of ₹5000 and above
+                        <span className='text-blue-500 ml-2'>T&C</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='text-gray-700 text-base mt-4'>{value.Description}</div>
                 </div>
               </div>
             </div>
-          );
-        })}
+          </div>
+        </div>
         {/* product details end */}
 
         {/* relate products */}
