@@ -3,14 +3,13 @@ import { db } from 'lib/firebase';
 import { getDocs, collection } from 'firebase/firestore';
 import { routes } from 'routes';
 import { Link } from 'react-router-dom';
+import { BiRupee } from 'react-icons/bi';
 
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
-import { BiRupee } from 'react-icons/bi';
 import StarRating from 'Components/StarRating';
 import Button from 'Components/Button';
 import 'Styles/product-list-header.css';
 import Pagination from 'Components/Pagination';
-
 import { ProductListItem } from 'Interface/product-list-item.interface';
 
 export default function ProductList() {
@@ -38,16 +37,16 @@ export default function ProductList() {
               <div className='max-w-sm rounded-2xl overflow-hidden shadow hover:shadow-lg' key={el.productId}>
                 <Link to={routes.productDetailsScreen}>
                   {' '}
-                  <img className='w-full h-56' src={el.image} alt='image' />
+                  <img className='w-full h-56' src={el.Image} alt='image' />
                   <div className='px-6 py-2'>
                     <div className='font-bold text-xl mb-2'>{el.ProductName}</div>
-                    <p className='text-gray-700 text-base'>{el.description}....</p>
+                    <p className='text-gray-700 text-base'>{el.Description}....</p>
                   </div>
                 </Link>
 
                 <div className='px-4 pt-4 pb-2 flex text-sm font-semibold text-gray-700'>
                   <span className='px-3 py-1 mr-2 mb-2 flex'>
-                    Price : <BiRupee className='mt-1' /> {el.actualPrice}
+                    Price : <BiRupee className='mt-1' /> {el.Price}
                   </span>
                   <div className='flex'>
                     <span className='px-3 py-1 mb-2'>Ratings:</span>

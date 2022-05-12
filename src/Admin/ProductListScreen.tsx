@@ -27,9 +27,8 @@ export default function ProductListScreen() {
   const deleteProduct = async (productId: string) => {
     const result = doc(db, 'products', productId);
     try {
-      const res = await deleteDoc(result);
+      await deleteDoc(result);
       setProductList(productList.filter((items) => items.productId !== productId));
-      console.log(res);
     } catch (error: any) {
       console.log(error.message);
     }
@@ -67,19 +66,19 @@ export default function ProductListScreen() {
                 </tr>
               </thead>
               <tbody>
-                {productList.map((el: any) => {
+                {productList.map((el) => {
                   return (
                     <tr key={el.productId}>
                       <td className='lg:w-5'></td>
                       <td className='image-cell'>
                         <div className='image w-24 h-24 mx-auto lg:w-6 lg:h-6'>
-                          <img src={el.image} className='rounded-full' />
+                          <img src={el.Image} className='rounded-full' />
                         </div>
                       </td>
-                      <td data-label='Product Name'>{el.title}</td>
-                      <td data-label='Product Description'>{el.description}</td>
-                      <td data-label='Product Quantity'>{el.quantity}</td>
-                      <td data-label='Product Price'>{el.actualPrice}</td>
+                      <td data-label='Product Name'>{el.ProductName}</td>
+                      <td data-label='Product Description'>{el.Description}</td>
+                      <td data-label='Product Quantity'>{el.Quantity}</td>
+                      <td data-label='Product Price'>{el.Price}</td>
                       <td data-label='Created'>
                         <small className='text-gray-500' title='Oct 25, 2021'>
                           Oct 25, 2021
@@ -87,7 +86,7 @@ export default function ProductListScreen() {
                       </td>
                       <td className='actions-cell'>
                         <div className='buttons right nowrap'>
-                          <Link to={routes.productListForm}>
+                          <Link to={routes.productListEdit.build(el.productId)}>
                             <button className='button small green' type='button'>
                               <span className='icon'>
                                 <FiEdit />
@@ -97,7 +96,7 @@ export default function ProductListScreen() {
                           <button
                             className='button small red'
                             type='button'
-                            onClick={() => deleteProduct(String(el.productId))}>
+                            onClick={() => deleteProduct(el.productId)}>
                             <span className='icon'>
                               <MdDeleteSweep />
                             </span>

@@ -25,7 +25,7 @@ export default function CategoryListScreen() {
 
         {/* Only visible for admin */}
         <div className='absolute right-6 mt-10'>
-          <Link to={routes.productListForm}>
+          <Link to={routes.categoryListForm}>
             <Button>Add new</Button>
           </Link>
         </div>

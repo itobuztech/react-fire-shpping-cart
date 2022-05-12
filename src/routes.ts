@@ -7,6 +7,12 @@ export const routes = {
   forgetPassword: '/forget-password',
   listScreen: '/list-screen',
   productListForm: '/product-list-form', //for admin
+  productListEdit: {
+    match:'/product-list-edit/:productId',
+    build: (productId: string) => 
+      `/product-list-edit/${productId}`
+  }, // for admin
+  categoryListForm: '/category-list-form', // for admin
   productCart: '/product-cart',
   orderList: '/order-list',
   orderDetails: '/order-details',
