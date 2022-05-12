@@ -1,9 +1,9 @@
 export interface ProductListItem {
-  title: string;
-  description: string;
-  image: string;
-  category: string;
-  quantity: string;
-  actualPrice: number;
-  discountedPrice?: number;
+  productId: string;
+  ProductName: string;
+  Description: string;
+  Image: string;
+  Category: string;
+  Quantity: string;
+  Price: number;
 }

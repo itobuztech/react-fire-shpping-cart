@@ -14,6 +14,7 @@ const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/Forg
 const EmailVerification = React.lazy(() => import('./Components/EmailVerification'));
 const PhoneNumberVerification = React.lazy(() => import('./Components/PhoneNumberVerification'));
 const ProductListForm = React.lazy(() => import('./Admin/ProductListForm'));
+const CategoryListForm = React.lazy(() => import('./Admin/ProductListForm'));
 const OrderListScreen = React.lazy(() => import('./Admin/OrderListScreen'));
 const ProductListScreen = React.lazy(() => import('./Admin/ProductListScreen'));
 const CategoryListScreen = React.lazy(() => import('./Admin/CategoryListScreen'));
@@ -60,8 +61,8 @@ export default function AppRouter() {
             </Route>
             {/*Order list end */}
 
-              {/*Order list details */}
-              <Route path={routes.orderDetails} element={<AuthGuard />}>
+            {/*Order list details */}
+            <Route path={routes.orderDetails} element={<AuthGuard />}>
               <Route path={routes.orderDetails} element={<OrderListDetails />} />
             </Route>
             {/*Order list details end */}
@@ -92,6 +93,18 @@ export default function AppRouter() {
             {/* Only visible for admin - product list create screen */}
             <Route path={routes.productListForm} element={<AuthGuard />}>
               <Route path={routes.productListForm} element={<ProductListForm />} />
+            </Route>
+            {/* Only visible for admin - product list create screen end */}
+
+            {/* Only visible for admin - product list edit screen */}
+            <Route path={routes.productListEdit.match} element={<AuthGuard />}>
+              <Route path={routes.productListEdit.match} element={<ProductListForm />} />
+            </Route>
+            {/* Only visible for admin - product list edit screen end */}
+
+            {/* Only visible for admin - category list create screen */}
+            <Route path={routes.categoryListForm} element={<AuthGuard />}>
+              <Route path={routes.categoryListForm} element={<CategoryListForm />} />
             </Route>
             {/* Only visible for admin - product list create screen end */}
 
