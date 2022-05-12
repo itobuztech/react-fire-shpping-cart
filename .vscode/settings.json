@@ -3,6 +3,7 @@
         "Fetchdata",
         "fetchingpage",
         "firestore",
+        "nevigate",
         "productinterface"
     ]
 }

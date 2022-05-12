@@ -1,5 +1,9 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/no-shadow */
 import React from 'react';
 import faker from '@faker-js/faker';
+
 
 import ProductListHeader from 'Components/ProductListHeader';
 import { routes } from 'routes';
@@ -12,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'Store/store';
 import { cartSliceAction } from 'Pages/Reducer/CartSlice';
 import { ICart } from 'Interface/cart.interface';
+import { ProductListItem } from 'Interface/product-list-item.interface';
 
 export default function ProductList() {
   const products = [...Array(12)].map(() => ({
@@ -22,11 +27,18 @@ export default function ProductList() {
     description: faker.lorem.words(4),
     rating: faker.datatype.number({ min: 0, max: 5 }),
   }));
+  
+
 
    const cart = useSelector((state:RootState) => state.cart.cartItem);
-   const dispatch = useDispatch;
 
-   console.log(cart);
+   const dispatch = useDispatch();
+   //console.log(cart);
+   const handelAddToCart = (products: any) => {
+    dispatch(cartSliceAction.addToCart({ ...products }));
+    
+};
+   
 
 
 
@@ -47,6 +59,7 @@ export default function ProductList() {
         </div>
         <div className='mt-10 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center p-4'>
           {products.map((el) => {
+           
             return (
               <div className='max-w-sm rounded-2xl overflow-hidden shadow hover:shadow-lg' key={el.id}>
                 <Link to={routes.productDetailsScreen}>
@@ -69,14 +82,13 @@ export default function ProductList() {
                     </div>
                   </div>
                 </div>
-               
+                
                 <div className='pb-10 flex justify-around'>
-                { cart.map((elem) => (
-                  <Button onClick={() => dispatch(cartSliceAction.addToDo(elem.id))}>
-                    <Link to={routes.productCart}>ADD TO CART</Link>
+                   
+                  <Button onClick={() => handelAddToCart(el)}>
+                    
+                    ADD to Cart
                   </Button>
-                  ))
-                }
                   <Button>Buy Now</Button>
                 </div>
               </div>
@@ -91,3 +103,16 @@ export default function ProductList() {
     </>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -6,8 +6,17 @@ import { BiRupee } from 'react-icons/bi';
 import { routes } from 'routes';
 import { Link } from 'react-router-dom';
 import FormHeader from 'Components/FormHeader';
+import { useSelector } from 'react-redux';
+import { RootState } from 'Store/store';
 
 export default function CartItem() {
+
+
+  const cart = useSelector((state:RootState) => state.cart.cartItem);
+  
+  
+
+
   return (
     <>
       <body className='bg-gray-100'>
@@ -32,10 +41,12 @@ export default function CartItem() {
               {/* cart list header end */}
 
               {/* cart list item */}
+            {cart.map(item => {
+                    return (
               <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5'>
                 <div className='flex w-2/5'>
                   <div className='flex flex-col justify-between ml-4 flex-grow'>
-                    <span className='font-bold text-sm'>Samsung A50</span>
+                    <span className='font-bold text-sm'>{item.productName}</span>
                     <span className='font-semibold hover:text-red-500 text-gray-500 text-xs'>Remove</span>
                   </div>
                 </div>
@@ -52,36 +63,18 @@ export default function CartItem() {
                 {/* Price section */}
                 <span className='text-center w-1/5 font-semibold text-sm'>
                   <BiRupee className='absolute ml-12 mt-1' />
-                  400.00
+                  {item.price}
                 </span>
                 <span className='text-center w-1/5 font-semibold text-sm'>
                   <BiRupee className='absolute ml-12 mt-1' />
-                  400.00
+                  {item.price}
                 </span>
               </div>
+               );
+              })
+            }
               {/* Price section end */}
 
-              <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5'>
-                <div className='flex w-2/5'>
-                  <div className='flex flex-col justify-between ml-4 flex-grow'>
-                    <span className='font-bold text-sm'>HP Laptop</span>
-                    <span className='font-semibold hover:text-red-500 text-gray-500 text-xs'>Remove</span>
-                  </div>
-                </div>
-                <div className='flex justify-center w-1/5'>
-                  <img src={iconMinus} alt='minus' />
-                  <input className='mx-2 border text-center w-8' type='text' value='1' />
-                  <img src={iconPlus} alt='plus' />
-                </div>
-                <span className='text-center w-1/5 font-semibold text-sm'>
-                  <BiRupee className='absolute ml-12 mt-1' />
-                  40.00
-                </span>
-                <span className='text-center w-1/5 font-semibold text-sm'>
-                  <BiRupee className='absolute ml-12 mt-1' />
-                  40.00
-                </span>
-              </div>
               <Link to={routes.listScreen}>
                 {' '}
                 <div className='flex font-semibold text-indigo-600 text-sm mt-10'>Continue Shopping</div>
@@ -89,6 +82,7 @@ export default function CartItem() {
             </div>
 
             {/*Order summary section */}
+           
             <div className='w-1/4 px-8 py-10'>
               <h1 className='font-semibold text-2xl border-b pb-8'>Order Summary</h1>
               <div className='flex justify-between mt-10 mb-5'>
@@ -107,13 +101,19 @@ export default function CartItem() {
                 </div>
               </div>
               </div>
+              {cart.map(item => {
+                return (
               <div className='border-t mt-8'>
+                
                 <div className='flex font-semibold justify-between py-6 text-'>
                   <span>Total Amount</span>
+                  
                   <div className='flex'>
                 <span className='text-sm mr-4'><BiRupee className='absolute mt-1' /></span>
-                <span className='font-semibold text-sm'>480</span>
+                <span className='font-semibold text-sm'>{item.totalAmount}</span>
+              
                 </div>
+                
                 </div>
                 <Link to={routes.checkoutScreen}> <button
                   className='bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm 
@@ -122,8 +122,13 @@ export default function CartItem() {
                 </button></Link>
                
               </div>
+                );
+              })
+            }
             </div>
+            
           </div>
+          
         </div>
       
       </body>
