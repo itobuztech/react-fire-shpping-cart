@@ -17,8 +17,8 @@ export default function CartItem() {
   const deleteItem = (id: string) => {
     dispatch(removeFromCart(id));
   };
-  const incrementQuantity = (id: string) => {
-    dispatch(quantityIncrement(id));
+  const incrementQuantity = (index: number) => {
+    dispatch(quantityIncrement(index));
   };
 
   return (
@@ -43,10 +43,10 @@ export default function CartItem() {
                 <h3 className='font-semibold text-center text-gray-600 text-xs uppercase w-1/5'>Total</h3>
               </div>
               {/* cart list header end */}
-              {cartList.map(i => {
+              {cartList.map((i, index) => {
                 if (i.quantity !== 0) {
                 return (
-              <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5' key={i.id}>
+              <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5' key={index}>
                 <div className='flex w-2/5'>
                   <div className='flex flex-col justify-between ml-4 flex-grow'>
                     <span className='font-bold text-sm'>{i.title}</span>
@@ -59,7 +59,7 @@ export default function CartItem() {
 
                   <div className='mx-2 border text-center w-8'>{i.quantity}</div>
 
-                  <img src={iconPlus} alt='plus' onClick={() => incrementQuantity(i.id)} />
+                  <img src={iconPlus} alt='plus' onClick={() => incrementQuantity(index)} />
                 </div>
                 <span className='text-center w-1/5 font-semibold text-sm'>
                   <BiRupee className='absolute ml-12 mt-1' />
@@ -67,7 +67,7 @@ export default function CartItem() {
                 </span>
                 <span className='text-center w-1/5 font-semibold text-sm'>
                   <BiRupee className='absolute ml-12 mt-1' />
-                  400.00
+                  {i.total}
                 </span>
               </div>); 
               }

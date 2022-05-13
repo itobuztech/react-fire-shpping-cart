@@ -7,8 +7,10 @@ const initProduct = {
     id: '',
     title: '',
     quantity: 0,
-    discountedPrice: 0
-  }]
+    discountedPrice: 0,
+    total: 0
+  }],
+  grandTotal: 0
 };
 
 
@@ -22,7 +24,8 @@ const cartSlice = createSlice({
         quantity: 1,
         title: action.payload.title,
         productImage: '',
-        discountedPrice: action.payload.discountedPrice
+        discountedPrice: action.payload.discountedPrice,
+        total: action.payload.discountedPrice
       };
       state.numberCart++;
       state.Carts.push(item);
@@ -34,10 +37,7 @@ const cartSlice = createSlice({
       state.numberCart--;
     },
     quantityIncrement: (state, action) => {
-      const item = state.Carts.find(i => i.id === action.payload.id);
-      if (item) {
-        item.quantity += 1;
-      }
+      state.Carts[action.payload].quantity++;
     }
   }
 });

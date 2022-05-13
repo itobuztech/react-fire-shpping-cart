@@ -4,4 +4,5 @@ export interface CartInterface {
   title: string;
   productImage?: string;
   discountedPrice: number;
+  total: number;
 }
