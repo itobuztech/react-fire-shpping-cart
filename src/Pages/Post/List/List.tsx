@@ -2,7 +2,8 @@ import Button from 'Components/Button';
 import Pagination from 'Components/Pagination';
 import ProductListHeader from 'Components/ProductListHeader';
 import StarRating from 'Components/StarRating';
-import { collection, deleteDoc, doc, getDocs, query } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { collection, deleteDoc, doc, getDocs, query, setDoc } from 'firebase/firestore';
 import { ProductListItem } from 'Interface/product-list-item.interface';
 import { db } from 'lib/firebase';
 import React, { useEffect, useState } from 'react';
@@ -11,10 +12,12 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { routes } from 'routes';
 import { addToCart } from '../../../Store/slice/cartSlice';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function MyProductList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const auth = getAuth();
   const [productList, setProductList] = useState<ProductListItem[]>([]);
 
   const fetchData = async () => {
@@ -32,8 +35,14 @@ export default function MyProductList() {
 
   // for add_to_cart
   const addtoCart = async (product: ProductListItem) => {
-    dispatch(addToCart({ ...product }));
+    dispatch(addToCart({ ...product, uid: auth.currentUser?.uid }));
     navigate(routes.productCart);
+    const generateId = uuidv4();
+    await setDoc(doc(db, 'myCart', generateId), {
+      id: generateId,
+      productId: product.id,
+      quantity: 1
+    });
   };
   
   useEffect(() => {

@@ -10,6 +10,7 @@ const initProduct = {
     discountedPrice: 0,
     total: 0
   }],
+  subTotal: 0,
   grandTotal: 0
 };
 
@@ -25,9 +26,11 @@ const cartSlice = createSlice({
         title: action.payload.title,
         productImage: '',
         discountedPrice: action.payload.discountedPrice,
-        total: action.payload.discountedPrice
+        total: action.payload.discountedPrice,
+        uid: action.payload
       };
       state.numberCart++;
+      state.subTotal = item.total;
       state.Carts.push(item);
     },
     removeFromCart: (state, action) => {
@@ -38,10 +41,18 @@ const cartSlice = createSlice({
     },
     quantityIncrement: (state, action) => {
       state.Carts[action.payload].quantity++;
+      state.Carts[action.payload].total =
+      state.Carts[action.payload].quantity * state.Carts[action.payload].discountedPrice;
+      state.subTotal = state.Carts[action.payload].total;
+    },
+    quantityDecrement: (state, action) => {
+      state.Carts[action.payload].quantity--;
+      state.Carts[action.payload].total =
+      state.Carts[action.payload].quantity * state.Carts[action.payload].discountedPrice;
     }
   }
 });
 
-export const { addToCart, removeFromCart, quantityIncrement } = cartSlice.actions;
+export const { addToCart, removeFromCart, quantityIncrement, quantityDecrement } = cartSlice.actions;
 
 export default cartSlice.reducer;

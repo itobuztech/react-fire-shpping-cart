@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
 import iconMinus from 'assets/icons/icon_minus.svg';
 import iconPlus from 'assets/icons/icon_plus.svg';
 import { BiRupee } from 'react-icons/bi';
@@ -8,18 +7,45 @@ import { Link } from 'react-router-dom';
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'Store/store';
-import { removeFromCart, quantityIncrement } from '../Store/slice/cartSlice';
+import { removeFromCart, quantityIncrement, quantityDecrement } from '../Store/slice/cartSlice';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from 'lib/firebase';
+import { CartInterface } from 'Interface/cart.interface';
+import { ProductListItem } from 'Interface/product-list-item.interface';
 
 export default function CartItem() {
   const dispatch = useDispatch();
-  const cartList = useSelector((state: RootState) => state.cart.Carts || []);
+  const cartLists = useSelector((state: RootState) => state.cart.Carts);
+  const [cartList, setCartList] = useState(cartLists);
+  const [productList, setProductList] = useState<ProductListItem[]>([]);
   const cartNum = useSelector((state: RootState) => state.cart.numberCart);
+  const cartSubTotal = useSelector((state: RootState) => state.cart.subTotal);
+
+  const fetchData = async () => {
+    const q = query(collection( db, 'myCart' ));
+    const cartQueryData = await getDocs(q);
+    const p = query(collection(db, 'myProducts'));
+    const productQueryData = await getDocs(p);
+    const cartData = cartQueryData.docs.map((i) => {
+      const items = i.data();
+      items.map((item: any) => console.log(item));
+    });
+    
+  };
   const deleteItem = (id: string) => {
     dispatch(removeFromCart(id));
   };
   const incrementQuantity = (index: number) => {
     dispatch(quantityIncrement(index));
   };
+  const decrementQuantity = (index: number) => {
+    dispatch(quantityDecrement(index));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
 
   return (
     <>
@@ -55,18 +81,19 @@ export default function CartItem() {
                   </div>
                 </div>
                 <div className='flex justify-center w-1/5'>
-                  <img src={iconMinus} alt='minus' />
+                  <img src={iconMinus} alt='minus' 
+                  className="cursor-pointer" onClick={() => decrementQuantity(index)} />
 
                   <div className='mx-2 border text-center w-8'>{i.quantity}</div>
 
-                  <img src={iconPlus} alt='plus' onClick={() => incrementQuantity(index)} />
+                  <img src={iconPlus} alt='plus' className="cursor-pointer" onClick={() => incrementQuantity(index)} />
                 </div>
-                <span className='text-center w-1/5 font-semibold text-sm'>
-                  <BiRupee className='absolute ml-12 mt-1' />
+                <span className='text-center w-1/5 font-semibold text-sm relative justify-content flex'>
+                  <BiRupee className='ml-11 mt-1' />
                   {i.discountedPrice}
                 </span>
-                <span className='text-center w-1/5 font-semibold text-sm'>
-                  <BiRupee className='absolute ml-12 mt-1' />
+                <span className='text-center w-1/5 font-semibold text-sm relative justify-content flex'>
+                  <BiRupee className='ml-11 mt-1' />
                   {i.total}
                 </span>
               </div>); 
@@ -82,12 +109,12 @@ export default function CartItem() {
             <div className='w-1/4 px-8 py-10 bg-gray-200'>
               <h1 className='font-semibold text-2xl border-b pb-8'>Order Summary</h1>
               <div className='flex justify-between mt-10 mb-5'>
-                <span className='font-semibold text-sm'>Items 2</span>
+                <span className='font-semibold text-sm'>Items {cartNum}</span>
                 <div className='flex'>
                   <span className='text-sm mr-4'>
                     <BiRupee className='absolute mt-1' />
                   </span>
-                  <span className='font-semibold text-sm'>440</span>
+                  <span className='font-semibold text-sm'>{cartSubTotal}</span>
                 </div>
               </div>
               <div>

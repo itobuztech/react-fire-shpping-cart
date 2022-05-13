@@ -5,4 +5,5 @@ export interface CartInterface {
   productImage?: string;
   discountedPrice: number;
   total: number;
+  uid?: string;
 }
