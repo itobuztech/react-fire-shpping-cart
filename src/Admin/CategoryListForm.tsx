@@ -29,6 +29,7 @@ export default function CategoryListForm() {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<CategoryData>({
     resolver: yupResolver(CategoryListCreateSchema),
@@ -70,6 +71,7 @@ export default function CategoryListForm() {
         Image: image,
       });
       toast.success('Category added successful');
+      reset();
     }
   };
 

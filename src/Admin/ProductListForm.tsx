@@ -33,6 +33,7 @@ export default function ProductListForm() {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<ProductListItem>({
     resolver: yupResolver(ProductListCreateSchema),
@@ -80,6 +81,7 @@ export default function ProductListForm() {
         Price: value.Price,
       });
       toast.success('Product added successful');
+      reset();
     }
   };
 

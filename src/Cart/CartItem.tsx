@@ -1,16 +1,44 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
 import iconMinus from 'assets/icons/icon_minus.svg';
 import iconPlus from 'assets/icons/icon_plus.svg';
 import { BiRupee } from 'react-icons/bi';
-import { routes } from 'routes';
 import { Link } from 'react-router-dom';
+import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
+
+import { routes } from 'routes';
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
+import { db } from 'lib/firebase';
+import { ProductListItem } from 'Interface/product-list-item.interface';
+import { useDispatch, useSelector } from 'react-redux';
+import { decrementQuantity, incrementQuantity, selectCount } from 'Store/slice/cartSlice';
 
 export default function CartItem() {
+  const [cart, setCart] = useState<ProductListItem[]>([]);
+  const [productList, setProductList] = useState<any>();
+  const count = useSelector(selectCount);
+  const dispatch = useDispatch();
+  const fetchCart = async () => {
+    const getData = await getDocs(collection(db, 'cartItem'));
+    const data = getData.docs.map((items) => items.data() as ProductListItem);
+    setCart(data);
+  };
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  const deleteProduct = async (uid: string) => {
+    const result = doc(db, 'cartItem', uid);
+    try {
+      await deleteDoc(result);
+      setProductList(productList.filter((items: any) => items.uid !== uid));
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <>
-      <body>
+      <div>
         <ShoppingCartHeader />
         <div className='container mx-auto mt-10'>
           <div className='flex shadow-md my-10'>
@@ -32,56 +60,43 @@ export default function CartItem() {
               {/* cart list header end */}
 
               {/* cart list item */}
-              <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5'>
-                <div className='flex w-2/5'>
-                  <div className='flex flex-col justify-between ml-4 flex-grow'>
-                    <span className='font-bold text-sm'>Samsung A50</span>
-                    <span className='font-semibold hover:text-red-500 text-gray-500 text-xs'>Remove</span>
+              {cart.map((el: any) => {
+                return (
+                  <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5' key={el?.productId}>
+                    <div className='flex w-2/5'>
+                      <div className='flex flex-col justify-between ml-4 flex-grow'>
+                        <span className='font-bold text-sm'>{el?.ProductName}</span>
+                        <span className='font-semibold hover:text-red-500 text-gray-500 text-xs'>
+                          <button onClick={() => deleteProduct(String(el))}>Remove</button>
+                        </span>
+                      </div>
+                    </div>
+                    {/* Quantity section */}
+                    <div className='flex justify-center w-1/5'>
+                      <button onClick={() => dispatch(decrementQuantity())}>
+                        <img src={iconMinus} alt='minus' />
+                      </button>
+
+                      <input className='mx-2 border text-center w-8' type='text' value={count} />
+
+                      <button onClick={() => dispatch(incrementQuantity())}>
+                        <img src={iconPlus} alt='plus' />
+                      </button>
+                    </div>
+                    {/* Quantity section end */}
+
+                    {/* Price section */}
+                    <span className='text-center w-1/5 font-semibold text-sm'>
+                      <BiRupee className='absolute ml-12 mt-1' />
+                      {el?.Price}
+                    </span>
+                    <span className='text-center w-1/5 font-semibold text-sm'>
+                      <BiRupee className='absolute ml-12 mt-1' />
+                      {el?.Price}
+                    </span>
                   </div>
-                </div>
-                {/* Quantity section */}
-                <div className='flex justify-center w-1/5'>
-                  <img src={iconMinus} alt='minus' />
-
-                  <input className='mx-2 border text-center w-8' type='text' value='1' />
-
-                  <img src={iconPlus} alt='plus' />
-                </div>
-                {/* Quantity section end */}
-
-                {/* Price section */}
-                <span className='text-center w-1/5 font-semibold text-sm'>
-                  <BiRupee className='absolute ml-12 mt-1' />
-                  400.00
-                </span>
-                <span className='text-center w-1/5 font-semibold text-sm'>
-                  <BiRupee className='absolute ml-12 mt-1' />
-                  400.00
-                </span>
-              </div>
-              {/* Price section end */}
-
-              <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5'>
-                <div className='flex w-2/5'>
-                  <div className='flex flex-col justify-between ml-4 flex-grow'>
-                    <span className='font-bold text-sm'>HP Laptop</span>
-                    <span className='font-semibold hover:text-red-500 text-gray-500 text-xs'>Remove</span>
-                  </div>
-                </div>
-                <div className='flex justify-center w-1/5'>
-                  <img src={iconMinus} alt='minus' />
-                  <input className='mx-2 border text-center w-8' type='text' value='1' />
-                  <img src={iconPlus} alt='plus' />
-                </div>
-                <span className='text-center w-1/5 font-semibold text-sm'>
-                  <BiRupee className='absolute ml-12 mt-1' />
-                  40.00
-                </span>
-                <span className='text-center w-1/5 font-semibold text-sm'>
-                  <BiRupee className='absolute ml-12 mt-1' />
-                  40.00
-                </span>
-              </div>
+                );
+              })}
               <Link to={routes.listScreen}>
                 {' '}
                 <div className='flex font-semibold text-indigo-600 text-sm mt-10'>Continue Shopping</div>
@@ -134,7 +149,7 @@ export default function CartItem() {
             </div>
           </div>
         </div>
-      </body>
+      </div>
     </>
   );
 }

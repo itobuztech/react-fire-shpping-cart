@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { FiEdit } from 'react-icons/fi';
+import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { MdDeleteSweep } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
-import { MdDeleteSweep } from 'react-icons/md';
 import Button from 'Components/Button';
-import { Link } from 'react-router-dom';
 import { routes } from 'routes';
 import Pagination from 'Components/Pagination';
 import '../Styles/product-list-admin.css';
 import { CategoryData } from 'Interface/category-data.interface';
-import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { db } from 'lib/firebase';
 
 export default function CategoryListScreen() {
@@ -83,11 +83,11 @@ export default function CategoryListScreen() {
                       <td className='actions-cell'>
                         <div className='buttons right nowrap'>
                           <Link to={routes.categoryListEdit.build(el.categoryId)}>
-                          <button className='button small green' type='button'>
-                            <span className='icon'>
-                              <FiEdit />
-                            </span>
-                          </button>
+                            <button className='button small green' type='button'>
+                              <span className='icon'>
+                                <FiEdit />
+                              </span>
+                            </button>
                           </Link>
 
                           <button
