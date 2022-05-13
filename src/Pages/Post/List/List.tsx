@@ -31,7 +31,7 @@ export default function MyProductList() {
   };
 
   // for add_to_cart
-  const addtoCart = (product: ProductListItem) => {
+  const addtoCart = async (product: ProductListItem) => {
     dispatch(addToCart({ ...product }));
     navigate(routes.productCart);
   };
