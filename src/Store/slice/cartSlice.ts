@@ -31,6 +31,7 @@ const cartSlice = createSlice({
       state.Carts = state.Carts.filter((item) => 
         item.id !== action.payload
       );
+      state.numberCart--;
     },
     quantityIncrement: (state, action) => {
       const item = state.Carts.find(i => i.id === action.payload.id);

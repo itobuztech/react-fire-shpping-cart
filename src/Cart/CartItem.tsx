@@ -44,6 +44,7 @@ export default function CartItem() {
               </div>
               {/* cart list header end */}
               {cartList.map(i => {
+                if (i.quantity !== 0) {
                 return (
               <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5' key={i.id}>
                 <div className='flex w-2/5'>
@@ -68,7 +69,8 @@ export default function CartItem() {
                   <BiRupee className='absolute ml-12 mt-1' />
                   400.00
                 </span>
-              </div>);
+              </div>); 
+              }
               } )}
               <Link to={routes.myProductList}>
                 {' '}
