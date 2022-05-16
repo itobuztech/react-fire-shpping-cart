@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,6 +11,13 @@ import { routes } from 'routes';
 import { Link } from 'react-router-dom';
 import FormHeader from 'Components/FormHeader';
 import { BiRupee } from 'react-icons/bi';
+import { useSelector } from 'react-redux';
+import { RootState } from 'Store/store';
+import { doc, setDoc } from 'firebase/firestore';
+import db, { fireAuth } from 'lib/firebase';
+import { v4 as uuidv4 } from 'uuid';
+import { onAuthStateChanged } from 'firebase/auth';
+
 
 export default function CheckoutScreen() {
   const UserDetailsSchema = yup.object().shape({
@@ -18,10 +25,26 @@ export default function CheckoutScreen() {
     email: yup.string().trim().required('Email address is required').email('Enter valid email address'),
     phoneNumber: yup.string().trim().required('Phone number is required.'),
     address: yup.string().trim().required('Address is required.'),
-    city: yup.string().trim().required('City is required.'),
     country: yup.string().trim().required('Country is required.'),
+    city: yup.string().trim().required('city is required.'),
     pinCode: yup.string().trim().required('PinCode is required.'),
+   
   });
+
+  const cartQuantity = useSelector((state: RootState) => state.cart);
+  const cart = useSelector((state: RootState) => state.cart.cartItem);
+  //userId
+  const userId = useSelector((state: RootState) => state.auth.user);
+
+
+  //TotalPrice
+  const amount = cart.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2);
+
+  // Order Date
+  const current = new Date();
+  const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
+
 
   const {
     register,
@@ -30,13 +53,56 @@ export default function CheckoutScreen() {
   } = useForm<UserDetails>({
     resolver: yupResolver(UserDetailsSchema),
   });
-  const onSubmit = async () => {};
+
+
+
+  const onSubmit = async (data: UserDetails) => {
+
+    const generateId = uuidv4();
+    await setDoc(doc(db, 'checkout', generateId), {
+      id: generateId,
+      name: data.name,
+      email: data.email,
+      phoneNumber: data.phoneNumber,
+      address: data.address,
+      country: data.country,
+      city: data.city,
+      pinCode: data.pinCode,
+      saveDetails: data.saveDetails,
+      total: amount,
+      order_date: date,
+      userId:userId?.uid
+     
+
+
+
+
+    });
+
+    console.log(userId);
+    alert('Form successfully submit');
+  };
+
+
+  useEffect(() => {
+    onAuthStateChanged(fireAuth, (user) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      const userId = user?.uid;
+    
+
+
+    });
+  }, []);
+
+
+
   return (
     <>
       <FormHeader />
       <div className='min-h-full flex items-center justify-center px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full space-y-2 pr-6'>
-          <form className='mt-8 space-y-6' onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} className='mt-8 space-y-6'>
             <div className='rounded-md -space-y-px'>
               <div className='pb-4 font-medium'>Contact Information</div>
 
@@ -72,14 +138,25 @@ export default function CheckoutScreen() {
               </div>
               {/* Address End  */}
 
+              {/* country  */}
+              <div>
+                <TextInputField type='text' placeholder='country' register={register('country')} />
+              </div>
+              <div className='pt-2'>
+                <FormErrorMessage>{errors.country?.message}</FormErrorMessage>
+              </div>
+              {/* country End  */}
+
+
               {/* City  */}
               <div>
-                <TextInputField type='text' placeholder='City' register={register('city')} />
+                <TextInputField type='text' placeholder='city' register={register('city')} />
               </div>
               <div className='pt-2'>
                 <FormErrorMessage>{errors.city?.message}</FormErrorMessage>
               </div>
               {/* City End  */}
+
 
               {/* PinCode  */}
               <div>
@@ -89,9 +166,11 @@ export default function CheckoutScreen() {
                 <FormErrorMessage>{errors.pinCode?.message}</FormErrorMessage>
               </div>
               {/* PinCode End  */}
+
+
               <div className='flex items-center pt-2'>
                 <input
-                  type='checkbox'
+                  type='checkbox'{...register('saveDetails')}
                   className='h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded'
                 />
                 <label className='ml-2 block text-sm text-gray-900'>Save this information for next time</label>
@@ -104,18 +183,21 @@ export default function CheckoutScreen() {
           </Button>
         </div>
         {/*Order summary section */}
+
         <div className='w-1/4 px-8'>
           <h1 className='font-semibold text-2xl border-b pb-8'>Order Summary</h1>
           <div className='flex justify-between mt-10 mb-5'>
-            <span className='font-semibold text-sm'>Items 2</span>
+            <span className='font-semibold text-sm'>Items: {cartQuantity.quantity}</span>
             <div className='flex'>
               <span className='text-sm mr-4'>
                 <BiRupee className='absolute mt-1' />
               </span>
-              <span className='font-semibold text-sm'>440</span>
+              <span className='font-semibold text-sm'>{amount}</span>
             </div>
           </div>
           <div>
+
+
             <div className='flex justify-between mt-10 mb-5'>
               <span className='font-semibold text-sm'>Shipping Charges</span>
               <div className='flex'>
@@ -125,7 +207,9 @@ export default function CheckoutScreen() {
                 <span className='font-semibold text-sm'>40</span>
               </div>
             </div>
+
           </div>
+
           <div className='border-t border-b mt-8'>
             <div className='flex font-semibold justify-between py-6 text-md'>
               <span>Total Payable</span>
@@ -133,10 +217,11 @@ export default function CheckoutScreen() {
                 <span className='text-sm mr-4'>
                   <BiRupee className='absolute mt-1' />
                 </span>
-                <span className='font-semibold text-sm'>480</span>
+                <span className='font-semibold text-sm'>{amount}</span>
               </div>
             </div>
           </div>
+
           {/*Order summary section end */}
         </div>
       </div>

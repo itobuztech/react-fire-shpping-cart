@@ -17,6 +17,7 @@ export default function CartItem() {
   const cart = useSelector((state: RootState) => state.cart.cartItem);
   // For get Quantity Purpose
   const cartQuantity = useSelector((state: RootState) => state.cart);
+  // TotalPrice 
   const  amount =  cart.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2);
   
   
@@ -39,7 +40,10 @@ export default function CartItem() {
  
 
  if (cartQuantity.quantity === 0) {
-  return <h2 className="no-items">No items in cart...</h2>;
+  return <div className='no-items'><h2 className="no-items">No items in cart...</h2>
+  <Link to={routes.listScreen}>Click on Back to shop page</Link>
+  </div>;
+
 }
  
   return (

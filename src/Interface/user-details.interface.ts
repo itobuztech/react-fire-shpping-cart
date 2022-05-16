@@ -1,9 +1,12 @@
 export interface UserDetails {
+  id: number,
   name: string;
   email: string;
   phoneNumber: number;
   address: string;
-  city: string;
   country: string;
+  city: string;
   pinCode: number;
+  saveDetails: boolean;
+  displayName:string;
 }

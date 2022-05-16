@@ -8,10 +8,18 @@ import { Link } from 'react-router-dom';
 
 import Button from '../../Components/Button';
 import ProductListHeader from 'Components/ProductListHeader';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'Store/store';
+import { cartSliceAction } from 'Pages/Reducer/CartSlice';
+import { setDoc } from 'firebase/firestore';
+import { v4 as uuidv4 } from 'uuid';
+import { doc } from 'firebase/firestore';
+import db from 'lib/firebase';
 
 
 export default function ProductDetailsScreen() {
   const products = [...Array(1)].map(() => ({
+    id: faker.datatype.uuid(),
     productName: faker.commerce.productName(),
     price: faker.commerce.price(),
     image: faker.image.business(600, 600),
@@ -23,6 +31,23 @@ export default function ProductDetailsScreen() {
     price: faker.commerce.price(),
     image: faker.image.business(600, 400),
   }));
+
+   const cartQuantity = useSelector((state:RootState) => state.cart);
+   const dispatch = useDispatch();
+   // eslint-disable-next-line @typescript-eslint/no-shadow
+   const handelAddToCart = async (products: any, id:string) => {
+    dispatch(cartSliceAction.addToCart({ ...products, id }));
+    const generateId = uuidv4();
+    await setDoc(doc(db, 'cartItem', generateId), {
+      id: generateId,
+      quantity: cartQuantity.quantity + 1,
+      product_id :id,
+    });
+};
+
+
+
+
   return (
     <>
       <ProductListHeader />
@@ -49,7 +74,7 @@ export default function ProductDetailsScreen() {
                     <img src={el.image} alt='image' className='p-2' />
                   </div>
                   <div className='flex justify-around mt-4'>
-                    <Button>ADD TO CART</Button>
+                     <Button onClick={()=> handelAddToCart(el, el.id)}>ADD TO CART</Button>
                     <Button>BUY NOW</Button>
                   </div>
                 </div>

@@ -48,7 +48,6 @@ export default function ProductListForm() {
   const getData = async () => {
     const q = await getDocs(collection(db, 'category'));
     const data = q.docs.map(i => i.data() as ProductListItem);
-    console.log(data);
     setCategoryList(data);
 
 
