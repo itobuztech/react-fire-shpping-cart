@@ -13,15 +13,15 @@ import 'Styles/product-list-header.css';
 import Pagination from 'Components/Pagination';
 import { ProductListItem } from 'Interface/product-list-item.interface';
 import { addToCart } from 'Store/slice/cartSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'Store/store';
+import { useDispatch } from 'react-redux';
+import { getAuth } from 'firebase/auth';
 
 export default function ProductList() {
   const [productList, setProductList] = useState<ProductListItem[]>([]);
-  const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const id = uuids4();
+  const auth = getAuth();
 
   const fetchProduct = async () => {
     const getData = await getDocs(collection(db, 'products'));
@@ -34,13 +34,13 @@ export default function ProductList() {
 
   const addtoCart = async (item: ProductListItem) => {
     const database = collection(db, 'cartItem');
-    await setDoc(doc(database, id), {
-      productId: item.productId,
+    await setDoc(doc(database, id ), {
+      productId: id,
       ProductName: item.ProductName,
       Quantity: item.Quantity,
       Price: item.Price,
     });
-    dispatch(addToCart({ ...item, uid:user?.uid }));
+    dispatch(addToCart({ ...item, user:auth.currentUser?.uid }));
     navigate(routes.productCart);
     console.log(item);
   };

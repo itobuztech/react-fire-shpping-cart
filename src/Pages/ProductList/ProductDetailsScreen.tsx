@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BiRupee } from 'react-icons/bi';
 import { MdLocalOffer } from 'react-icons/md';
-import { Link, useParams } from 'react-router-dom';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
+import { v4 as uuids4 } from 'uuid';
+import { useDispatch } from 'react-redux';
 
 import Button from '../../Components/Button';
 import { routes } from 'routes';
@@ -10,11 +12,15 @@ import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 import StarRating from 'Components/StarRating';
 import { ProductListItem } from 'Interface/product-list-item.interface';
 import { db } from 'lib/firebase';
+import { addToCart } from 'Store/slice/cartSlice';
 
 export default function ProductDetailsScreen() {
   const params = useParams();
-  const [value, setValue] = useState<ProductListItem>();
+  const [value, setValue] = useState<any>();
   const [productList, setProductList] = useState<ProductListItem[]>([]);
+  const id = uuids4();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const fetchProduct = async () => {
     const getData = await getDocs(collection(db, 'products'));
@@ -37,6 +43,19 @@ export default function ProductDetailsScreen() {
     })();
   }, [params.productId, setValue]);
 
+  const addtoCart = async (item: ProductListItem) => {
+    const database = collection(db, 'cartItem');
+    await setDoc(doc(database, id), {
+      productId: id,
+      ProductName: item.ProductName,
+      Quantity: item.Quantity,
+      Price: item.Price,
+    });
+    dispatch(addToCart({ ...item }));
+    navigate(routes.productCart);
+    console.log(item);
+  };
+
   return (
     <>
       <ShoppingCartHeader />
@@ -53,7 +72,7 @@ export default function ProductDetailsScreen() {
               </div>
               <div className='flex justify-around mt-4'>
                 <Link to={routes.cartItem}>
-                  <Button>ADD TO CART</Button>
+                  <Button onClick={() => addtoCart(value?.id)}>ADD TO CART</Button>
                 </Link>
                 <Link to={routes.checkoutScreen}>
                   <Button>BUY NOW</Button>

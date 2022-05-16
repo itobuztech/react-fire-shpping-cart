@@ -2,34 +2,52 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   Carts: [] as any,
-  value: 1,
+  numberCart: 0,
+  Total: 0,
+  subTotal: 0,
+  Quantity: 1,
 };
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, action) => {
+    addToCart: (state, { payload }: { payload: any }) => {
       const cart = {
-        productId: action.payload.productId,
-        ProductName: action.payload.ProductName,
+        productId: payload.productId,
+        ProductName: payload.ProductName,
         Quantity: 1,
-        Price: action.payload.Price,
+        Price: payload.Price,
       };
       state.Carts.push(cart);
+      state.numberCart++;
+      state.Total += payload.Price * state.Quantity;
+      state.subTotal += payload.Total;
     },
-    incrementQuantity: (state) => {
-      state.value += 1;
+    incrementQuantity: (state, { payload }: { payload: any }) => {
+      state.Carts = state.Carts.map((item: { productId: any; Quantity: number }) => {
+        if (item.productId === payload.productId) {
+          return { Quantity: item.Quantity + 1 };
+        } else {
+          return item;
+        }
+      });
+      state.Quantity++;
+      state.Total += payload.Price * state.Quantity;
     },
     decrementQuantity: (state) => {
-      const quantity = state.value;
+      const quantity = state.Quantity;
       if (quantity > 1) {
-        state.value -= 1;
+        state.Quantity -= 1;
       }
+    },
+    removeCartItem: (state, action) => {
+      state.Carts = state.Carts.filter((item: any) => item.productId !== action.payload);
+      state.numberCart--;
     },
   },
 });
 
-export const { addToCart, incrementQuantity, decrementQuantity } = cartSlice.actions;
-export const selectCount = (state: { cart: { value: any } }) => state.cart.value;
+export const { addToCart, incrementQuantity, decrementQuantity, removeCartItem } = cartSlice.actions;
+export const selectCount = (state: { cart: { Quantity: any } }) => state.cart.Quantity;
 export const cartActions = cartSlice.actions;
 export const cartReducer = cartSlice.reducer;

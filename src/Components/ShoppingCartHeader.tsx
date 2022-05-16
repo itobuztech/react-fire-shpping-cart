@@ -9,10 +9,13 @@ import { routes } from 'routes';
 import { SearchField } from './SearchField';
 import '../Styles/product-list-header.css';
 import { BiLogOutCircle } from 'react-icons/bi';
+import { useSelector } from 'react-redux';
+import { RootState } from 'Store/store';
 
 export default function ShoppingCartHeader() {
   const productCart = '/product-cart';
   const [cartHide] = useState(useLocation().pathname === productCart ? true : false);
+  const cartCount = useSelector((state: RootState) => state.cart.numberCart || 0);
   return (
     <>
       <div className='bg-indigo-400'>
@@ -193,11 +196,14 @@ export default function ShoppingCartHeader() {
               </ul>
             </div>
             {!cartHide ? (
-              <div className='md:text-3xl sm:text-2xl text-white lg:pr-6 md:pr-2'>
-                <Link to={routes.productCart}>
-                  {' '}
-                  <BsCart3 />
-                </Link>
+              <div className='flex'>
+                <div className='md:text-3xl sm:text-2xl text-white'>
+                  <Link to={routes.productCart}>
+                    {' '}
+                    <BsCart3 />
+                  </Link>
+                </div>
+                (<div className='text-red-600'>{cartCount}</div>)
               </div>
             ) : null}
           </div>

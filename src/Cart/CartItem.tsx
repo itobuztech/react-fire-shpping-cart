@@ -4,19 +4,23 @@ import iconPlus from 'assets/icons/icon_plus.svg';
 import { BiRupee } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'Store/store';
 
 import { routes } from 'routes';
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 import { db } from 'lib/firebase';
 import { ProductListItem } from 'Interface/product-list-item.interface';
-import { useDispatch, useSelector } from 'react-redux';
-import { decrementQuantity, incrementQuantity, selectCount } from 'Store/slice/cartSlice';
+import { decrementQuantity, incrementQuantity, removeCartItem, selectCount } from 'Store/slice/cartSlice';
 
 export default function CartItem() {
   const [cart, setCart] = useState<ProductListItem[]>([]);
-  const [productList, setProductList] = useState<any>();
-  const count = useSelector(selectCount);
   const dispatch = useDispatch();
+  const count = useSelector(selectCount);
+  const cartItemCount = useSelector((state: RootState) => state.cart.numberCart || 0);
+  const Total = useSelector((state: RootState) => state.cart.Total);
+  const subTotal = useSelector((state: RootState) => state.cart.subTotal);
+
   const fetchCart = async () => {
     const getData = await getDocs(collection(db, 'cartItem'));
     const data = getData.docs.map((items) => items.data() as ProductListItem);
@@ -26,11 +30,12 @@ export default function CartItem() {
     fetchCart();
   }, []);
 
-  const deleteProduct = async (uid: string) => {
-    const result = doc(db, 'cartItem', uid);
+  const deleteProduct = async (productId: string) => {
+    const result = doc(db, 'cartItem', productId);
     try {
       await deleteDoc(result);
-      setProductList(productList.filter((items: any) => items.uid !== uid));
+      setCart(cart.filter((items: any) => items.productId !== productId));
+      dispatch(removeCartItem(productId));
     } catch (error: any) {
       console.log(error.message);
     }
@@ -46,7 +51,7 @@ export default function CartItem() {
               {/* Cart header */}
               <div className='flex justify-between border-b pb-8'>
                 <h1 className='font-semibold text-2xl'>Shopping Cart</h1>
-                <h2 className='font-semibold text-2xl'>2 Items</h2>
+                <h2 className='font-semibold text-2xl'>{cartItemCount} Items</h2>
               </div>
               {/* Cart header end */}
 
@@ -67,7 +72,7 @@ export default function CartItem() {
                       <div className='flex flex-col justify-between ml-4 flex-grow'>
                         <span className='font-bold text-sm'>{el?.ProductName}</span>
                         <span className='font-semibold hover:text-red-500 text-gray-500 text-xs'>
-                          <button onClick={() => deleteProduct(String(el))}>Remove</button>
+                          <button onClick={() => deleteProduct(String(el.productId))}>Remove</button>
                         </span>
                       </div>
                     </div>
@@ -77,9 +82,9 @@ export default function CartItem() {
                         <img src={iconMinus} alt='minus' />
                       </button>
 
-                      <input className='mx-2 border text-center w-8' type='text' value={count} />
+                      <span className='mx-2 border text-center w-8'>{count}</span>
 
-                      <button onClick={() => dispatch(incrementQuantity())}>
+                      <button onClick={() => dispatch(incrementQuantity(el))}>
                         <img src={iconPlus} alt='plus' />
                       </button>
                     </div>
@@ -92,7 +97,7 @@ export default function CartItem() {
                     </span>
                     <span className='text-center w-1/5 font-semibold text-sm'>
                       <BiRupee className='absolute ml-12 mt-1' />
-                      {el?.Price}
+                      {Total}
                     </span>
                   </div>
                 );
@@ -133,7 +138,7 @@ export default function CartItem() {
                     <span className='text-sm mr-4'>
                       <BiRupee className='absolute mt-1' />
                     </span>
-                    <span className='font-semibold text-sm'>480</span>
+                    <span className='font-semibold text-sm'>{subTotal}</span>
                   </div>
                 </div>
 
