@@ -4,7 +4,6 @@
 import React from 'react';
 import faker from '@faker-js/faker';
 
-
 import ProductListHeader from 'Components/ProductListHeader';
 import { routes } from 'routes';
 import { Link } from 'react-router-dom';
@@ -16,7 +15,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'Store/store';
 import { cartSliceAction } from 'Pages/Reducer/CartSlice';
 import { ICart } from 'Interface/cart.interface';
-import { ProductListItem } from 'Interface/product-list-item.interface';
+import { v4 as uuidv4 } from 'uuid';
+import { doc, setDoc } from 'firebase/firestore';
+import db from 'lib/firebase';
+
 
 export default function ProductList() {
   const products = [...Array(12)].map(() => ({
@@ -31,17 +33,20 @@ export default function ProductList() {
 
 
    const cart = useSelector((state:RootState) => state.cart.cartItem);
+   const cartQuantity = useSelector((state:RootState) => state.cart);
 
    const dispatch = useDispatch();
-   //console.log(cart);
-   const handelAddToCart = (products: any) => {
+   const handelAddToCart = async (products: any) => {
     dispatch(cartSliceAction.addToCart({ ...products }));
-    
+
+    const generateId = uuidv4();
+    await setDoc(doc(db, 'cartItem', generateId), {
+      id: generateId,
+      quantity: cartQuantity.quantity + 1,
+    });
+   
 };
    
-
-
-
   return (
     <>
       <ProductListHeader />

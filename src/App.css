@@ -65,7 +65,10 @@ border: 1px solid #00000042;
     width: 100%;
     min-height: 45px;
 }
-
+.no-items
+{
+  text-align: center;
+}
 
 @keyframes App-logo-spin {
   from {

@@ -17,27 +17,57 @@ const CartSlice = createSlice({
     addToCart: (state, { payload }: { payload: ICart }) => {
       const isItemExist = state.cartItem.find((item) =>
         item.id === payload.id
-        
       );
      
       if (!isItemExist) {
         state.cartItem = [...state.cartItem, { ...payload, quantity: 1, }];
-        console.log(state.cartItem);
+
       } else {
         state.cartItem = state.cartItem.map((item) => {
           if (item.id === payload.id) {
-            return { ...item, quantity: item.quantity + 1, price:item.price };
+            return { ...item, quantity: item.quantity + 1 };
           } else {
             return item;
           }
         });
       }
       state.quantity++;
-      payload.price;
       state.totalAmount += payload.price;
     },
-  
 
+    removeFromCart: (state, { payload }:{ payload: ICart }) => {
+      state.cartItem = state.cartItem.filter((item) => 
+        item.id !== payload.id
+    );
+      state.quantity -= payload.quantity;
+      state.totalAmount -= payload.price * payload.quantity;
+    },
+
+    addItemQuantity: (state, { payload }: { payload:ICart }) => {
+      state.cartItem = state.cartItem.map((item) => {
+        if (item.id === payload.id) {
+          return { ...item, quantity: item.quantity + 1 };
+        } else {
+          return item;
+        }
+      });
+      state.quantity++;
+      state.totalAmount += payload.price;
+    },
+
+
+    subtractItemQuantity: (state, { payload }: { payload:ICart }) => {
+      state.cartItem = state.cartItem.map((item) => {
+        if (item.id === payload.id) {
+          return { ...item, quantity: item.quantity - 1 };
+        } else {
+          return item;
+        }
+      });
+      state.quantity--;
+      state.totalAmount -= payload.price;
+    },
+  
   }
 });
 

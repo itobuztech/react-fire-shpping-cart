@@ -4,6 +4,7 @@
         "fetchingpage",
         "firestore",
         "nevigate",
-        "productinterface"
+        "productinterface",
+        "uuidv"
     ]
 }

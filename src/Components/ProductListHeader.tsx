@@ -6,8 +6,13 @@ import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import { routes } from 'routes';
 import { SearchField } from './SearchField';
 import '../Styles/product-list-header.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'Store/store';
 
 export default function ProductListHeader() {
+
+  const cart = useSelector((state:RootState) => state.cart);
+
   return (
     <>
       <div className='bg-indigo-400'>
@@ -54,11 +59,13 @@ export default function ProductListHeader() {
                 </li>
               </ul>
             </div>
-
             <div className='md:text-3xl sm:text-2xl text-white lg:pr-6 md:pr-2'>
               <Link to={routes.productCart}>
                 {' '}
                 <BsCart3 />
+                  <div>
+                  {cart.quantity !== 0 && <span>{cart.quantity}</span>}
+                  </div>
               </Link>
             </div>
           </div>

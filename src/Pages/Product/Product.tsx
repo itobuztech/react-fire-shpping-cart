@@ -10,11 +10,11 @@ import { Link, useParams } from 'react-router-dom';
 import { SetStateAction, useEffect, useState } from 'react';
 import db from '../../lib/firebase';
 import 'firebase/compat/database';
-import { addDoc, collection, doc, getDoc, getDocs, getFirestore, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { Products } from 'Interface/productinterface';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, list } from 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
-import { getDatabase, child, push, update } from 'firebase/database';
+
 
 
 export default function Product() {
