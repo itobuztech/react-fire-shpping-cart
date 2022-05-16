@@ -36,15 +36,16 @@ export default function ProductList() {
    const cartQuantity = useSelector((state:RootState) => state.cart);
 
    const dispatch = useDispatch();
-   const handelAddToCart = async (products: any) => {
-    dispatch(cartSliceAction.addToCart({ ...products }));
+   const handelAddToCart = async (products: any, id:string) => {
+    dispatch(cartSliceAction.addToCart({ ...products, id }));
 
     const generateId = uuidv4();
+  
     await setDoc(doc(db, 'cartItem', generateId), {
       id: generateId,
       quantity: cartQuantity.quantity + 1,
+      product_id :id,
     });
-   
 };
    
   return (
@@ -90,7 +91,7 @@ export default function ProductList() {
                 
                 <div className='pb-10 flex justify-around'>
                    
-                  <Button onClick={() => handelAddToCart(el)}>
+                  <Button onClick={() => handelAddToCart(el, el.id)}>
                     
                     ADD to Cart
                   </Button>
@@ -108,6 +109,7 @@ export default function ProductList() {
     </>
   );
 }
+
 
 
 
