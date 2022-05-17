@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { db } from 'lib/firebase';
 import { getDocs, collection, setDoc, doc } from 'firebase/firestore';
-import { routes } from 'routes';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiRupee } from 'react-icons/bi';
 import { v4 as uuids4 } from 'uuid';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 import StarRating from 'Components/StarRating';
@@ -13,15 +12,16 @@ import 'Styles/product-list-header.css';
 import Pagination from 'Components/Pagination';
 import { ProductListItem } from 'Interface/product-list-item.interface';
 import { addToCart } from 'Store/slice/cartSlice';
-import { useDispatch } from 'react-redux';
-import { getAuth } from 'firebase/auth';
+import { routes } from 'routes';
+import { db } from 'lib/firebase';
+import { RootState } from 'Store/store';
 
 export default function ProductList() {
   const [productList, setProductList] = useState<ProductListItem[]>([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const id = uuids4();
-  const auth = getAuth();
+  const currentUser = useSelector((state: RootState) => state.auth.user);
 
   const fetchProduct = async () => {
     const getData = await getDocs(collection(db, 'products'));
@@ -32,17 +32,24 @@ export default function ProductList() {
     fetchProduct();
   }, []);
 
-  const addtoCart = async (item: ProductListItem) => {
-    const database = collection(db, 'cartItem');
-    await setDoc(doc(database, id ), {
-      productId: id,
-      ProductName: item.ProductName,
+  const AddToCart = async (item: any) => {
+    const cartDatabase = collection(db, 'cartItem');
+    const productDatabase = collection(db, 'productItem');
+    await setDoc(doc(cartDatabase, id,), {
+      id: id,
+      productId: item.productId,
       Quantity: item.Quantity,
-      Price: item.Price,
+     
     });
-    dispatch(addToCart({ ...item, user:auth.currentUser?.uid }));
+    await setDoc(doc(productDatabase, id,), {
+     id: id,
+     ProductName: item.ProductName,
+     Price: item.Price,
+     Total: item.Price
+     
+    });
+    dispatch(addToCart({ ...item,  userId:currentUser?.uid }));
     navigate(routes.productCart);
-    console.log(item);
   };
 
   return (
@@ -53,7 +60,7 @@ export default function ProductList() {
           <div className='font-bold md:text-4xl sm:text-xl mt-10'>Products</div>
         </div>
         <div className='mt-10 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center p-4'>
-          {productList.map((el: any) => {
+          {productList.map((el) => {
             return (
               <div className='max-w-sm rounded-2xl overflow-hidden shadow hover:shadow-lg' key={el.productId}>
                 <Link to={routes.productDetailsScreen.build(el.productId)}>
@@ -77,7 +84,7 @@ export default function ProductList() {
                   </div>
                 </div>
                 <div className='pb-10 flex justify-around'>
-                  <Button onClick={() => addtoCart(el)}>ADD TO CART</Button>
+                  <Button onClick={() => AddToCart(el)}>ADD TO CART</Button>
                   <Link to={routes.checkoutScreen}>
                     <Button>Buy Now</Button>
                   </Link>

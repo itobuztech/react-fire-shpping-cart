@@ -43,17 +43,15 @@ export default function ProductDetailsScreen() {
     })();
   }, [params.productId, setValue]);
 
-  const addtoCart = async (item: ProductListItem) => {
+  const AddToCart = async (item: any) => {
     const database = collection(db, 'cartItem');
     await setDoc(doc(database, id), {
-      productId: id,
-      ProductName: item.ProductName,
+      id: id,
+      productId: item.productId,
       Quantity: item.Quantity,
-      Price: item.Price,
     });
     dispatch(addToCart({ ...item }));
     navigate(routes.productCart);
-    console.log(item);
   };
 
   return (
@@ -72,7 +70,7 @@ export default function ProductDetailsScreen() {
               </div>
               <div className='flex justify-around mt-4'>
                 <Link to={routes.cartItem}>
-                  <Button onClick={() => addtoCart(value?.id)}>ADD TO CART</Button>
+                  <Button onClick={() => AddToCart(value?.id)}>ADD TO CART</Button>
                 </Link>
                 <Link to={routes.checkoutScreen}>
                   <Button>BUY NOW</Button>
