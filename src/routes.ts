@@ -6,6 +6,7 @@ export const routes = {
   phoneNumberVerification: '/phone-number-verification',
   forgetPassword: '/forget-password',
   listScreen: '/list-screen',
+  PostList: '/list-products',
   productListForm: '/product-list-form',
   productCart: '/product-cart',
   productCategoryList: '/product-category-list',

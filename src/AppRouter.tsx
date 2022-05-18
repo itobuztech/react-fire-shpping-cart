@@ -23,6 +23,7 @@ const CartItem = React.lazy(() => import('./Cart/CartItem'));
 const CheckoutScreen = React.lazy(() => import('./Cart/CheckoutScreen'));
 const ProductDetailsScreen = React.lazy(() => import('./Pages/ProductList/ProductDetailsScreen'));
 const Logout = React.lazy(() => import('./Pages/Auth/Logout/Logout'));
+const PostList = React.lazy(() => import('./Pages/Post/List/List'));
 
 export default function AppRouter() {
   return (
@@ -99,6 +100,7 @@ export default function AppRouter() {
             {/*User profile end */}
 
             <Route path={routes.logOut} element={<Logout />} />
+            <Route path={routes.PostList} element={<PostList />} />
           </Routes>
         </Suspense>
       </BrowserRouter>

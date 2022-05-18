@@ -73,29 +73,11 @@ export default function CheckoutScreen() {
       order_date: date,
       userId:userId?.uid
      
-
-
-
-
     });
 
     console.log(userId);
     alert('Form successfully submit');
   };
-
-
-  useEffect(() => {
-    onAuthStateChanged(fireAuth, (user) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const userId = user?.uid;
-    
-
-
-    });
-  }, []);
-
-
 
   return (
     <>
