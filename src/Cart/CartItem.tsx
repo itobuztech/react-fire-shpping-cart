@@ -8,7 +8,7 @@ import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'Store/store';
 import { removeFromCart, quantityIncrement, quantityDecrement } from '../Store/slice/cartSlice';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { db } from 'lib/firebase';
 import { CartInterface } from 'Interface/cart.interface';
 import { ProductListItem } from 'Interface/product-list-item.interface';
@@ -24,13 +24,23 @@ export default function CartItem() {
   const fetchData = async () => {
     const q = query(collection( db, 'myCart' ));
     const cartQueryData = await getDocs(q);
-    const p = query(collection(db, 'myProducts'));
-    const productQueryData = await getDocs(p);
-    const cartData = cartQueryData.docs.map((i) => {
+    const cartData = cartQueryData.docs.map(async (i) => {
       const items = i.data();
-      items.map((item: any) => console.log(item));
+      console.log(items.productId);
+      const productRef = doc(db, 'myProducts', items.productId);
+      const productSnap = await getDoc(productRef);
+      console.log(productSnap.data());
+      const productData = productSnap.data() as ProductListItem;
+      if (productSnap.exists()) {
+        setCartList([{
+          id: productData.id,
+          title: productData.title,
+          discountedPrice: Number(productData.discountedPrice),
+          quantity: items.quantity,
+          total: Number(productData.discountedPrice)
+        }]);
+      }
     });
-    
   };
   const deleteItem = (id: string) => {
     dispatch(removeFromCart(id));
