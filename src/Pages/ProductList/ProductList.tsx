@@ -21,7 +21,7 @@ export default function ProductList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const id = uuids4();
-  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const cartQuantity = useSelector((state: RootState) => state.cart);
 
   const fetchProduct = async () => {
     const getData = await getDocs(collection(db, 'products'));
@@ -32,23 +32,14 @@ export default function ProductList() {
     fetchProduct();
   }, []);
 
-  const AddToCart = async (item: any) => {
+  const AddToCart = async (item: ProductListItem) => {
     const cartDatabase = collection(db, 'cartItem');
-    const productDatabase = collection(db, 'productItem');
-    await setDoc(doc(cartDatabase, id,), {
+    await setDoc(doc(cartDatabase, id), {
       id: id,
       productId: item.productId,
-      Quantity: item.Quantity,
-     
+      Quantity: cartQuantity.Quantity + 1,
     });
-    await setDoc(doc(productDatabase, id,), {
-     id: id,
-     ProductName: item.ProductName,
-     Price: item.Price,
-     Total: item.Price
-     
-    });
-    dispatch(addToCart({ ...item,  userId:currentUser?.uid }));
+    dispatch(addToCart({ ...item }));
     navigate(routes.productCart);
   };
 
@@ -60,7 +51,7 @@ export default function ProductList() {
           <div className='font-bold md:text-4xl sm:text-xl mt-10'>Products</div>
         </div>
         <div className='mt-10 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center p-4'>
-          {productList.map((el) => {
+          {productList.map((el: any) => {
             return (
               <div className='max-w-sm rounded-2xl overflow-hidden shadow hover:shadow-lg' key={el.productId}>
                 <Link to={routes.productDetailsScreen.build(el.productId)}>

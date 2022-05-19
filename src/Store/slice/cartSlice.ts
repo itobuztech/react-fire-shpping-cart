@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { CartItem } from 'Interface/CartItem.interface';
 
 const initialState = {
-  Carts: [] as any,
+  Carts: [] as CartItem[],
   numberCart: 0,
   Total: 0,
-  Quantity: 1,
+  Quantity: 0,
 };
 const cartSlice = createSlice({
   name: 'cart',
@@ -16,12 +17,11 @@ const cartSlice = createSlice({
       if (!productExit) {
         state.Carts = [...state.Carts, { ...payload, Quantity: 1 }];
       }
-      state.Quantity++;
       state.numberCart++;
       state.Total += payload.Price;
     },
     incrementQuantity: (state, { payload }: { payload: any }) => {
-      state.Carts = state.Carts.map((item: { productId: any; Quantity: number }) => {
+      state.Carts = state.Carts.map((item) => {
         if (item.productId === payload.productId) {
           return { ...item, Quantity: item.Quantity + 1 };
         } else {
@@ -29,11 +29,10 @@ const cartSlice = createSlice({
         }
       });
       state.Quantity++;
-      state.numberCart++;
       state.Total += payload.price;
     },
     decrementQuantity: (state, { payload }: { payload: any }) => {
-      state.Carts = state.Carts.map((item: { productId: any; Quantity: number }) => {
+      state.Carts = state.Carts.map((item) => {
         if (item.productId === payload.productId && state.Quantity > 1) {
           return { ...item, Quantity: item.Quantity - 1 };
         } else {

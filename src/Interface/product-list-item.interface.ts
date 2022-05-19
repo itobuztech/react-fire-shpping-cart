@@ -4,7 +4,8 @@ export interface ProductListItem {
   Description?: string;
   Image: any;
   Category?: string;
-  Quantity?: string;
-  Price?: number;
+  Quantity?: number;
+  Price: number;
   rating?: any;
+  id?: string;
 }

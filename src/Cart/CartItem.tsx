@@ -1,41 +1,103 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import iconMinus from 'assets/icons/icon_minus.svg';
 import iconPlus from 'assets/icons/icon_plus.svg';
 import { BiRupee } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from 'Store/store';
 
 import { routes } from 'routes';
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
-import { decrementQuantity, incrementQuantity, removeCartItem } from 'Store/slice/cartSlice';
+import { collection, deleteDoc, doc, getDoc, getDocs, increment, updateDoc } from 'firebase/firestore';
+import { db } from 'lib/firebase';
+import { ProductListItem } from 'Interface/product-list-item.interface';
+import { CartItemRow, CartItem } from 'Interface/CartItem.interface';
 
-export default function CartItem() {
-  const dispatch = useDispatch();
+export default function CartRow() {
   const cart = useSelector((state: RootState) => state.cart.Carts);
-  const cartItemCount = useSelector((state: RootState) => state.cart.numberCart || 0);
-  const cartQuantity = useSelector((state: RootState) => state.cart.Quantity || 0);
+  const [cartValue, setCartValue] = useState<any>(cart);
 
+  const [cartItems, setCartItems] = useState<CartItemRow[]>([]);
+
+  const [count, setCount] = useState<any>();
   const initialValue = 0;
-  const GrandTotal = cart.reduce(
-    (accumulator: number, current: { Price: number; Quantity: number }) =>
-      accumulator + current.Price * current.Quantity + 40,
-    initialValue
-  );
+  // const GrandTotal = cart.reduce(
+  //   (accumulator: number, current: { Price: number; Quantity: number }) =>
+  //     accumulator + current.Price * current.Quantity,
+  //   initialValue
+  // );
 
-  const deleteItem = async (productId: string) => {
+  const GrandTotal = 0;
+
+  const deleteCartItem = async (id: string) => {
+    const result = doc(db, 'cartItem', String(id));
     try {
-      dispatch(removeCartItem(productId));
+      const item = await deleteDoc(result);
+      setCartValue(cartValue.filter((items: any) => items.id !== id));
+      console.log(item);
     } catch (error: any) {
       console.log(error.message);
     }
+  };
+  // get cartList
+  const fetchData = async () => {
+    const getData = await getDocs(collection(db, 'cartItem'));
+    const $rows = getData.docs.map(async (i: any) => {
+      const item = i.data() as CartItem;
+      const productRef = doc(db, 'products', item.productId);
+      const productItemDoc = await getDoc(productRef);
+      const productItem = productItemDoc.data() as ProductListItem;
+      return {
+        ...item,
+        ProductName: productItem.ProductName,
+        Price: productItem.Price || 0,
+        Total: productItem.Price * item.Quantity,
+      };
+    });
+    const data = await Promise.all($rows);
+    setCartItems(data);
+    console.log(data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // cart length
+  useEffect(() => {
+    const getCartItem = collection(db, 'cartItem');
+    getDocs(getCartItem).then((item) => {
+      const cartCount = item.size;
+      setCount(cartCount);
+    });
+  }, []);
+
+  // increment quantity
+  const quantityIncrement = async () => {
+    const getData = await getDocs(collection(db, 'cartItem'));
+    getData.docs.find(async (i: any) => {
+      const itemRef = doc(db, 'cartItem', i.id);
+      await updateDoc(itemRef, {
+        Quantity: increment(1),
+      });
+    });
+  };
+  // decrement quantity
+  const quantityDecrement = async () => {
+    const getData = await getDocs(collection(db, 'cartItem'));
+    getData.docs.find(async (i: any) => {
+      const itemRef = doc(db, 'cartItem', i.id);
+      await updateDoc(itemRef, {
+        Quantity: increment(-1),
+      });
+    });
   };
 
   return (
     <>
       <div>
         <ShoppingCartHeader />
-        {cartQuantity > 1 && (
+        {count && (
           <div className='container mx-auto mt-10'>
             <div className='flex shadow-md my-10'>
               <div className='w-3/4 bg-gray-50 px-10 py-10'>
@@ -55,26 +117,26 @@ export default function CartItem() {
                 {/* cart list header end */}
 
                 {/* cart list item */}
-                {cart.map((el: any) => {
+                {cartItems.map((el) => {
                   return (
                     <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5' key={el?.productId}>
                       <div className='flex w-2/5'>
                         <div className='flex flex-col justify-between ml-4 flex-grow'>
-                          <span className='font-bold text-sm'>{el?.ProductName}</span>
+                          <span className='font-bold text-sm'>{el.ProductName}</span>
                           <span className='font-semibold hover:text-red-500 text-gray-500 text-xs'>
-                            <button onClick={() => deleteItem(String(el.productId))}>Remove</button>
+                            <button onClick={() => deleteCartItem(String(el?.id))}>Remove</button>
                           </span>
                         </div>
                       </div>
                       {/* Quantity section */}
                       <div className='flex justify-center w-1/5'>
-                        <button onClick={() => dispatch(decrementQuantity({ ...el }))}>
+                        <button onClick={() => quantityDecrement()}>
                           <img src={iconMinus} alt='minus' />
                         </button>
 
                         <span className='mx-2 border text-center w-8'>{el.Quantity}</span>
 
-                        <button onClick={() => dispatch(incrementQuantity({ ...el }))}>
+                        <button onClick={() => quantityIncrement()}>
                           <img src={iconPlus} alt='plus' />
                         </button>
                       </div>
@@ -102,19 +164,9 @@ export default function CartItem() {
               <div className='w-1/4 px-8 py-10 bg-gray-200'>
                 <h1 className='font-semibold text-2xl border-b pb-8'>Order Summary</h1>
                 <div className='flex justify-between mt-8 mb-5'>
-                  <span className='font-semibold text-sm'>Items {cartItemCount}</span>
+                  <span className='font-semibold text-sm'>Items {count}</span>
                 </div>
-                <div>
-                  <div className='flex justify-between mt-10 mb-5'>
-                    <span className='font-semibold text-sm'>Standard delivery charges</span>
-                    <div className='flex'>
-                      <span className='text-sm mr-4'>
-                        <BiRupee className='absolute mt-1' />
-                      </span>
-                      <span className='font-semibold text-sm'>40</span>
-                    </div>
-                  </div>
-                </div>
+                <div></div>
                 <div className='border-t mt-8'>
                   <div className='flex font-semibold justify-between py-6 text-'>
                     <span>Net Payable</span>
@@ -139,7 +191,7 @@ export default function CartItem() {
             </div>
           </div>
         )}
-        {cartQuantity && <div className='flex justify-center font-semibold pt-10 text-2xl'>Empty Shopping Cart</div>}
+        {count < 1 && <div className='font-semibold text-3xl flex justify-center'>Empty Shopping Cart</div>}
       </div>
     </>
   );
