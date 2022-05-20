@@ -10,7 +10,7 @@ import FormHeader from 'Components/FormHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'Store/store';
 import { cartSliceAction } from 'Pages/Reducer/CartSlice';
-import { collection, doc, getDoc, getDocs, query } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, query } from 'firebase/firestore';
 import { ICart } from 'Interface/cart.interface';
 import db from 'lib/firebase';
 
@@ -19,7 +19,7 @@ export default function CartItem() {
 
   // cart list
   const cart = useSelector((state: RootState) => state.cart.cartItem);
-  //console.log(cart);
+  
 
   // For get Quantity Purpose
   const cartQuantity = useSelector((state: RootState) => state.cart);
@@ -27,14 +27,25 @@ export default function CartItem() {
   const amount = cart.reduce((acc, item) => acc + cartQuantity.quantity * item.actualPrice, 0).toFixed(2);
   
   const [carts, setCarts] = useState<ICart[]>(cart);
+  
 
   const dispatch = useDispatch();
 
-  const handelRemoveToCart = async (id: any) => {
-    dispatch(cartSliceAction.removeFromCart(id));
+  const handelRemoveToCart = async (product: any) => {
     
-      
-    
+    dispatch(cartSliceAction.removeFromCart({ ...product } ));
+    const q = query(collection(db, 'cartItem'));
+    const cartQueryData = await getDocs(q);
+    const cartData = cartQueryData.docs.map(async (i) => {
+    const items = i.data();
+    const taskDocRef = doc(db, 'cartItem', items.id);
+    try {
+      await deleteDoc(taskDocRef);
+    } catch (err) {
+      alert(err);
+    }
+  });
+    window.location.reload();
   };
 
   const handleAddQuantity = (index: any) => {
@@ -61,11 +72,12 @@ export default function CartItem() {
     const cartQueryData = await getDocs(q);
     const cartData = cartQueryData.docs.map(async (i) => {
       const items = i.data();
+      console.log(items.id);
       
       const productRef = doc(db, 'productForm', items.product_id);
-      
       const productSnap = await getDoc(productRef);
       const dataCart = productSnap.data() as ICart;
+      
 
       if (productSnap.exists()) {
         setCarts([{
@@ -79,11 +91,14 @@ export default function CartItem() {
           image: dataCart.image,
           descriptions: dataCart.descriptions,
           rating: dataCart.rating,
+          
 
         }]);
+        
       }
 
     });
+    
     
   };
 
@@ -99,9 +114,11 @@ export default function CartItem() {
     <>
       <body className='bg-gray-100'>
         <FormHeader />
+        
         <div className='container mx-auto mt-10'>
           <div className='flex shadow-md my-10'>
             <div className='w-3/4 bg-white px-10 py-10'>
+              
               {/* Cart header */}
               <div className='flex justify-between border-b pb-8'>
                 <h1 className='font-semibold text-2xl'>Shopping Cart</h1>
@@ -119,17 +136,20 @@ export default function CartItem() {
               {/* cart list header end */}
 
               {/* cart list item */}
-
+              
+            
               {carts.map((item, index) => {
-                //console.log(carts);
-
+                
+            
                 if (item.quantity !== 0) {
+                  //console.log(carts);
+                  
                   return (
                     <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5'>
                       <div className='flex w-2/5'>
                         <div className='flex flex-col justify-between ml-4 flex-grow'>
                           <span key={item.id} className='font-bold text-sm'>{item.title}</span>
-                          <button onClick={() => handelRemoveToCart(item.id)}>Remove</button>
+                          <button onClick={() => handelRemoveToCart(item)}>Remove</button>
                         </div>
                       </div>
                       {/* Quantity section */}
@@ -138,7 +158,7 @@ export default function CartItem() {
                           <img src={iconMinus} alt='minus' />
                         </button>
 
-                        <input className='mx-2 border text-center w-8' type='text' value={item.quantity} />
+                        <input className='mx-2 border text-center w-8' type='text' value={cartQuantity.quantity} />
                         <button onClick={() => handleAddQuantity(index)}>
                           <img src={iconPlus} alt='plus' />
                         </button>
@@ -172,6 +192,7 @@ export default function CartItem() {
 
 
             {/*Order summary section */}
+            
             {carts.map((item, index) => {
               return (
                 <div className='w-1/4 px-8 py-10'>
