@@ -1,8 +1,8 @@
 export interface ProductListItem {
-  id:number;
+  id:any;
   categoryName: any;
   title: string;
-  description: string;
+  descriptions: string;
   image: string;
   category: string;
   quantity: string;

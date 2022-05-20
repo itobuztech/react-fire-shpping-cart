@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-shadow */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import faker from '@faker-js/faker';
 
 import ProductListHeader from 'Components/ProductListHeader';
@@ -16,38 +16,56 @@ import { RootState } from 'Store/store';
 import { cartSliceAction } from 'Pages/Reducer/CartSlice';
 import { ICart } from 'Interface/cart.interface';
 import { v4 as uuidv4 } from 'uuid';
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
 import db from 'lib/firebase';
+import { ProductListItem } from 'Interface/product-list-item.interface';
+import { Products } from 'Interface/productinterface';
 
 
 export default function ProductList() {
-  const products = [...Array(12)].map(() => ({
-    id: faker.datatype.uuid(),
-    productName: faker.commerce.productName(),
-    price: faker.commerce.price(),
-    image: faker.image.business(600, 400),
-    description: faker.lorem.words(4),
-    rating: faker.datatype.number({ min: 0, max: 5 }),
-  }));
+  // const products = [...Array(12)].map(() => ({
+  //   id: faker.datatype.uuid(),
+  //   productName: faker.commerce.productName(),
+  //   price: faker.commerce.price(),
+  //   image: faker.image.business(600, 400),
+  //   description: faker.lorem.words(4),
+  //   rating: faker.datatype.number({ min: 0, max: 5 }),
+  // }));
   
+
+   const [product, setProduct] = useState<ProductListItem[]>();
 
 
    const cart = useSelector((state:RootState) => state.cart.cartItem);
+   
+   // Get Quantity
    const cartQuantity = useSelector((state:RootState) => state.cart);
 
    const dispatch = useDispatch();
-   const handelAddToCart = async (products: any, id:string) => {
-    dispatch(cartSliceAction.addToCart({ ...products, id }));
-
+   //Add to cart button function
+   const handelAddToCart = async ( product: any, id:string ) => {
+     console.log(product);
+    dispatch(cartSliceAction.addToCart({ ...product, id }));
     const generateId = uuidv4();
-  
     await setDoc(doc(db, 'cartItem', generateId), {
       id: generateId,
       quantity: cartQuantity.quantity + 1,
       product_id :id,
     });
 };
+
+
+const fetchData = async () => {
+  const q = await getDocs(collection(db, 'productForm'));
+  const data = q.docs.map(i => i.data() as ProductListItem);
+  setProduct(data);
+
+};
+useEffect(() => {
+  fetchData();
+}, []);
    
+
   return (
     <>
       <ProductListHeader />
@@ -64,7 +82,7 @@ export default function ProductList() {
           {/* Only visible for admin end */}
         </div>
         <div className='mt-10 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center p-4'>
-          {products.map((el) => {
+          {product && product.map((el) => {
            
             return (
               <div className='max-w-sm rounded-2xl overflow-hidden shadow hover:shadow-lg' key={el.id}>
@@ -72,21 +90,21 @@ export default function ProductList() {
                   {' '}
                   <img className='w-full' src={el.image} alt='image' />
                   <div className='px-6 py-2'>
-                    <div className='font-bold text-xl mb-2'>{el.productName}</div>
-                    <p className='text-gray-700 text-base'>{el.description}....</p>
+                    <div className='font-bold text-xl mb-2'>{el.title}</div>
+                    <p className='text-gray-700 text-base'>{el.descriptions}....</p>
                   </div>
                 </Link>
 
                 <div className='px-4 pt-4 pb-2 flex text-sm font-semibold text-gray-700'>
                   <span className='px-3 py-1 mr-2 mb-2 flex'>
-                    Price : <BiRupee className='mt-1' /> {el.price}
+                    Price : <BiRupee className='mt-1' /> {el.actualPrice}
                   </span>
-                  <div className='flex'>
+                  {/* <div className='flex'>
                     <span className='px-3 py-1 mb-2'>Ratings:</span>
                     <div className='mt-2'>
-                      <StarRating rating={el.rating} />
+                      <StarRating rating={el.category} />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 
                 <div className='pb-10 flex justify-around'>

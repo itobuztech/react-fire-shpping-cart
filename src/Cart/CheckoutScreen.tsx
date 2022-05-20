@@ -38,7 +38,7 @@ export default function CheckoutScreen() {
 
 
   //TotalPrice
-  const amount = cart.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2);
+  const amount = cart.reduce((acc, item) => acc + item.quantity * item.actualPrice, 0).toFixed(2);
 
   // Order Date
   const current = new Date();

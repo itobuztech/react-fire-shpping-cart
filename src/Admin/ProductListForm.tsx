@@ -27,7 +27,7 @@ export default function ProductListForm() {
 
   const ProductListCreateSchema = yup.object().shape({
     title: yup.string().trim().required('Title is required.'),
-    description: yup.string().trim().required('Description is required'),
+    descriptions: yup.string().trim().required('Description is required'),
     image: yup.string(),
     category: yup.string(),
     quantity: yup.string().required('Quantity is required').trim(),
@@ -76,7 +76,7 @@ export default function ProductListForm() {
         try {
           await updateDoc(taskDocRef, {
             title: data.title,
-            descriptions: data.description,
+            descriptions: data.descriptions,
             image: url,
             category: data.category,
             quantity: data.quantity,
@@ -96,7 +96,7 @@ export default function ProductListForm() {
 
           id: generateId,
           title: data.title,
-          descriptions: data.description,
+          descriptions: data.descriptions,
           image: url,
           category: data.category,
           quantity: data.quantity,
@@ -118,7 +118,7 @@ export default function ProductListForm() {
     if (docSnap.exists()) {
 
       setValue('title', docSnap.data().title);
-      setValue('description', docSnap.data().description);
+      setValue('descriptions', docSnap.data().description);
       setValue('image', docSnap.data().url);
       setValue('category', docSnap.data().category);
       setValue('quantity', docSnap.data().quantity);
@@ -159,9 +159,9 @@ export default function ProductListForm() {
 
               {/* description  */}
               <div className='pb-2'>
-                <TextInputField type='text' placeholder='Description' register={register('description')} />
+                <TextInputField type='text' placeholder='Description' register={register('descriptions')} />
               </div>
-              <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
+              <FormErrorMessage>{errors.descriptions?.message}</FormErrorMessage>
               {/* description End */}
 
               {/* image */}

@@ -32,7 +32,7 @@ const CartSlice = createSlice({
         });
       }
       state.quantity++;
-      state.totalAmount += payload.price;
+      state.totalAmount += payload.actualPrice;
     },
 
     removeFromCart: (state, { payload }:{ payload: ICart }) => {
@@ -40,7 +40,7 @@ const CartSlice = createSlice({
         item.id !== payload.id
     );
       state.quantity -= payload.quantity;
-      state.totalAmount -= payload.price * payload.quantity;
+      state.totalAmount -= payload.actualPrice * payload.quantity;
     },
 
     addItemQuantity: (state, { payload }: { payload:ICart }) => {
@@ -52,7 +52,7 @@ const CartSlice = createSlice({
         }
       });
       state.quantity++;
-      state.totalAmount += payload.price;
+      state.totalAmount += payload.actualPrice;
     },
 
 
@@ -65,7 +65,7 @@ const CartSlice = createSlice({
         }
       });
       state.quantity--;
-      state.totalAmount -= payload.price;
+      state.totalAmount -= payload.actualPrice;
     },
   
   }

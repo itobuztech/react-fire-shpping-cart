@@ -1,12 +1,14 @@
 export interface ICart {
-    totalAmount: any;
-    id:number;
-    productName:string;
-    price:number;
+    id:string;
+    title:string;
+    actualPrice:number;
+    discountedPrice:number;
     image:string;
-    description:string;
+    descriptions:string;
     rating:any;
     quantity:number;
+    category:string;
+    totalAmount: number;
    
     
  }
