@@ -1,4 +1,5 @@
 export interface UserDetails {
+  order_id: string;
   name: string;
   email: string;
   phoneNumber: number;

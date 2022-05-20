@@ -3,42 +3,37 @@ import iconMinus from 'assets/icons/icon_minus.svg';
 import iconPlus from 'assets/icons/icon_plus.svg';
 import { BiRupee } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from 'Store/store';
+import { collection, deleteDoc, doc, getDoc, getDocs, increment, updateDoc } from 'firebase/firestore';
 
 import { routes } from 'routes';
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
-import { collection, deleteDoc, doc, getDoc, getDocs, increment, updateDoc } from 'firebase/firestore';
 import { db } from 'lib/firebase';
 import { ProductListItem } from 'Interface/product-list-item.interface';
 import { CartItemRow, CartItem } from 'Interface/CartItem.interface';
 
-export default function CartRow() {
-  const cart = useSelector((state: RootState) => state.cart.Carts);
-  const [cartValue, setCartValue] = useState<any>(cart);
+export default function Cart() {
 
   const [cartItems, setCartItems] = useState<CartItemRow[]>([]);
-
-  const [count, setCount] = useState<any>();
+  const [cartItemsCount, setCartItemsCount] = useState<any>();
   const initialValue = 0;
-  // const GrandTotal = cart.reduce(
-  //   (accumulator: number, current: { Price: number; Quantity: number }) =>
-  //     accumulator + current.Price * current.Quantity,
-  //   initialValue
-  // );
+  const GrandTotal = cartItems.reduce(
+    (accumulator: number, current: { Price: number; Quantity: number }) =>
+      accumulator + current.Price * current.Quantity,
+    initialValue
+  );
 
-  const GrandTotal = 0;
-
+  // delete cart item
   const deleteCartItem = async (id: string) => {
     const result = doc(db, 'cartItem', String(id));
     try {
       const item = await deleteDoc(result);
-      setCartValue(cartValue.filter((items: any) => items.id !== id));
+      setCartItems(cartItems.filter((items) => items.id !== id));
       console.log(item);
     } catch (error: any) {
       console.log(error.message);
     }
   };
+
   // get cartList
   const fetchData = async () => {
     const getData = await getDocs(collection(db, 'cartItem'));
@@ -56,48 +51,50 @@ export default function CartRow() {
     });
     const data = await Promise.all($rows);
     setCartItems(data);
-    console.log(data);
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  });
 
   // cart length
   useEffect(() => {
     const getCartItem = collection(db, 'cartItem');
     getDocs(getCartItem).then((item) => {
       const cartCount = item.size;
-      setCount(cartCount);
+      setCartItemsCount(cartCount);
     });
-  }, []);
+  });
 
   // increment quantity
-  const quantityIncrement = async () => {
-    const getData = await getDocs(collection(db, 'cartItem'));
-    getData.docs.find(async (i: any) => {
-      const itemRef = doc(db, 'cartItem', i.id);
-      await updateDoc(itemRef, {
+  const quantityIncrement = async (id: string) => {
+    const cartRef = doc(db, 'cartItem', String(id));
+    try {
+      await updateDoc(cartRef, {
         Quantity: increment(1),
       });
-    });
+    } catch (error: any) {
+      console.log(error.message);
+    }
   };
+
   // decrement quantity
-  const quantityDecrement = async () => {
-    const getData = await getDocs(collection(db, 'cartItem'));
-    getData.docs.find(async (i: any) => {
-      const itemRef = doc(db, 'cartItem', i.id);
-      await updateDoc(itemRef, {
+  const quantityDecrement = async (id: string) => {
+    const cartRef = doc(db, 'cartItem', String(id));
+    try {
+      await updateDoc(cartRef, {
         Quantity: increment(-1),
       });
-    });
+    } catch (error: any) {
+      console.log(error.message);
+    }
   };
 
   return (
     <>
       <div>
         <ShoppingCartHeader />
-        {count && (
+        {cartItemsCount && (
           <div className='container mx-auto mt-10'>
             <div className='flex shadow-md my-10'>
               <div className='w-3/4 bg-gray-50 px-10 py-10'>
@@ -130,13 +127,13 @@ export default function CartRow() {
                       </div>
                       {/* Quantity section */}
                       <div className='flex justify-center w-1/5'>
-                        <button onClick={() => quantityDecrement()}>
+                        <button onClick={() => quantityDecrement(el.id)}>
                           <img src={iconMinus} alt='minus' />
                         </button>
 
                         <span className='mx-2 border text-center w-8'>{el.Quantity}</span>
 
-                        <button onClick={() => quantityIncrement()}>
+                        <button onClick={() => quantityIncrement(el.id)}>
                           <img src={iconPlus} alt='plus' />
                         </button>
                       </div>
@@ -164,7 +161,7 @@ export default function CartRow() {
               <div className='w-1/4 px-8 py-10 bg-gray-200'>
                 <h1 className='font-semibold text-2xl border-b pb-8'>Order Summary</h1>
                 <div className='flex justify-between mt-8 mb-5'>
-                  <span className='font-semibold text-sm'>Items {count}</span>
+                  <span className='font-semibold text-sm'>Items {cartItemsCount}</span>
                 </div>
                 <div></div>
                 <div className='border-t mt-8'>
@@ -191,7 +188,7 @@ export default function CartRow() {
             </div>
           </div>
         )}
-        {count < 1 && <div className='font-semibold text-3xl flex justify-center'>Empty Shopping Cart</div>}
+        {cartItemsCount < 1 && <div className='font-semibold text-3xl flex justify-center'>Empty Shopping Cart</div>}
       </div>
     </>
   );

@@ -33,7 +33,7 @@ export default function ProductList() {
   }, []);
 
   const AddToCart = async (item: ProductListItem) => {
-    const cartDatabase = collection(db, 'cartItem');
+    const cartDatabase = await collection(db, 'cartItem');
     await setDoc(doc(cartDatabase, id), {
       id: id,
       productId: item.productId,
@@ -51,7 +51,7 @@ export default function ProductList() {
           <div className='font-bold md:text-4xl sm:text-xl mt-10'>Products</div>
         </div>
         <div className='mt-10 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center p-4'>
-          {productList.map((el: any) => {
+          {productList.map((el) => {
             return (
               <div className='max-w-sm rounded-2xl overflow-hidden shadow hover:shadow-lg' key={el.productId}>
                 <Link to={routes.productDetailsScreen.build(el.productId)}>

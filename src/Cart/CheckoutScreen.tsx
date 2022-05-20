@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { BiRupee } from 'react-icons/bi';
+import { v4 as uuids4 } from 'uuid';
 
 import Button from 'Components/Button';
 import FormErrorMessage from 'Components/FormErrorMessage';
 import TextInputField from 'Components/TextInputField';
 import { UserDetails } from 'Interface/user-details.interface';
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
+import { addDoc, collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { db } from 'lib/firebase';
+import { CartItem, CartItemRow } from 'Interface/CartItem.interface';
+import { ProductListItem } from 'Interface/product-list-item.interface';
 
 export default function CheckoutScreen() {
+  const [cartItemsCount, setCartItemsCount] = useState<any>();
+  const [cartItems, setCartItems] = useState<CartItemRow[]>([]);
+  const id = uuids4();
+
   const UserDetailsSchema = yup.object().shape({
     name: yup.string().trim().required('Name is required.'),
     email: yup.string().trim().required('Email address is required').email('Enter valid email address'),
@@ -24,11 +33,67 @@ export default function CheckoutScreen() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<UserDetails>({
     resolver: yupResolver(UserDetailsSchema),
   });
-  const onSubmit = async () => {};
+
+  const initialValue = 0;
+  const GrandTotal = cartItems.reduce(
+    (accumulator: number, current: { Price: number; Quantity: number }) =>
+      accumulator + 40 + current.Price * current.Quantity,
+    initialValue
+  );
+
+  // cart length
+  useEffect(() => {
+    const getCartItem = collection(db, 'cartItem');
+    getDocs(getCartItem).then((item) => {
+      const cartCount = item.size;
+      setCartItemsCount(cartCount);
+    });
+  });
+
+  const onSubmit = async (value: UserDetails) => {
+      const database = collection(db, 'OrderDetails');
+      const data = await addDoc(database, {
+        order_id: id,
+        name: value.name,
+        email: value.email,
+        phoneNumber: value.phoneNumber,
+        address: value.address,
+        city: value.city,
+        country: value.country,
+        pinCode: value.pinCode,
+      });
+      reset();
+      console.log(data);
+  };
+
+  // get cartList
+  const fetchData = async () => {
+    const getData = await getDocs(collection(db, 'cartItem'));
+    const $rows = getData.docs.map(async (i: any) => {
+      const item = i.data() as CartItem;
+      const productRef = doc(db, 'products', item.productId);
+      const productItemDoc = await getDoc(productRef);
+      const productItem = productItemDoc.data() as ProductListItem;
+      return {
+        ...item,
+        ProductName: productItem.ProductName,
+        Price: productItem.Price || 0,
+        Total: productItem.Price * item.Quantity,
+      };
+    });
+    const data = await Promise.all($rows);
+    setCartItems(data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <ShoppingCartHeader />
@@ -104,13 +169,7 @@ export default function CheckoutScreen() {
         <div className='w-1/4 px-8'>
           <h1 className='font-semibold text-2xl border-b pb-8'>Order Summary</h1>
           <div className='flex justify-between mt-10 mb-5'>
-            <span className='font-semibold text-sm'>Items 2</span>
-            <div className='flex'>
-              <span className='text-sm mr-4'>
-                <BiRupee className='absolute mt-1' />
-              </span>
-              <span className='font-semibold text-sm'>440</span>
-            </div>
+            <span className='font-semibold text-sm'>Items {cartItemsCount}</span>
           </div>
           <div>
             <div className='flex justify-between mt-10 mb-5'>
@@ -130,7 +189,7 @@ export default function CheckoutScreen() {
                 <span className='text-sm mr-4'>
                   <BiRupee className='absolute mt-1' />
                 </span>
-                <span className='font-semibold text-sm'>480</span>
+                <span className='font-semibold text-sm'>{GrandTotal}</span>
               </div>
             </div>
           </div>

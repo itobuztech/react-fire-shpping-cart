@@ -31,6 +31,7 @@ if (process.env.REACT_APP_FIREBASE_EMULATOR === 'true') {
 
 export const storage = getStorage();
 
+
 if (process.env.REACT_APP_FIREBASE_EMULATOR === 'true') {
   connectStorageEmulator(storage, 'localhost', 9199);
 }

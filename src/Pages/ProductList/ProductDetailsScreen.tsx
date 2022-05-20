@@ -16,7 +16,7 @@ import { addToCart } from 'Store/slice/cartSlice';
 
 export default function ProductDetailsScreen() {
   const params = useParams();
-  const [value, setValue] = useState<any>();
+  const [value, setValue] = useState<ProductListItem>();
   const [productList, setProductList] = useState<ProductListItem[]>([]);
   const id = uuids4();
   const dispatch = useDispatch();
