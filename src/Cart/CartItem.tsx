@@ -10,9 +10,9 @@ import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 import { db } from 'lib/firebase';
 import { ProductListItem } from 'Interface/product-list-item.interface';
 import { CartItemRow, CartItem } from 'Interface/CartItem.interface';
+import Button from 'Components/Button';
 
 export default function Cart() {
-
   const [cartItems, setCartItems] = useState<CartItemRow[]>([]);
   const [cartItemsCount, setCartItemsCount] = useState<any>();
   const initialValue = 0;
@@ -94,7 +94,7 @@ export default function Cart() {
     <>
       <div>
         <ShoppingCartHeader />
-        {cartItemsCount && (
+        {cartItemsCount >= 1 && (
           <div className='container mx-auto mt-10'>
             <div className='flex shadow-md my-10'>
               <div className='w-3/4 bg-gray-50 px-10 py-10'>
@@ -188,7 +188,19 @@ export default function Cart() {
             </div>
           </div>
         )}
-        {cartItemsCount < 1 && <div className='font-semibold text-3xl flex justify-center'>Empty Shopping Cart</div>}
+        {cartItemsCount < 1 && (
+          <div>
+          <div
+            className='font-semibold text-3xl flex
+         justify-center mt-8'>
+            Empty Shopping Cart
+            </div>
+            <div className='flex justify-center mt-8'>
+            <Link to={routes.listScreen}><Button>Back to Home</Button></Link>
+            </div>
+          </div>
+         
+        )}
       </div>
     </>
   );

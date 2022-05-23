@@ -26,6 +26,7 @@ const OrderListDetails = React.lazy(() => import('./OrderList/OrderListDetails')
 const ProductCategoryList = React.lazy(() => import('./Pages/Categories/ProductCategoryList'));
 const CartItem = React.lazy(() => import('./Cart/CartItem'));
 const CheckoutScreen = React.lazy(() => import('./Cart/CheckoutScreen'));
+const OrderScreen = React.lazy(() => import('./Cart/OrderScreen'));
 
 const Logout = React.lazy(() => import('./Pages/Auth/Logout/Logout'));
 
@@ -90,7 +91,13 @@ export default function AppRouter() {
             <Route path={routes.checkoutScreen} element={<AuthGuard />}>
               <Route path={routes.checkoutScreen} element={<CheckoutScreen />} />
             </Route>
-            {/*Product Cart end */}
+            {/* checkout screen end */}
+
+               {/*order screen */}
+               <Route path={routes.orderScreen} element={<AuthGuard />}>
+              <Route path={routes.orderScreen} element={<OrderScreen />} />
+            </Route>
+            {/*order screen end */}
 
             {/* Only visible for admin - product list create screen */}
             <Route path={routes.productListForm} element={<AuthGuard />}>

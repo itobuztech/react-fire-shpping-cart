@@ -3,7 +3,7 @@ import { getDocs, collection, setDoc, doc } from 'firebase/firestore';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiRupee } from 'react-icons/bi';
 import { v4 as uuids4 } from 'uuid';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 import StarRating from 'Components/StarRating';
@@ -11,17 +11,18 @@ import Button from 'Components/Button';
 import 'Styles/product-list-header.css';
 import Pagination from 'Components/Pagination';
 import { ProductListItem } from 'Interface/product-list-item.interface';
-import { addToCart } from 'Store/slice/cartSlice';
 import { routes } from 'routes';
 import { db } from 'lib/firebase';
 import { RootState } from 'Store/store';
 
 export default function ProductList() {
   const [productList, setProductList] = useState<ProductListItem[]>([]);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const id = uuids4();
   const cartQuantity = useSelector((state: RootState) => state.cart);
+
+  //current user
+  const currentUser = useSelector((state: RootState) => state.auth.user);
 
   const fetchProduct = async () => {
     const getData = await getDocs(collection(db, 'products'));
@@ -38,9 +39,20 @@ export default function ProductList() {
       id: id,
       productId: item.productId,
       Quantity: cartQuantity.Quantity + 1,
+      userId: currentUser?.uid,
     });
-    dispatch(addToCart({ ...item }));
-    navigate(routes.productCart);
+    navigate(routes.cartItem);
+  };
+
+  const buyNow = async (item: ProductListItem) => {
+    const cartDatabase = await collection(db, 'cartItem');
+    await setDoc(doc(cartDatabase, id), {
+      id: id,
+      productId: item.productId,
+      Quantity: cartQuantity.Quantity + 1,
+      userId: currentUser?.uid,
+    });
+    navigate(routes.checkoutScreen);
   };
 
   return (
@@ -76,9 +88,8 @@ export default function ProductList() {
                 </div>
                 <div className='pb-10 flex justify-around'>
                   <Button onClick={() => AddToCart(el)}>ADD TO CART</Button>
-                  <Link to={routes.checkoutScreen}>
-                    <Button>Buy Now</Button>
-                  </Link>
+
+                  <Button onClick={() => buyNow(el)}>Buy Now</Button>
                 </div>
               </div>
             );

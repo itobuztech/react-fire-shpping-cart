@@ -26,6 +26,7 @@ export const routes = {
   productCategoryList: '/product-category-list',
   cartItem: '/product-cart',
   checkoutScreen: '/checkout-screen',
+  orderScreen: '/order-screen',
 
   oderListScreen: '/order-list-screen', //for admin
   productListScreen: '/product-list-screen', //for admin

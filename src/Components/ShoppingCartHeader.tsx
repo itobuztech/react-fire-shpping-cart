@@ -22,7 +22,7 @@ export default function ShoppingCartHeader() {
       const cartCount = item.size;
       setCount(cartCount);
     });
-  }, []);
+  });
   return (
     <>
       <div className='bg-indigo-400'>

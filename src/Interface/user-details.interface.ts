@@ -7,4 +7,5 @@ export interface UserDetails {
   city: string;
   country: string;
   pinCode: number;
+  save_details: boolean;
 }
