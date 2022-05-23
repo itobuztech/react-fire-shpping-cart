@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsBoxArrowRight, BsCart3 } from 'react-icons/bs';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { MdOutlineCategory, MdOutlineKeyboardArrowDown } from 'react-icons/md';
@@ -9,10 +9,20 @@ import { routes } from 'routes';
 import { SearchField } from './SearchField';
 import '../Styles/product-list-header.css';
 import { BiLogOutCircle } from 'react-icons/bi';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from 'lib/firebase';
 
 export default function ShoppingCartHeader() {
   const productCart = '/product-cart';
   const [cartHide] = useState(useLocation().pathname === productCart ? true : false);
+  const [count, setCount] = useState<any>();
+  useEffect(() => {
+    const getCartItem = collection(db, 'cartItem');
+    getDocs(getCartItem).then((item) => {
+      const cartCount = item.size;
+      setCount(cartCount);
+    });
+  });
   return (
     <>
       <div className='bg-indigo-400'>
@@ -193,11 +203,14 @@ export default function ShoppingCartHeader() {
               </ul>
             </div>
             {!cartHide ? (
-              <div className='md:text-3xl sm:text-2xl text-white lg:pr-6 md:pr-2'>
-                <Link to={routes.productCart}>
-                  {' '}
-                  <BsCart3 />
-                </Link>
+              <div className='flex'>
+                <div className='md:text-3xl sm:text-2xl text-white'>
+                  <Link to={routes.productCart}>
+                    {' '}
+                    <BsCart3 />
+                  </Link>
+                </div>
+                (<div className='text-red-600'>{count}</div>)
               </div>
             ) : null}
           </div>

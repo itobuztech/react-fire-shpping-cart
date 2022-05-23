@@ -14,17 +14,20 @@ const ForgetPassword = React.lazy(() => import('./Pages/Auth/ForgetPassword/Forg
 const EmailVerification = React.lazy(() => import('./Components/EmailVerification'));
 const PhoneNumberVerification = React.lazy(() => import('./Components/PhoneNumberVerification'));
 const ProductListForm = React.lazy(() => import('./Admin/ProductListForm'));
+const CategoryListForm = React.lazy(() => import('./Admin/CategoryListForm'));
 const OrderListScreen = React.lazy(() => import('./Admin/OrderListScreen'));
 const ProductListScreen = React.lazy(() => import('./Admin/ProductListScreen'));
 const CategoryListScreen = React.lazy(() => import('./Admin/CategoryListScreen'));
 const UserProfile = React.lazy(() => import('./UserProfile/UserProfile'));
 const ProductList = React.lazy(() => import('./Pages/ProductList/ProductList'));
+const ProductDetailsScreen = React.lazy(() => import('./Pages/ProductList/ProductDetailsScreen'));
 const OrderList = React.lazy(() => import('./OrderList/OrderList'));
 const OrderListDetails = React.lazy(() => import('./OrderList/OrderListDetails'));
 const ProductCategoryList = React.lazy(() => import('./Pages/Categories/ProductCategoryList'));
 const CartItem = React.lazy(() => import('./Cart/CartItem'));
 const CheckoutScreen = React.lazy(() => import('./Cart/CheckoutScreen'));
-const ProductDetailsScreen = React.lazy(() => import('./Pages/ProductList/ProductDetailsScreen'));
+const OrderScreen = React.lazy(() => import('./Cart/OrderScreen'));
+
 const Logout = React.lazy(() => import('./Pages/Auth/Logout/Logout'));
 
 export default function AppRouter() {
@@ -54,14 +57,20 @@ export default function AppRouter() {
             </Route>
             {/*Product list end */}
 
+            {/*Product details screen */}
+            <Route path={routes.productDetailsScreen.match} element={<AuthGuard />}>
+              <Route path={routes.productDetailsScreen.match} element={<ProductDetailsScreen />} />
+            </Route>
+            {/*Product details screen end */}
+
             {/*Order list */}
             <Route path={routes.orderList} element={<AuthGuard />}>
               <Route path={routes.orderList} element={<OrderList />} />
             </Route>
             {/*Order list end */}
 
-              {/*Order list details */}
-              <Route path={routes.orderDetails} element={<AuthGuard />}>
+            {/*Order list details */}
+            <Route path={routes.orderDetails} element={<AuthGuard />}>
               <Route path={routes.orderDetails} element={<OrderListDetails />} />
             </Route>
             {/*Order list details end */}
@@ -82,18 +91,37 @@ export default function AppRouter() {
             <Route path={routes.checkoutScreen} element={<AuthGuard />}>
               <Route path={routes.checkoutScreen} element={<CheckoutScreen />} />
             </Route>
-            {/*Product Cart end */}
+            {/* checkout screen end */}
 
-            {/*Product details screen */}
-            <Route path={routes.productDetailsScreen} element={<AuthGuard />}>
-              <Route path={routes.productDetailsScreen} element={<ProductDetailsScreen />} />
+               {/*order screen */}
+               <Route path={routes.orderScreen} element={<AuthGuard />}>
+              <Route path={routes.orderScreen} element={<OrderScreen />} />
             </Route>
+            {/*order screen end */}
 
             {/* Only visible for admin - product list create screen */}
             <Route path={routes.productListForm} element={<AuthGuard />}>
               <Route path={routes.productListForm} element={<ProductListForm />} />
             </Route>
             {/* Only visible for admin - product list create screen end */}
+
+            {/* Only visible for admin - product list edit screen */}
+            <Route path={routes.productListEdit.match} element={<AuthGuard />}>
+              <Route path={routes.productListEdit.match} element={<ProductListForm />} />
+            </Route>
+            {/* Only visible for admin - product list edit screen end */}
+
+            {/* Only visible for admin - category list create screen */}
+            <Route path={routes.categoryListForm} element={<AuthGuard />}>
+              <Route path={routes.categoryListForm} element={<CategoryListForm />} />
+            </Route>
+            {/* Only visible for admin - product list create screen end */}
+
+            {/* Only visible for admin - category list edit screen */}
+            <Route path={routes.categoryListEdit.match} element={<AuthGuard />}>
+              <Route path={routes.categoryListEdit.match} element={<CategoryListForm />} />
+            </Route>
+            {/* Only visible for admin - category list edit screen end */}
 
             {/* Only visible for admin - order list screen */}
             <Route path={routes.oderListScreen} element={<AuthGuard />}>

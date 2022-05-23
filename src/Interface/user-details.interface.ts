@@ -1,4 +1,5 @@
 export interface UserDetails {
+  order_id: string;
   name: string;
   email: string;
   phoneNumber: number;
@@ -6,4 +7,5 @@ export interface UserDetails {
   city: string;
   country: string;
   pinCode: number;
+  save_details: boolean;
 }

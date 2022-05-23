@@ -1,25 +1,38 @@
-import React from 'react';
-import faker from '@faker-js/faker';
+import React, { useEffect, useState } from 'react';
 import { FiEdit } from 'react-icons/fi';
-
-import ShoppingCartHeader from 'Components/ShoppingCartHeader';
+import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { db } from 'lib/firebase';
 import { MdDeleteSweep } from 'react-icons/md';
-import Button from 'Components/Button';
 import { Link } from 'react-router-dom';
 import { routes } from 'routes';
+
+import ShoppingCartHeader from 'Components/ShoppingCartHeader';
+import Button from 'Components/Button';
 import Pagination from 'Components/Pagination';
 import '../Styles/product-list-admin.css';
+import { ProductListItem } from 'Interface/product-list-item.interface';
 
 export default function ProductListScreen() {
-  const products = [...Array(8)].map(() => ({
-    id: faker.datatype.uuid(),
-    productName: faker.commerce.productName(),
-    price: faker.commerce.price(),
-    quantity: faker.datatype.number(100),
-    image: faker.image.business(600, 600),
-    description: faker.lorem.words(4),
-    rating: faker.datatype.number({ min: 0, max: 5 }),
-  }));
+  const [productList, setProductList] = useState<ProductListItem[]>([]);
+
+  const fetchProduct = async () => {
+    const getData = await getDocs(collection(db, 'products'));
+    const data = getData.docs.map((items) => items.data() as ProductListItem);
+    setProductList(data);
+  };
+  useEffect(() => {
+    fetchProduct();
+  }, []);
+
+  const deleteProduct = async (productId: string) => {
+    const result = doc(db, 'products', productId);
+    try {
+      await deleteDoc(result);
+      setProductList(productList.filter((items) => items.productId !== productId));
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
   return (
     <>
       <ShoppingCartHeader />
@@ -42,8 +55,7 @@ export default function ProductListScreen() {
                 <tr
                   className='max-w-full block relative border-b-4 border-gray-100
     lg:table-row lg:border-b-0'>
-                  <th className='checkbox-cell lg:w-5'>
-                  </th>
+                  <th className='checkbox-cell lg:w-5'></th>
                   <th className='image-cell border-b-0 lg:w-6'></th>
                   <th>Product Name</th>
                   <th>Product Description</th>
@@ -54,20 +66,19 @@ export default function ProductListScreen() {
                 </tr>
               </thead>
               <tbody>
-                {products.map((el) => {
+                {productList.map((el) => {
                   return (
-                    <tr>
-                      <td className='lg:w-5'>
-                      </td>
+                    <tr key={el.productId}>
+                      <td className='lg:w-5'></td>
                       <td className='image-cell'>
                         <div className='image w-24 h-24 mx-auto lg:w-6 lg:h-6'>
-                          <img src={el.image} className='rounded-full' />
+                          <img src={el.Image} className='rounded-full' />
                         </div>
                       </td>
-                      <td data-label='Product Name'>{el.productName}</td>
-                      <td data-label='Product Description'>{el.description}</td>
-                      <td data-label='Product Quantity'>{el.quantity}</td>
-                      <td data-label='Product Price'>{el.price}</td>
+                      <td data-label='Product Name'>{el.ProductName}</td>
+                      <td data-label='Product Description'>{el.Description}</td>
+                      <td data-label='Product Quantity'>{el.Quantity}</td>
+                      <td data-label='Product Price'>{el.Price}</td>
                       <td data-label='Created'>
                         <small className='text-gray-500' title='Oct 25, 2021'>
                           Oct 25, 2021
@@ -75,14 +86,17 @@ export default function ProductListScreen() {
                       </td>
                       <td className='actions-cell'>
                         <div className='buttons right nowrap'>
-                          <Link to={routes.productListForm}>
+                          <Link to={routes.productListEdit.build(el.productId)}>
                             <button className='button small green' type='button'>
                               <span className='icon'>
                                 <FiEdit />
                               </span>
                             </button>
                           </Link>
-                          <button className='button small red' type='button'>
+                          <button
+                            className='button small red'
+                            type='button'
+                            onClick={() => deleteProduct(el.productId)}>
                             <span className='icon'>
                               <MdDeleteSweep />
                             </span>
