@@ -9,20 +9,31 @@ import { routes } from 'routes';
 import { SearchField } from './SearchField';
 import '../Styles/product-list-header.css';
 import { BiLogOutCircle } from 'react-icons/bi';
-import { collection, getDocs } from 'firebase/firestore';
+import { getDocs, collection } from 'firebase/firestore';
+import { CartItem } from 'Interface/CartItem.interface';
 import { db } from 'lib/firebase';
 
 export default function ShoppingCartHeader() {
   const productCart = '/product-cart';
   const [cartHide] = useState(useLocation().pathname === productCart ? true : false);
-  const [count, setCount] = useState<any>();
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
+  // get product list
+  const fetchCart = async () => {
+    const getData = await getDocs(collection(db, 'cartItem'));
+    const data = getData.docs.map((items) => items.data() as CartItem);
+    setCartItems(data);
+  };
   useEffect(() => {
-    const getCartItem = collection(db, 'cartItem');
-    getDocs(getCartItem).then((item) => {
-      const cartCount = item.size;
-      setCount(cartCount);
-    });
-  });
+    fetchCart();
+  }, []);
+
+  const initialValue = 0;
+  const cartItemsCount = cartItems.reduce(
+    (accumulator: number, current: { Quantity: number }) => accumulator + current.Quantity,
+    initialValue
+  );
+
   return (
     <>
       <div className='bg-indigo-400'>
@@ -210,7 +221,7 @@ export default function ShoppingCartHeader() {
                     <BsCart3 />
                   </Link>
                 </div>
-                (<div className='text-red-600'>{count}</div>)
+                (<div className='text-red-600'>{cartItemsCount}</div>)
               </div>
             ) : null}
           </div>

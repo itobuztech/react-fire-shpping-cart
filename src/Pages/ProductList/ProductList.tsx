@@ -14,9 +14,11 @@ import { ProductListItem } from 'Interface/product-list-item.interface';
 import { routes } from 'routes';
 import { db } from 'lib/firebase';
 import { RootState } from 'Store/store';
+import { CartItem } from 'Interface/CartItem.interface';
 
 export default function ProductList() {
   const [productList, setProductList] = useState<ProductListItem[]>([]);
+  const [cartList, setCartList] = useState<CartItem[]>([]);
   const navigate = useNavigate();
   const id = uuids4();
   const cartQuantity = useSelector((state: RootState) => state.cart);
@@ -24,6 +26,7 @@ export default function ProductList() {
   //current user
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
+  // get product list
   const fetchProduct = async () => {
     const getData = await getDocs(collection(db, 'products'));
     const data = getData.docs.map((items) => items.data() as ProductListItem);
@@ -31,6 +34,16 @@ export default function ProductList() {
   };
   useEffect(() => {
     fetchProduct();
+  }, []);
+
+  // get cart items
+  const fetchCart = async () => {
+    const getData = await getDocs(collection(db, 'cartItem'));
+    const data = getData.docs.map((items) => items.data() as CartItem);
+    setCartList(data);
+  };
+  useEffect(() => {
+    fetchCart();
   }, []);
 
   const AddToCart = async (item: ProductListItem) => {
@@ -64,6 +77,7 @@ export default function ProductList() {
         </div>
         <div className='mt-10 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center p-4'>
           {productList.map((el) => {
+            const inCart = Boolean(cartList.find((item) => item.productId === el.productId));
             return (
               <div className='max-w-sm rounded-2xl overflow-hidden shadow hover:shadow-lg' key={el.productId}>
                 <Link to={routes.productDetailsScreen.build(el.productId)}>
@@ -87,8 +101,13 @@ export default function ProductList() {
                   </div>
                 </div>
                 <div className='pb-10 flex justify-around'>
-                  <Button onClick={() => AddToCart(el)}>ADD TO CART</Button>
+                  {!inCart && <Button onClick={() => AddToCart(el)}>ADD TO CART</Button>}
 
+                  {inCart && (
+                    <Link to={routes.cartItem}>
+                      <Button>GO TO CART</Button>
+                    </Link>
+                  )}
                   <Button onClick={() => buyNow(el)}>Buy Now</Button>
                 </div>
               </div>

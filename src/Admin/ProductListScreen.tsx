@@ -81,7 +81,7 @@ export default function ProductListScreen() {
                       <td data-label='Product Price'>{el.Price}</td>
                       <td data-label='Created'>
                         <small className='text-gray-500' title='Oct 25, 2021'>
-                          Oct 25, 2021
+                          {el.create_date}
                         </small>
                       </td>
                       <td className='actions-cell'>

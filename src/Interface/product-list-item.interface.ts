@@ -8,4 +8,5 @@ export interface ProductListItem {
   Price: number;
   rating?: any;
   id?: string;
+  create_date?: string;
 }

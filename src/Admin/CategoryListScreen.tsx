@@ -77,7 +77,7 @@ export default function CategoryListScreen() {
                       <td data-label='Product Description'>{el.Description}</td>
                       <td data-label='Created'>
                         <small className='text-gray-500' title='Oct 25, 2021'>
-                          Oct 25, 2021
+                        {el.create_date}
                         </small>
                       </td>
                       <td className='actions-cell'>

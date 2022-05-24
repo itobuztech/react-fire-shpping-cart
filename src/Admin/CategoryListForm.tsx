@@ -35,6 +35,9 @@ export default function CategoryListForm() {
     resolver: yupResolver(CategoryListCreateSchema),
   });
 
+  const current = new Date();
+  const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
   const imageUpload = async (value: any) => {
     const categoryId = params.categoryId;
     const file = value.target.files[0];
@@ -69,6 +72,7 @@ export default function CategoryListForm() {
         CategoryName: value.CategoryName,
         Description: value.Description,
         Image: image,
+        create_date: date
       });
       toast.success('Category added successful');
       reset();

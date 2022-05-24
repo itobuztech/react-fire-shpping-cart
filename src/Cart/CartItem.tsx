@@ -14,11 +14,17 @@ import Button from 'Components/Button';
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState<CartItemRow[]>([]);
-  const [cartItemsCount, setCartItemsCount] = useState<any>();
+  // const [cartItemsCount, setCartItemsCount] = useState<any>();
   const initialValue = 0;
   const GrandTotal = cartItems.reduce(
     (accumulator: number, current: { Price: number; Quantity: number }) =>
       accumulator + current.Price * current.Quantity,
+    initialValue
+  );
+
+  const cartItemsCount = cartItems.reduce(
+    (accumulator: number, current: { Quantity: number }) =>
+      accumulator + current.Quantity,
     initialValue
   );
 
@@ -57,14 +63,14 @@ export default function Cart() {
     fetchData();
   });
 
-  // cart length
-  useEffect(() => {
-    const getCartItem = collection(db, 'cartItem');
-    getDocs(getCartItem).then((item) => {
-      const cartCount = item.size;
-      setCartItemsCount(cartCount);
-    });
-  });
+  // // cart length
+  // useEffect(() => {
+  //   const getCartItem = collection(db, 'cartItem');
+  //   getDocs(getCartItem).then((item: any) => {
+  //     const cartCount = item.size;
+  //     setCartItemsCount(cartCount);
+  //   });
+  // });
 
   // increment quantity
   const quantityIncrement = async (id: string) => {
@@ -190,16 +196,17 @@ export default function Cart() {
         )}
         {cartItemsCount < 1 && (
           <div>
-          <div
-            className='font-semibold text-3xl flex
+            <div
+              className='font-semibold text-3xl flex
          justify-center mt-8'>
-            Empty Shopping Cart
+              Empty Shopping Cart
             </div>
             <div className='flex justify-center mt-8'>
-            <Link to={routes.listScreen}><Button>Back to Home</Button></Link>
+              <Link to={routes.listScreen}>
+                <Button>Back to Home</Button>
+              </Link>
             </div>
           </div>
-         
         )}
       </div>
     </>

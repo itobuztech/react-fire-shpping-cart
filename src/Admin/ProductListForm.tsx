@@ -39,6 +39,9 @@ export default function ProductListForm() {
     resolver: yupResolver(ProductListCreateSchema),
   });
 
+  const current = new Date();
+  const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
   const imageUpload = async (value: any) => {
     const productId = params.productId;
     const file = value.target.files[0];
@@ -79,6 +82,7 @@ export default function ProductListForm() {
         Category: value.Category,
         Quantity: value.Quantity,
         Price: value.Price,
+        create_date: date
       });
       toast.success('Product added successful');
       reset();

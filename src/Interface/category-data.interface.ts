@@ -3,4 +3,5 @@ export interface CategoryData {
   CategoryName?: string;
   Description?: string;
   Image?: any;
+  create_date?: string;
 }

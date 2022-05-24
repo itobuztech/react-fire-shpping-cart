@@ -4,13 +4,17 @@ import React from 'react';
 import { FaUserAlt } from 'react-icons/fa';
 import { AiFillLock } from 'react-icons/ai';
 import ShoppingCartHeader from 'Components/ShoppingCartHeader';
+import { useSelector } from 'react-redux';
+import { RootState } from 'Store/store';
 
 export default function UserProfile() {
+  //current user
+  const currentUser = useSelector((state: RootState) => state.auth.user);
   return (
     <>
       {' '}
       <ShoppingCartHeader />
-      <body className='bg-gray-100 p-10'>
+      <div className='bg-gray-100 p-10'>
         <div className='grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6'>
           <div className='bg-white'>
             <header className='p-6 flex items-stretch border-b border-gray-100'>
@@ -77,7 +81,7 @@ export default function UserProfile() {
               <hr />
               <div className='field p-2'>
                 <label className='font-semibold'>Email</label>
-                <div>rimpa@itobuz.com</div>
+                <div>{currentUser?.email}</div>
               </div>
             </div>
           </div>
@@ -118,7 +122,7 @@ export default function UserProfile() {
             </form>
           </div>
         </div>
-      </body>
+      </div>
     </>
   );
 }
