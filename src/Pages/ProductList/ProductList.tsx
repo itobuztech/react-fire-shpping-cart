@@ -31,40 +31,40 @@ export default function ProductList() {
   //   description: faker.lorem.words(4),
   //   rating: faker.datatype.number({ min: 0, max: 5 }),
   // }));
-  
-
-   const [product, setProduct] = useState<ProductListItem[]>();
 
 
-   const cart = useSelector((state:RootState) => state.cart.cartItem);
-   
-   // Get Quantity
-   const cartQuantity = useSelector((state:RootState) => state.cart);
+  const [product, setProduct] = useState<ProductListItem[]>();
 
-   const dispatch = useDispatch();
-   //Add to cart button function
-   const handelAddToCart = async ( product: any, id:string ) => {
-     console.log(product);
+
+  const cart = useSelector((state: RootState) => state.cart.cartItem);
+
+  // Get Quantity
+  const cartQuantity = useSelector((state: RootState) => state.cart);
+
+  const dispatch = useDispatch();
+  //Add to cart button function
+  const handelAddToCart = async (product: any, id: string) => {
+    //console.log(product);
     dispatch(cartSliceAction.addToCart({ ...product, id }));
     const generateId = uuidv4();
     await setDoc(doc(db, 'cartItem', generateId), {
       id: generateId,
       quantity: cartQuantity.quantity + 1,
-      product_id :id,
+      product_id: id,
     });
-};
+  };
 
 
-const fetchData = async () => {
-  const q = await getDocs(collection(db, 'productForm'));
-  const data = q.docs.map(i => i.data() as ProductListItem);
-  setProduct(data);
+  const fetchData = async () => {
+    const q = await getDocs(collection(db, 'productForm'));
+    const data = q.docs.map(i => i.data() as ProductListItem);
+    setProduct(data);
 
-};
-useEffect(() => {
-  fetchData();
-}, []);
-   
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
 
   return (
     <>
@@ -83,7 +83,7 @@ useEffect(() => {
         </div>
         <div className='mt-10 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center p-4'>
           {product && product.map((el) => {
-           
+
             return (
               <div className='max-w-sm rounded-2xl overflow-hidden shadow hover:shadow-lg' key={el.id}>
                 <Link to={routes.productDetailsScreen}>
@@ -106,17 +106,17 @@ useEffect(() => {
                     </div>
                   </div> */}
                 </div>
-                
+
                 <div className='pb-10 flex justify-around'>
-                   
+
                   <Button onClick={() => handelAddToCart(el, el.id)}>
-                    
+
                     ADD to Cart
                   </Button>
                   <Button>Buy Now</Button>
                 </div>
               </div>
-               
+
             );
           })}
         </div>

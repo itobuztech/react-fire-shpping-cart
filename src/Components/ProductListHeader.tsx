@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsCart3 } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
@@ -8,11 +8,29 @@ import { SearchField } from './SearchField';
 import '../Styles/product-list-header.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'Store/store';
+import { ICart } from 'Interface/cart.interface';
+import { collection, doc, getDoc, getDocs, query } from 'firebase/firestore';
+import db from 'lib/firebase';
 
 export default function ProductListHeader() {
 
-  const cart = useSelector((state:RootState) => state.cart);
+  const cart = useSelector((state: RootState) => state.cart.cartItem);
+  const cartQuantity = useSelector((state:RootState) => state.cart);
+  const [carts, setCarts] = useState<ICart[]>(cart);
+  const [cartTotal, setCartTotal] = useState<any>();
 
+  
+
+
+
+  useEffect(() => {
+    const getCartItem = collection(db, 'cartItem');
+    getDocs(getCartItem).then((item) => {
+      const cartCount = item.size;
+      setCartTotal(cartCount);
+    });
+  });
+  
   return (
     <>
       <div className='bg-indigo-400'>
@@ -60,13 +78,27 @@ export default function ProductListHeader() {
               </ul>
             </div>
             <div className='md:text-3xl sm:text-2xl text-white lg:pr-6 md:pr-2'>
+              
               <Link to={routes.productCart}>
+                
                 {' '}
                 <BsCart3 />
-                  <div>
-                  {cart.quantity !== 0 && <span>{cart.quantity}</span>}
-                  </div>
+                
+                
+
+                    <div>
+                    {cartTotal}
+                    
+                    
+                    
+                    
+                    </div>
+
+                  
+              
+                 
               </Link>
+              
             </div>
           </div>
         </div>

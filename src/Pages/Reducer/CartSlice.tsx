@@ -20,7 +20,7 @@ const CartSlice = createSlice({
       );
      
       if (!isItemExist) {
-        state.cartItem = [...state.cartItem, { ...payload, quantity: 1, }];
+         state.cartItem = [...state.cartItem, { ...payload, quantity: 1, }];
 
       } else {
         state.cartItem = state.cartItem.map((item) => {
@@ -29,7 +29,9 @@ const CartSlice = createSlice({
           } else {
             return item;
           }
+         
         });
+       
       }
       state.quantity++;
       state.totalAmount += payload.actualPrice;

@@ -27,6 +27,7 @@ if (process.env.REACT_APP_FIREBASE_EMULATOR === 'true') {
   connectAuthEmulator(fireAuth, 'http://localhost:9099');
 }
 
+
 export const db = getFirestore();
 
 if (process.env.REACT_APP_FIREBASE_EMULATOR === 'true') {
