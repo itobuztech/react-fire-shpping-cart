@@ -1,8 +1,35 @@
 import FormHeader from 'Components/FormHeader';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiRupee } from 'react-icons/bi';
+import { UserDetails } from 'Interface/user-details.interface';
+import { collection, getDocs } from 'firebase/firestore';
+import db from 'lib/firebase';
 
 export default function OrderListScreen() {
+
+const [order, setOrder] = useState<UserDetails[]>([]);
+const [orderItems, setOrderItems] = useState<any>();
+
+const fetchData = async () => {
+  const q = await getDocs(collection(db, 'checkout'));
+  const data = q.docs.map(i => i.data() as UserDetails);
+  setOrder(data);
+
+};
+useEffect(() => {
+  fetchData();
+}, []);
+
+
+// number of items in order list total
+useEffect(() => {
+  const getOrderItem = collection(db, 'checkout');
+  getDocs(getOrderItem).then((item) => {
+    const orderItem = item.size;
+    setOrderItems(orderItem);
+  });
+});
+
   return (
     <>
       <body className='bg-gray-100'>
@@ -13,7 +40,7 @@ export default function OrderListScreen() {
               {/* Cart header */}
               <div className='flex justify-between border-b pb-8'>
                 <h1 className='font-semibold text-2xl'>Order List</h1>
-                <h2 className='font-semibold text-2xl'>1 Items</h2>
+                <h2 className='font-semibold text-2xl'>{orderItems} Items</h2>
               </div>
               {/* Cart header end */}
 
@@ -29,41 +56,45 @@ export default function OrderListScreen() {
               {/* cart list header end */}
 
               {/* cart list item */}
+              {order && order.map((el) => {
+                return (
               <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5'>
                 <div className='flex w-1/5'>
                   <div className='flex flex-col justify-between ml-4 flex-grow'>
-                    <span className='font-bold text-sm'>Rimpa Das</span>
+                    <span className='font-bold text-sm'>{el.name}</span>
                   </div>
                 </div>
                 <div className='flex w-1/5'>
                   <div className='flex flex-col justify-between ml-4 flex-grow'>
-                    <span className='font-bold text-sm'>Shibpur, Howrah</span>
+                    <span className='font-bold text-sm'>{el.address}</span>
                   </div>
                 </div>
                 <div className='flex w-1/5'>
                   <div className='flex flex-col justify-between ml-4 flex-grow'>
-                    <span className='font-bold text-sm'>Hp Laptop</span>
+                    <span className='font-bold text-sm'>{el.name}</span>
                   </div>
                 </div>
                 <div className='flex w-1/5 pl-6'>
                   <div className='flex flex-col justify-between ml-4 flex-grow'>
-                    <span className='font-bold text-sm'>06/05/2022</span>
+                    <span className='font-bold text-sm'>{el.order_date}</span>
                   </div>
                 </div>
 
                 {/* Quantity section */}
                 <div className='flex justify-center w-1/5'>
-                  <input className='mx-2 border text-center w-8' type='text' value='1' />
+                  <input className='mx-2 border text-center w-8' type='text' value= {el.quantity}/>
                 </div>
                 {/* Quantity section end */}
 
                 {/* Price section */}
                 <span className='text-center w-1/5 font-semibold text-sm'>
                   <BiRupee className='absolute ml-14 mt-1' />
-                  4000.00
+                  {el.total}
                 </span>
               </div>
-              {/* Price section end */}
+              /* Price section end */
+              );
+            })}
             </div>
           </div>
         </div>

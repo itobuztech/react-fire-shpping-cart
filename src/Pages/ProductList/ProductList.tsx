@@ -23,16 +23,7 @@ import { Products } from 'Interface/productinterface';
 
 
 export default function ProductList() {
-  // const products = [...Array(12)].map(() => ({
-  //   id: faker.datatype.uuid(),
-  //   productName: faker.commerce.productName(),
-  //   price: faker.commerce.price(),
-  //   image: faker.image.business(600, 400),
-  //   description: faker.lorem.words(4),
-  //   rating: faker.datatype.number({ min: 0, max: 5 }),
-  // }));
-
-
+  
   const [product, setProduct] = useState<ProductListItem[]>();
 
 

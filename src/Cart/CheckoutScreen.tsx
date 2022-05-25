@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+/* eslint-disable max-len */
+import React, { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,10 +14,12 @@ import FormHeader from 'Components/FormHeader';
 import { BiRupee } from 'react-icons/bi';
 import { useSelector } from 'react-redux';
 import { RootState } from 'Store/store';
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, setDoc } from 'firebase/firestore';
 import db, { fireAuth } from 'lib/firebase';
 import { v4 as uuidv4 } from 'uuid';
 import { onAuthStateChanged } from 'firebase/auth';
+import { rowCartItem, SingleCartItem } from 'Interface/cartitem.interface';
+import { ProductListItem } from 'Interface/product-list-item.interface';
 
 
 export default function CheckoutScreen() {
@@ -36,14 +39,27 @@ export default function CheckoutScreen() {
   //userId
   const userId = useSelector((state: RootState) => state.auth.user);
 
+  const [carts, setCarts] = useState<rowCartItem[]>([]);
+  const [cartTotal, setCartTotal] = useState<any>();
+
+
+
+  // items number in order summary
+  const cartItemsCount = carts.reduce(
+    (accumulator: number, current: { quantity: number }) =>
+      accumulator + current.quantity,
+    0
+  );
 
   //TotalPrice
-  const amount = cart.reduce((acc, item) => acc + item.quantity * item.actualPrice, 0).toFixed(2);
+  const amount = carts.reduce((acc, item) => acc + item.quantity * item.actualPrice, 0).toFixed(2);
 
+  //shopping Charge Add Amount
+
+  const shoppingChargeAddAmount = carts.reduce((acc, item) => acc + item.quantity * item.actualPrice + 40, 0).toFixed(2);
   // Order Date
   const current = new Date();
   const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
-
 
 
   const {
@@ -54,6 +70,45 @@ export default function CheckoutScreen() {
     resolver: yupResolver(UserDetailsSchema),
   });
 
+// cart total
+
+useEffect(() => {
+  const getCartItem = collection(db, 'cartItem');
+  getDocs(getCartItem).then((item) => {
+    const cartCount = item.size;
+    setCartTotal(cartCount);
+  });
+});
+
+
+// Product details
+
+const findData = async () => {
+  const q = query(collection(db, 'cartItem'));
+  const cartQueryData = await getDocs(q);
+  const cartData = cartQueryData.docs.map(async (i) => {
+    const items = i.data() as SingleCartItem;
+
+    const productRef = doc(db, 'productForm', items.product_id);
+    const productSnap = await getDoc(productRef);
+
+    const productData = productSnap.data() as ProductListItem;
+
+    return {
+      ...items,
+      title: productData.title,
+      actualPrice: productData.actualPrice || 0,
+      totalAmount: productData.actualPrice * items.quantity,
+    };
+  });
+  const data = await Promise.all(cartData);
+  setCarts(data);
+};
+
+
+useEffect(() => {
+  findData();
+}, []);
 
 
   const onSubmit = async (data: UserDetails) => {
@@ -71,7 +126,8 @@ export default function CheckoutScreen() {
       saveDetails: data.saveDetails,
       total: amount,
       order_date: date,
-      userId:userId?.uid
+      userId:userId?.uid,
+      quantity: cartItemsCount,
      
     });
 
@@ -169,7 +225,7 @@ export default function CheckoutScreen() {
         <div className='w-1/4 px-8'>
           <h1 className='font-semibold text-2xl border-b pb-8'>Order Summary</h1>
           <div className='flex justify-between mt-10 mb-5'>
-            <span className='font-semibold text-sm'>Items: {cartQuantity.quantity}</span>
+            <span className='font-semibold text-sm'>Items: {cartItemsCount}</span>
             <div className='flex'>
               <span className='text-sm mr-4'>
                 <BiRupee className='absolute mt-1' />
@@ -199,7 +255,7 @@ export default function CheckoutScreen() {
                 <span className='text-sm mr-4'>
                   <BiRupee className='absolute mt-1' />
                 </span>
-                <span className='font-semibold text-sm'>{amount}</span>
+                <span className='font-semibold text-sm'>{shoppingChargeAddAmount}</span>
               </div>
             </div>
           </div>

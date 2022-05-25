@@ -16,18 +16,17 @@ export default function ProductListHeader() {
 
   const cart = useSelector((state: RootState) => state.cart.cartItem);
   const cartQuantity = useSelector((state:RootState) => state.cart);
-  const [carts, setCarts] = useState<ICart[]>(cart);
-  const [cartTotal, setCartTotal] = useState<any>();
+  const [cartItem, setCartItem] = useState<any>();
 
   
 
 
-
+// Number of items add to cart
   useEffect(() => {
-    const getCartItem = collection(db, 'cartItem');
-    getDocs(getCartItem).then((item) => {
-      const cartCount = item.size;
-      setCartTotal(cartCount);
+    const getItem = collection(db, 'cartItem');
+    getDocs(getItem).then((item) => {
+      const itemsCount = item.size;
+      setCartItem(itemsCount);
     });
   });
   
@@ -83,20 +82,9 @@ export default function ProductListHeader() {
                 
                 {' '}
                 <BsCart3 />
-                
-                
-
                     <div>
-                    {cartTotal}
-                    
-                    
-                    
-                    
+                    {cartItem}
                     </div>
-
-                  
-              
-                 
               </Link>
               
             </div>

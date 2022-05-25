@@ -1,4 +1,7 @@
 export interface UserDetails {
+  quantity: string;
+  total: number;
+  order_date: number;
   id: number,
   name: string;
   email: string;

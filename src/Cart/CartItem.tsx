@@ -31,7 +31,15 @@ export default function CartItem() {
   const [cartTotal, setCartTotal] = useState<any>();
   // TotalPrice 
   const amount = carts.reduce((acc, item) => acc + item.quantity * item.actualPrice, 0).toFixed(2);
-  //console.log(amount);
+
+  // items number as quantity add in order summary
+  const cartItemsQuantity = carts.reduce(
+    (accumulator: number, current: { quantity: number }) =>
+      accumulator + current.quantity,
+    0
+  );
+
+
 
   // Remove item
   const handelRemoveToCart = async (id: string) => {
@@ -45,40 +53,44 @@ export default function CartItem() {
     }
   };
 
-
-
-
-
   // Increase quantity
-  const handleAddQuantity = async (id: string) => {
+  const handleAddQuantity = async (index: any, id: string) => {
     const cartRef = doc(db, 'cartItem', String(id));
     try {
       const units = await updateDoc(cartRef, {
         quantity: increment(1),
       });
-      //setCarts(units);
-      //console.log(quantity);
+
+      setCarts(carts.map((item, i) => i === index
+        ? { ...item, quantity: item.quantity + 1 }
+        : item
+      )
+      );
+
     } catch (error: any) {
       console.log(error.message);
 
     }
   };
-  useEffect(() => {
-    //handleAddQuantity(id);
-  }, []);
+
 
   // substract quantity
-  const handleSubtractQuantity = async (id: string) => {
+  const handleSubtractQuantity = async (index: any, id: string) => {
     const cartRef = doc(db, 'cartItem', String(id));
     try {
       await updateDoc(cartRef, {
         quantity: increment(-1),
 
       });
+      setCarts(carts.map((item, i) => i === index
+        ? { ...item, quantity: item.quantity - 1 }
+        : item
+      )
+      );
     } catch (error: any) {
       console.log(error.message);
     }
-    window.location.reload();
+
   };
 
 
@@ -113,15 +125,18 @@ export default function CartItem() {
   }, []);
 
 
-  // cart total
+  // number of items in cart list total
 
   useEffect(() => {
-    const getCartItem = collection(db, 'cartItem');
-    getDocs(getCartItem).then((item) => {
-      const cartCount = item.size;
-      setCartTotal(cartCount);
+    const getItem = collection(db, 'cartItem');
+    getDocs(getItem).then((item) => {
+      const itemsCount = item.size;
+      setCartTotal(itemsCount);
     });
   });
+
+
+
 
   return (
     <>
@@ -152,7 +167,7 @@ export default function CartItem() {
                 {/* cart list item */}
 
 
-                {carts.map((item) => {
+                {carts.map((item, index) => {
 
                   //console.log(carts);
 
@@ -166,13 +181,13 @@ export default function CartItem() {
                       </div>
                       {/* Quantity section */}
                       <div className='flex justify-center w-1/5'>
-                        <button onClick={() => handleSubtractQuantity(item.id)}>
+                        <button onClick={() => handleSubtractQuantity(index, item.id)}>
                           <img src={iconMinus} alt='minus' />
                         </button>
 
                         <input className='mx-2 border text-center w-8' type='text' value={item.quantity} />
 
-                        <button onClick={() => handleAddQuantity(item.id)}>
+                        <button onClick={() => handleAddQuantity(index, item.id)}>
                           <img src={iconPlus} alt='plus' />
                         </button>
                       </div>
@@ -209,20 +224,14 @@ export default function CartItem() {
               <div className='w-1/4 px-8 py-10'>
                 <h1 className='font-semibold text-2xl border-b pb-8'>Order Summary</h1>
                 <div className='flex justify-between mt-10 mb-5'>
-                  <span className='font-semibold text-sm'>Items {cartTotal}</span>
+                  <span className='font-semibold text-sm'>Items {cartItemsQuantity}</span>
                   <div className='flex'>
                     <span className='text-sm mr-4'><BiRupee className='absolute mt-1' /></span>
                     <span className='font-semibold text-sm'>{amount}</span>
                   </div>
                 </div>
                 <div>
-                  {/* <div className='flex justify-between mt-10 mb-5'>
-                    <span className='font-semibold text-sm'>Delivery Charges</span>
-                    <div className='flex'>
-                      <span className='text-sm mr-4'><BiRupee className='absolute mt-1' /></span>
-                      <span className='font-semibold text-sm'>40</span>
-                    </div>
-                  </div> */}
+
                 </div>
 
                 <div className='border-t mt-8'>
