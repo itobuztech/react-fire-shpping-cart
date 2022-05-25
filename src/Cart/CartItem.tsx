@@ -23,8 +23,7 @@ export default function Cart() {
   );
 
   const cartItemsCount = cartItems.reduce(
-    (accumulator: number, current: { Quantity: number }) =>
-      accumulator + current.Quantity,
+    (accumulator: number, current: { Quantity: number }) => accumulator + current.Quantity,
     initialValue
   );
 

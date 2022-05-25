@@ -82,7 +82,7 @@ export default function ProductListForm() {
         Category: value.Category,
         Quantity: value.Quantity,
         Price: value.Price,
-        create_date: date
+        create_date: date,
       });
       toast.success('Product added successful');
       reset();
