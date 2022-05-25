@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BiRupee } from 'react-icons/bi';
 import { MdLocalOffer } from 'react-icons/md';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { v4 as uuids4 } from 'uuid';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import Button from '../../Components/Button';
 import { routes } from 'routes';
@@ -12,15 +12,19 @@ import ShoppingCartHeader from 'Components/ShoppingCartHeader';
 import StarRating from 'Components/StarRating';
 import { ProductListItem } from 'Interface/product-list-item.interface';
 import { db } from 'lib/firebase';
-import { addToCart } from 'Store/slice/cartSlice';
+import { RootState } from 'Store/store';
 
 export default function ProductDetailsScreen() {
   const params = useParams();
-  const [value, setValue] = useState<ProductListItem>();
+  const [value, setValue] = useState<ProductListItem | any>();
   const [productList, setProductList] = useState<ProductListItem[]>([]);
   const id = uuids4();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const cartQuantity = useSelector((state: RootState) => state.cart);
+
+  //current user
+  const currentUser = useSelector((state: RootState) => state.auth.user);
 
   const fetchProduct = async () => {
     const getData = await getDocs(collection(db, 'products'));
@@ -43,15 +47,26 @@ export default function ProductDetailsScreen() {
     })();
   }, [params.productId, setValue]);
 
-  const AddToCart = async (item: any) => {
-    const database = collection(db, 'cartItem');
-    await setDoc(doc(database, id), {
+  const AddToCart = async (item: ProductListItem) => {
+    const cartDatabase = await collection(db, 'cartItem');
+    await setDoc(doc(cartDatabase, id), {
       id: id,
       productId: item.productId,
-      Quantity: item.Quantity,
+      Quantity: cartQuantity.Quantity + 1,
+      userId: currentUser?.uid,
     });
-    dispatch(addToCart({ ...item }));
-    navigate(routes.productCart);
+    navigate(routes.cartItem);
+  };
+
+  const buyNow = async (item: ProductListItem | any) => {
+    const cartDatabase = await collection(db, 'cartItem');
+    await setDoc(doc(cartDatabase, id), {
+      id: id,
+      productId: item.productId,
+      Quantity: cartQuantity.Quantity + 1,
+      userId: currentUser?.uid,
+    });
+    navigate(routes.checkoutScreen);
   };
 
   return (
@@ -69,12 +84,9 @@ export default function ProductDetailsScreen() {
                 <img src={value?.Image} />
               </div>
               <div className='flex justify-around mt-4'>
-                <Link to={routes.cartItem}>
-                  <Button onClick={() => AddToCart(value?.id)}>ADD TO CART</Button>
-                </Link>
-                <Link to={routes.checkoutScreen}>
-                  <Button>BUY NOW</Button>
-                </Link>
+                <Button onClick={() => AddToCart(value)}>ADD TO CART</Button>
+
+                <Button onClick={() => buyNow(value)}>BUY NOW</Button>
               </div>
             </div>
           </div>

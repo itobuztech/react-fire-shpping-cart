@@ -17,7 +17,7 @@ export default function OrderList() {
   return (
     <>
       <ShoppingCartHeader />
-      <body>
+      <div>
         <div className='container mx-auto mt-10'>
           <div className='flex shadow-md'>
             {/* filter */}
@@ -101,7 +101,7 @@ export default function OrderList() {
           </div>
         </div>
         <Pagination />
-      </body>
+      </div>
     </>
   );
 }

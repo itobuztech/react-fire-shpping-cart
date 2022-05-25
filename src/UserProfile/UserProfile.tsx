@@ -39,7 +39,8 @@ export default function UserProfile() {
                 <div className='field'>
                   <label className='pr-4 font-semibold'>Name</label>
                   <div className='pb-2 pt-2'>
-                    <TextInputField value='Rimpa Das' placeholder='Enter your name' type='text' />
+                    <TextInputField placeholder='Enter your name' type='text' 
+                    value={(String(currentUser?.displayName))} />
                   </div>
                 </div>
                 <div className='field'>
@@ -68,7 +69,7 @@ export default function UserProfile() {
             <div className='card-content p-6'>
               <div className=' block relative w-48 h-48 mx-auto'>
                 <img
-                  src='https://avatars.dicebear.com/v2/initials/john-doe.svg'
+                  src={(String(currentUser?.photoURL))}
                   alt='image'
                   className='rounded-full p-2'
                 />
@@ -76,7 +77,7 @@ export default function UserProfile() {
               <hr />
               <div className='field p-2'>
                 <label className='font-semibold'>Name</label>
-                <div>Rimpa Das</div>
+                <div>{currentUser?.displayName}</div>
               </div>
               <hr />
               <div className='field p-2'>

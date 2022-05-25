@@ -21,6 +21,7 @@ export default function ProductList() {
   const [cartList, setCartList] = useState<CartItem[]>([]);
   const navigate = useNavigate();
   const id = uuids4();
+  
   const cartQuantity = useSelector((state: RootState) => state.cart);
 
   //current user

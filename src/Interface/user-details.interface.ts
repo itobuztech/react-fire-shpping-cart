@@ -8,4 +8,6 @@ export interface UserDetails {
   country: string;
   pinCode: number;
   save_details: boolean;
+  order_date: string;
+  grand_total: number;
 }

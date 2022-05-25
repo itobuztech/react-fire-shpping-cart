@@ -14,7 +14,7 @@ export default function OrderListDetails() {
   return (
     <>
       <ShoppingCartHeader />
-      <body>
+      <div>
         <div className='container mx-auto mt-10'>
           {/* order details */}
           <div className='w-full bg-gray-50 px-8 py-8 mb-4'>
@@ -136,7 +136,7 @@ export default function OrderListDetails() {
             </div>
           </div>
         </div>
-      </body>
+      </div>
     </>
   );
 }

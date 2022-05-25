@@ -31,7 +31,6 @@ export default function CheckoutScreen() {
   });
 
   const [cartItems, setCartItems] = useState<CartItemRow[]>([]);
-  const [cartItemsCount, setCartItemsCount] = useState<any>();
   const navigate = useNavigate();
 
   //current user
@@ -40,18 +39,14 @@ export default function CheckoutScreen() {
   const initialValue = 0;
   const GrandTotal = cartItems.reduce(
     (accumulator: number, current: { Price: number; Quantity: number }) =>
-      accumulator + 40 + current.Price * current.Quantity,
+      accumulator + current.Price * current.Quantity + 40,
     initialValue
   );
 
-  // cart length
-  useEffect(() => {
-    const getCartItem = collection(db, 'cartItem');
-    getDocs(getCartItem).then((item: any) => {
-      const cartCount = item.docs.length;
-      setCartItemsCount(cartCount);
-    });
-  }, []);
+  const cartItemsCount = cartItems.reduce(
+    (accumulator: number, current: { Quantity: number }) => accumulator + current.Quantity,
+    initialValue
+  );
 
   // Order Date
   const current = new Date();
