@@ -55,7 +55,6 @@ export default function CheckoutScreen() {
   const amount = carts.reduce((acc, item) => acc + item.quantity * item.actualPrice, 0).toFixed(2);
 
   //shopping Charge Add Amount
-
   const shoppingChargeAddAmount = carts.reduce((acc, item) => acc + item.quantity * item.actualPrice + 40, 0).toFixed(2);
   // Order Date
   const current = new Date();
@@ -131,7 +130,6 @@ useEffect(() => {
      
     });
 
-    console.log(userId);
     alert('Form successfully submit');
   };
 

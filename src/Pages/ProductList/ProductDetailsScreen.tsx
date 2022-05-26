@@ -19,20 +19,6 @@ import { ProductListItem } from 'Interface/product-list-item.interface';
 
 
 export default function ProductDetailsScreen() {
-  // const products = [...Array(1)].map(() => ({
-  //   id: faker.datatype.uuid(),
-  //   productName: faker.commerce.productName(),
-  //   price: faker.commerce.price(),
-  //   image: faker.image.business(600, 600),
-  //   description: faker.lorem.words(40),
-  //   rating: faker.datatype.number({ min: 0, max: 5 }),
-  // }));
-  const relateProducts = [...Array(4)].map(() => ({
-    productName: faker.commerce.productName(),
-    price: faker.commerce.price(),
-    image: faker.image.business(600, 400),
-  }));
-
   const param = useParams();
   const cartQuantity = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
@@ -51,7 +37,7 @@ export default function ProductDetailsScreen() {
     });
   };
 
-
+// fetching product  from firebase using id
   useEffect(() => {
     (async () => {
       const id = param.id;
@@ -76,7 +62,6 @@ export default function ProductDetailsScreen() {
   useEffect(() => {
     fetchData();
   }, []);
-
 
 
   return (
@@ -112,7 +97,6 @@ export default function ProductDetailsScreen() {
                       <Button onClick={() => handelAddToCart(product, productValue?.id)}>ADD TO CART</Button>
                       <Button>BUY NOW</Button>
                     </div></>
-               
             </div>
           </div><div className='card bg-white'>
               <div className='card-content p-6'>

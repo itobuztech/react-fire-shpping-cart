@@ -94,17 +94,15 @@ export default function CartItem() {
 
 
 
-  // Product details
+  // Product details through get product_id from  cartItem database from firebase
 
   const findData = async () => {
     const q = query(collection(db, 'cartItem'));
     const cartQueryData = await getDocs(q);
     const cartData = cartQueryData.docs.map(async (i) => {
       const item = i.data() as SingleCartItem;
-
       const productRef = doc(db, 'productForm', item.product_id);
       const productSnap = await getDoc(productRef);
-
       const productData = productSnap.data() as ProductListItem;
 
       return {

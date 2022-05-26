@@ -29,11 +29,10 @@ export default function ProductList() {
 
   // Get Quantity
   const cartQuantity = useSelector((state: RootState) => state.cart);
-
   const dispatch = useDispatch();
+
   //Add to cart button function
   const handelAddToCart = async (product: any, id: string) => {
-    //console.log(product);
     dispatch(cartSliceAction.addToCart({ ...product, id }));
     const generateId = uuidv4();
     await setDoc(doc(db, 'cartItem', generateId), {
