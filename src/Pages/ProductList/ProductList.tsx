@@ -25,8 +25,6 @@ import { Products } from 'Interface/productinterface';
 export default function ProductList() {
   
   const [product, setProduct] = useState<ProductListItem[]>();
-
-
   const cart = useSelector((state: RootState) => state.cart.cartItem);
 
   // Get Quantity
@@ -45,7 +43,7 @@ export default function ProductList() {
     });
   };
 
-
+// fetching Product detail from
   const fetchData = async () => {
     const q = await getDocs(collection(db, 'productForm'));
     const data = q.docs.map(i => i.data() as ProductListItem);
@@ -55,7 +53,6 @@ export default function ProductList() {
   useEffect(() => {
     fetchData();
   }, []);
-
 
   return (
     <>
@@ -77,7 +74,7 @@ export default function ProductList() {
 
             return (
               <div className='max-w-sm rounded-2xl overflow-hidden shadow hover:shadow-lg' key={el.id}>
-                <Link to={routes.productDetailsScreen}>
+                <Link to={`/productDetailsScreen/${el.id}`}>
                   {' '}
                   <img className='w-full' src={el.image} alt='image' />
                   <div className='px-6 py-2'>
@@ -90,18 +87,16 @@ export default function ProductList() {
                   <span className='px-3 py-1 mr-2 mb-2 flex'>
                     Price : <BiRupee className='mt-1' /> {el.actualPrice}
                   </span>
-                  {/* <div className='flex'>
-                    <span className='px-3 py-1 mb-2'>Ratings:</span>
+                  <div className='flex'>
+                    <span className='px-3 py-1 mb-2'>Category:</span>
                     <div className='mt-2'>
-                      <StarRating rating={el.category} />
+                      {el.category} 
                     </div>
-                  </div> */}
+                  </div>
                 </div>
 
                 <div className='pb-10 flex justify-around'>
-
                   <Button onClick={() => handelAddToCart(el, el.id)}>
-
                     ADD to Cart
                   </Button>
                   <Button>Buy Now</Button>

@@ -8,7 +8,7 @@ import db from 'lib/firebase';
 export default function OrderListScreen() {
 
 const [order, setOrder] = useState<UserDetails[]>([]);
-const [orderItems, setOrderItems] = useState<any>();
+const [orderItem, setOrderItem] = useState<any>();
 
 const fetchData = async () => {
   const q = await getDocs(collection(db, 'checkout'));
@@ -23,10 +23,10 @@ useEffect(() => {
 
 // number of items in order list total
 useEffect(() => {
-  const getOrderItem = collection(db, 'checkout');
-  getDocs(getOrderItem).then((item) => {
-    const orderItem = item.size;
-    setOrderItems(orderItem);
+  const getOrderItems = collection(db, 'checkout');
+  getDocs(getOrderItems).then((item) => {
+    const orderItems = item.size;
+    setOrderItem(orderItems);
   });
 });
 
@@ -40,7 +40,7 @@ useEffect(() => {
               {/* Cart header */}
               <div className='flex justify-between border-b pb-8'>
                 <h1 className='font-semibold text-2xl'>Order List</h1>
-                <h2 className='font-semibold text-2xl'>{orderItems} Items</h2>
+                <h2 className='font-semibold text-2xl'>{orderItem} Items</h2>
               </div>
               {/* Cart header end */}
 

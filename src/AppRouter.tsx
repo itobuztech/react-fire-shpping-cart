@@ -71,13 +71,14 @@ export default function AppRouter() {
             {/*Product Cart end */}
 
             {/*Product details screen */}
-            <Route path={routes.productDetailsScreen} element={<AuthGuard />}>
-              <Route path={routes.productDetailsScreen} element={<ProductDetailsScreen />} />
+            <Route path={'/productDetailsScreen/:id'} element={<AuthGuard />}>
+              <Route path={'/productDetailsScreen/:id'} element={<ProductDetailsScreen />} />
             </Route>
 
             {/* Only visible for admin - product list create screen */}
             <Route path={routes.productListForm} element={<AuthGuard />}>
               <Route path={routes.productListForm} element={<ProductListForm />} />
+              <Route path={'/product-list-form/:id'} element={<ProductListForm />} />
             </Route>
             {/* Only visible for admin - product list create screen end */}
 

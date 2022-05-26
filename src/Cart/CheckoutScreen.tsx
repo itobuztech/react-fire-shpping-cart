@@ -40,11 +40,11 @@ export default function CheckoutScreen() {
   const userId = useSelector((state: RootState) => state.auth.user);
 
   const [carts, setCarts] = useState<rowCartItem[]>([]);
-  const [cartTotal, setCartTotal] = useState<any>();
+  const [itemsTotal, setItemsTotal] = useState<any>();
 
 
 
-  // items number in order summary
+  // items number in order summary section
   const cartItemsCount = carts.reduce(
     (accumulator: number, current: { quantity: number }) =>
       accumulator + current.quantity,
@@ -70,13 +70,13 @@ export default function CheckoutScreen() {
     resolver: yupResolver(UserDetailsSchema),
   });
 
-// cart total
+// Number of items  in listing
 
 useEffect(() => {
-  const getCartItem = collection(db, 'cartItem');
-  getDocs(getCartItem).then((item) => {
-    const cartCount = item.size;
-    setCartTotal(cartCount);
+  const getItems = collection(db, 'cartItem');
+  getDocs(getItems).then((item) => {
+    const itemsCount = item.size;
+    setItemsTotal(itemsCount);
   });
 });
 
@@ -87,18 +87,18 @@ const findData = async () => {
   const q = query(collection(db, 'cartItem'));
   const cartQueryData = await getDocs(q);
   const cartData = cartQueryData.docs.map(async (i) => {
-    const items = i.data() as SingleCartItem;
+    const item = i.data() as SingleCartItem;
 
-    const productRef = doc(db, 'productForm', items.product_id);
+    const productRef = doc(db, 'productForm', item.product_id);
     const productSnap = await getDoc(productRef);
 
     const productData = productSnap.data() as ProductListItem;
 
     return {
-      ...items,
+      ...item,
       title: productData.title,
       actualPrice: productData.actualPrice || 0,
-      totalAmount: productData.actualPrice * items.quantity,
+      totalAmount: productData.actualPrice * item.quantity,
     };
   });
   const data = await Promise.all(cartData);

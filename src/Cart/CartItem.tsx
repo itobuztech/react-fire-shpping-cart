@@ -32,11 +32,10 @@ export default function CartItem() {
   // TotalPrice 
   const amount = carts.reduce((acc, item) => acc + item.quantity * item.actualPrice, 0).toFixed(2);
 
-  // items number as quantity add in order summary
+  // items number as quantity add in order summary section
   const cartItemsQuantity = carts.reduce(
     (accumulator: number, current: { quantity: number }) =>
-      accumulator + current.quantity,
-    0
+      accumulator + current.quantity, 0
   );
 
 
@@ -101,18 +100,18 @@ export default function CartItem() {
     const q = query(collection(db, 'cartItem'));
     const cartQueryData = await getDocs(q);
     const cartData = cartQueryData.docs.map(async (i) => {
-      const items = i.data() as SingleCartItem;
+      const item = i.data() as SingleCartItem;
 
-      const productRef = doc(db, 'productForm', items.product_id);
+      const productRef = doc(db, 'productForm', item.product_id);
       const productSnap = await getDoc(productRef);
 
       const productData = productSnap.data() as ProductListItem;
 
       return {
-        ...items,
+        ...item,
         title: productData.title,
         actualPrice: productData.actualPrice || 0,
-        totalAmount: productData.actualPrice * items.quantity,
+        totalAmount: productData.actualPrice * item.quantity,
       };
     });
     const data = await Promise.all(cartData);
@@ -128,22 +127,18 @@ export default function CartItem() {
   // number of items in cart list total
 
   useEffect(() => {
-    const getItem = collection(db, 'cartItem');
-    getDocs(getItem).then((item) => {
+    const getItems = collection(db, 'cartItem');
+    getDocs(getItems).then((item) => {
       const itemsCount = item.size;
       setCartTotal(itemsCount);
     });
   });
-
-
-
 
   return (
     <>
       <body className='bg-gray-100'>
         <FormHeader />
         {cartTotal >= 1 && (
-
           <div className='container mx-auto mt-10'>
             <div className='flex shadow-md my-10'>
               <div className='w-3/4 bg-white px-10 py-10'>
@@ -166,10 +161,7 @@ export default function CartItem() {
 
                 {/* cart list item */}
 
-
                 {carts.map((item, index) => {
-
-                  //console.log(carts);
 
                   return (
                     <div className='flex items-center hover:bg-gray-100 -mx-8 px-6 py-5'>
@@ -205,9 +197,7 @@ export default function CartItem() {
                     </div>
 
                   );
-
-
-                })
+                 })
                 }
 
                 {/* Price section end */}
@@ -218,9 +208,6 @@ export default function CartItem() {
                 </Link>
               </div>
               {/*Order summary section */}
-
-
-
               <div className='w-1/4 px-8 py-10'>
                 <h1 className='font-semibold text-2xl border-b pb-8'>Order Summary</h1>
                 <div className='flex justify-between mt-10 mb-5'>
@@ -231,38 +218,25 @@ export default function CartItem() {
                   </div>
                 </div>
                 <div>
-
                 </div>
-
                 <div className='border-t mt-8'>
-
                   <div className='flex font-semibold justify-between py-6 text-'>
                     <span>Total Amount</span>
-
                     <div className='flex'>
                       <span className='text-sm mr-4'><BiRupee className='absolute mt-1' /></span>
-
                       <span className='font-semibold text-sm'>{amount}</span>
-
                     </div>
-
                   </div>
                   <Link to={routes.checkoutScreen}> <button
                     className='bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm 
           text-white uppercase w-full'>
                     Checkout
                   </button></Link>
-
                 </div>
-
               </div>
-
-
             </div>
-
           </div>
         )}
-
       </body>
     </>
   );

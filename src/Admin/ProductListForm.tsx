@@ -19,10 +19,8 @@ import db from 'lib/firebase';
 
 export default function ProductListForm() {
 
-
   const [image, setImage] = useState<any>(null);
   const [categoryList, setCategoryList] = useState<ProductListItem[]>([]);
-
   const { id } = useParams();
 
   const ProductListCreateSchema = yup.object().shape({
@@ -43,13 +41,11 @@ export default function ProductListForm() {
     resolver: yupResolver(ProductListCreateSchema),
   });
 
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getData = async () => {
     const q = await getDocs(collection(db, 'category'));
     const data = q.docs.map(i => i.data() as ProductListItem);
     setCategoryList(data);
-
 
   };
 
@@ -66,7 +62,8 @@ export default function ProductListForm() {
     const storageRef = ref(storage, storagePath);
     const uploadTask = uploadBytesResumable(storageRef, file);
     uploadTask.on('state_changed', (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    
     });
 
     //update
@@ -104,8 +101,8 @@ export default function ProductListForm() {
           discountedPrice: data.discountedPrice
 
         });
-
       }
+      alert('Successfully submit');
       setImage(null);
     });
   };
@@ -118,15 +115,12 @@ export default function ProductListForm() {
     if (docSnap.exists()) {
 
       setValue('title', docSnap.data().title);
-      setValue('descriptions', docSnap.data().description);
+      setValue('descriptions', docSnap.data().descriptions);
       setValue('image', docSnap.data().url);
       setValue('category', docSnap.data().category);
       setValue('quantity', docSnap.data().quantity);
       setValue('actualPrice', docSnap.data().actualPrice);
       setValue('discountedPrice', docSnap.data().discountedPrice);
-
-
-
     } else {
       console.log('No such document!');
     }
@@ -150,6 +144,14 @@ export default function ProductListForm() {
           </div>
           <form className='mt-8 space-y-6' onSubmit={handleSubmit(onSubmit)}>
             <div className='rounded-md -space-y-px'>
+
+              {/* image */}
+              <div className='pb-2'>
+                <input type="file"  {...register('image')} onChange={handleImageAsFile} /><br />
+              </div>
+              <FormErrorMessage>{errors.image?.message}</FormErrorMessage>
+              {/* image End  */}
+
               {/* title  */}
               <div className='pb-2'>
                 <TextInputField type='text' placeholder='Title' register={register('title')} />
@@ -164,12 +166,6 @@ export default function ProductListForm() {
               <FormErrorMessage>{errors.descriptions?.message}</FormErrorMessage>
               {/* description End */}
 
-              {/* image */}
-              <div className='pb-2'>
-                <input type="file"  {...register('image')} onChange={handleImageAsFile} /><br />
-              </div>
-              <FormErrorMessage>{errors.image?.message}</FormErrorMessage>
-              {/* image End  */}
 
               {/* Category  */}
               <div>
@@ -182,7 +178,7 @@ export default function ProductListForm() {
                         </option>
                       );
                     })
-                  }
+                    }
                   </select>
                 </div>
               </div>
