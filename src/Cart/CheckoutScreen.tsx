@@ -69,7 +69,7 @@ export default function CheckoutScreen() {
     resolver: yupResolver(UserDetailsSchema),
   });
 
-// Number of items  in listing
+// Number of items  in  order summary section
 
 useEffect(() => {
   const getItems = collection(db, 'cartItem');

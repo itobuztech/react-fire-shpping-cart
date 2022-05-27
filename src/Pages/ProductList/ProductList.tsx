@@ -6,7 +6,7 @@ import faker from '@faker-js/faker';
 
 import ProductListHeader from 'Components/ProductListHeader';
 import { routes } from 'routes';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BiLeftArrowAlt, BiRightArrowAlt, BiRupee } from 'react-icons/bi';
 import StarRating from 'Components/StarRating';
 import Button from 'Components/Button';
@@ -31,6 +31,8 @@ export default function ProductList() {
   const cartQuantity = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
   //Add to cart button function
   const handelAddToCart = async (product: any, id: string) => {
     dispatch(cartSliceAction.addToCart({ ...product, id }));
@@ -40,6 +42,18 @@ export default function ProductList() {
       quantity: cartQuantity.quantity + 1,
       product_id: id,
     });
+  };
+
+    //Buy Now button
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const handelBuyNow = async (product: any, id: string) => {
+    const generateId = uuidv4();
+    await setDoc(doc(db, 'cartItem', generateId), {
+      id: generateId,
+      quantity: cartQuantity.quantity + 1,
+      product_id: id,
+    });
+    navigate(routes.checkoutScreen);
   };
 
 // fetching Product detail from
@@ -98,7 +112,7 @@ export default function ProductList() {
                   <Button onClick={() => handelAddToCart(el, el.id)}>
                     ADD to Cart
                   </Button>
-                  <Button>Buy Now</Button>
+                  <Button onClick={() => handelBuyNow(el, el.id)}>Buy Now</Button>
                 </div>
               </div>
 

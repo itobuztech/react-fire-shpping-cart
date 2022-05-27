@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { BiRupee } from 'react-icons/bi';
 import { MdLocalOffer } from 'react-icons/md';
 import { routes } from 'routes';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import Button from '../../Components/Button';
 import ProductListHeader from 'Components/ProductListHeader';
@@ -22,10 +22,13 @@ export default function ProductDetailsScreen() {
   const param = useParams();
   const cartQuantity = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [product, setProduct] = useState<ProductListItem[]>();
   const [productValue, setProductValue] = useState<ProductListItem | any>();
 
+
+  //Add to cart button
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const handelAddToCart = async (product: any, id: string) => {
     dispatch(cartSliceAction.addToCart({ ...product, id }));
@@ -36,6 +39,19 @@ export default function ProductDetailsScreen() {
       product_id: id,
     });
   };
+
+//Buy Now button
+// eslint-disable-next-line @typescript-eslint/no-shadow
+  const handelBuyNow = async (product: any, id: string) => {
+    const generateId = uuidv4();
+    await setDoc(doc(db, 'cartItem', generateId), {
+      id: generateId,
+      quantity: cartQuantity.quantity + 1,
+      product_id: id,
+    });
+    navigate(routes.checkoutScreen);
+  };
+
 
 // fetching product  from firebase using id
   useEffect(() => {
@@ -71,17 +87,7 @@ export default function ProductDetailsScreen() {
         <div className='flex justify-center'>
           <div className='font-bold md:text-4xl sm:text-xl mb-6 '>Products Details</div>
 
-          {/* Only visible for admin */}
-          {product && product.map((el) => {
-
-          return (  
-          <div className='absolute right-6'>
-            <Link to={`/product-list-form/${el.id}`}>
-              <Button>Edit Product</Button>
-            </Link>
-          </div>
-          );
-          })}
+         
         </div>
         {/* Only visible for admin end */}
 
@@ -95,7 +101,7 @@ export default function ProductDetailsScreen() {
                     <img src={productValue?.image} alt='image' className='p-2' />
                   </div><div className='flex justify-around mt-4'>
                       <Button onClick={() => handelAddToCart(product, productValue?.id)}>ADD TO CART</Button>
-                      <Button>BUY NOW</Button>
+                      <Button onClick={() => handelBuyNow(product, productValue?.id)}>BUY NOW</Button>
                     </div></>
             </div>
           </div><div className='card bg-white'>
