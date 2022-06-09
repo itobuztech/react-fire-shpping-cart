@@ -104,7 +104,6 @@ export default function CartItem() {
       const productRef = doc(db, 'productForm', item.product_id);
       const productSnap = await getDoc(productRef);
       const productData = productSnap.data() as ProductListItem;
-
       return {
         ...item,
         title: productData.title,

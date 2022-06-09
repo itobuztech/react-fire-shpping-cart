@@ -11,14 +11,40 @@ import { RootState } from 'Store/store';
 import { ICart } from 'Interface/cart.interface';
 import { collection, doc, getDoc, getDocs, query } from 'firebase/firestore';
 import db from 'lib/firebase';
+import { ProductListItem } from 'Interface/product-list-item.interface';
 
 export default function ProductListHeader() {
 
   const cart = useSelector((state: RootState) => state.cart.cartItem);
   const cartQuantity = useSelector((state:RootState) => state.cart);
   const [cartItem, setCartItem] = useState<any>();
+  const [searchInput, setSearchInput] = useState('');
+  const [product, setProduct] = useState<ProductListItem[]>();
+  const [filteredResults, setFilteredResults] = useState<ProductListItem[]>();
 
-  
+
+  // fetching Product detail from
+  const fetchData = async () => {
+    const q = await getDocs(collection(db, 'productForm'));
+    const data = q.docs.map(i => i.data() as ProductListItem);
+    setProduct(data);
+
+
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Search items
+  const searchItems = (searchValue:any) => {
+    setSearchInput(searchValue);
+  const filteredData = product && product.filter((item) => {
+    return Object.values(item).join('').toLowerCase().includes(searchInput.toLowerCase());
+    });
+    console.log(filteredData);
+    setFilteredResults(filteredData);
+
+};
 
 
 // Number of items add to cart
@@ -38,7 +64,7 @@ export default function ProductListHeader() {
             React Fire Shopping Cart
           </div>
           <div className='text-black lg:pr-6 md:pr-6 sm:mr-4 sm:pl-2 search'>
-            <SearchField label={'search here...'} />
+            <input onChange = {(e) => searchItems(e.target.value)}/>
           </div>
           <div className='flex justify-between nav-items'>
             {/*dropdown */}

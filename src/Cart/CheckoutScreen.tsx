@@ -56,6 +56,7 @@ export default function CheckoutScreen() {
 
   //shopping Charge Add Amount
   const shoppingChargeAddAmount = carts.reduce((acc, item) => acc + item.quantity * item.actualPrice + 40, 0).toFixed(2);
+
   // Order Date
   const current = new Date();
   const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;

@@ -80,6 +80,11 @@ border: 1px solid #00000042;
 
 
 }
+.search-input
+{
+  border: 1px solid #000;
+    width: 14%;
+}
 
 
 
